@@ -1,3 +1,5 @@
+package Models;
+
 class Student {
     private String name;
     private String email;
