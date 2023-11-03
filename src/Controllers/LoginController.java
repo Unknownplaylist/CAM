@@ -1,3 +1,5 @@
+package Controllers;
+
 public class LoginController {
     private StudentsController studentsController;
 
