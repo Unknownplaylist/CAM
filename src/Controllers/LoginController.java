@@ -1,14 +1,12 @@
 public class LoginController {
     private StudentsController studentsController;
-    private StaffController staffController;
 
-    public LoginController(StudentsController studentsController, StaffController staffController) {
+    public LoginController(StudentsController studentsController) {
         this.studentsController = studentsController;
-        this.staffController = staffController;
     }
 
     public boolean loginUser(String email, String password) {
-        // Verify user credentials
+        // Verify user credentials (e.g., email and password)
         boolean validCredentials = verifyCredentials(email, password);
 
         if (validCredentials) {
@@ -16,14 +14,9 @@ public class LoginController {
             if (studentsController.verifyStudent(email)) {
                 // User is a student
                 return true;
-            }
-            // Check if the user is a staff member
-            else if (staffController.verifyStaff(email)) {
-                // User is a staff member
-                return true;
             } else {
-                // User is neither a student nor a staff member
-                System.out.println("Access denied. You are not a student or staff member.");
+                // User is not a student
+                System.out.println("Access denied. You are not a student.");
                 return false;
             }
         } else {
@@ -33,26 +26,12 @@ public class LoginController {
         }
     }
 
-    // Other methods...
-}
-
-public class Main {
-    public static void main(String[] args) {
-        // Initialize controllers
-        StudentsController studentsController = new StudentsController();
-        StaffController staffController = new StaffController();
-        LoginController loginController = new LoginController(studentsController, staffController);
-
-        // User credentials
-        String email = "user@example.com";
-        String password = "password";
-
-        // Attempt to log in the user
-        boolean loggedIn = loginController.loginUser(email, password);
-
-        if (loggedIn) {
-            // User is successfully logged in
-            // Access student- or staff-specific functionalities here
-        }
+    private boolean verifyCredentials(String email, String password) {
+        // Implement the logic to verify user credentials (e.g., compare email and password)
+        // Return true if credentials are valid; otherwise, return false
+        // You can add your own authentication logic here
+        return true; // For demonstration purposes
     }
+
+    // Other methods related to user authentication can be added here
 }
