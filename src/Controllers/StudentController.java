@@ -2,6 +2,7 @@ package Controllers;
 
 import java.io.*;
 import java.util.*;
+import Models.*;
 
 class StudentsController {
     private static final String FILE_PATH = "students.csv";
