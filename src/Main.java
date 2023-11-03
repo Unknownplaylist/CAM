@@ -9,7 +9,7 @@ public class Main {
         LoginController loginController = new LoginController(studentsController);
 
         // Sample user credentials (email and password)
-        String email = "student@example.com";
+        String email = "YCHERN@e.ntu.edu.sg";
         String password = "password";
 
         // Attempt to log in the user

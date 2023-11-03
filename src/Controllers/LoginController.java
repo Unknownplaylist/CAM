@@ -28,12 +28,17 @@ public class LoginController {
         }
     }
 
+    private static final String DEFAULT_PASSWORD = "password";
+
     private boolean verifyCredentials(String email, String password) {
-        // Implement the logic to verify user credentials (e.g., compare email and password)
-        // Return true if credentials are valid; otherwise, return false
-        // You can add your own authentication logic here
-        return true; // For demonstration purposes
+        // Verify that the email is in the correct format and not null
+        if (email == null || !email.contains("@") || !email.endsWith("e.ntu.edu.sg")) {
+            System.out.println("Invalid email format.");
+            return false;
+        }
+
+        // Check if the provided password matches the default password
+        return password.equals(DEFAULT_PASSWORD);
     }
 
-    // Other methods related to user authentication can be added here
 }

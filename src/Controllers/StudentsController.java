@@ -4,16 +4,26 @@ import java.io.*;
 import java.util.*;
 import Models.*;
 
+
 public class StudentsController {
-    private static final String FILE_PATH = "students.csv";
+    private static final String FILE_PATH = "src/Database/student.csv";
     private static final String CSV_SEPARATOR = ",";
     
     public List<Student> readStudents() {
         List<Student> students = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) {
+            System.out.println("File does not exist at: " + FILE_PATH);
+            return students;
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(CSV_SEPARATOR);
+                if (data.length < 3) {
+                    System.out.println("Invalid line: " + line);
+                    continue;
+                }
                 Student student = new Student(data[0], data[1], data[2]);
                 students.add(student);
             }
@@ -23,7 +33,6 @@ public class StudentsController {
         }
         return students;
     }
-    
     public void writeStudent(Student student) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             String data = String.join(CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty());
