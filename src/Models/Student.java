@@ -34,4 +34,14 @@ public class Student {
     public void setFaculty(String faculty) {
         this.faculty = faculty;
     }
+
+        // toString method for printing
+        @Override
+        public String toString() {
+            return "Student{" +
+                    "name='" + name + '\'' +
+                    ", email='" + email + '\'' +
+                    ", faculty='" + faculty + '\'' +
+                    '}';
+        }
 }

@@ -2,23 +2,25 @@ package Controllers;
 
 public class LoginController {
     private StudentsController studentsController;
+    private StaffController staffController; 
 
-    public LoginController(StudentsController studentsController) {
+    public LoginController(StudentsController studentsController, StaffController staffController) {
         this.studentsController = studentsController;
+        this.staffController = staffController;
     }
 
-    public boolean loginUser(String email, String password) {
-        // Verify user credentials (e.g., email and password)
-        boolean validCredentials = verifyCredentials(email, password);
+    public boolean loginUser(String id, String password) {
+        // Verify user credentials (e.g., id and password)
+        boolean validCredentials = verifyCredentials(id, password);
 
         if (validCredentials) {
-            // Check if the user is a student
-            if (studentsController.verifyStudent(email)) {
-                // User is a student
+            // Check if the user is a student or staff
+            if (studentsController.verifyStudent(id + "@e.ntu.edu.sg") || staffController.verifyStaff(id + "@NTU.EDU.SG")) {
+                // User is a student or staff
                 return true;
             } else {
-                // User is not a student
-                System.out.println("Access denied. You are not a student.");
+                // User is not a student or staff
+                System.out.println("Access denied. You are not a recognized student or staff.");
                 return false;
             }
         } else {
@@ -30,15 +32,14 @@ public class LoginController {
 
     private static final String DEFAULT_PASSWORD = "password";
 
-    private boolean verifyCredentials(String email, String password) {
-        // Verify that the email is in the correct format and not null
-        if (email == null || !email.contains("@") || !email.endsWith("e.ntu.edu.sg")) {
-            System.out.println("Invalid email format.");
+    private boolean verifyCredentials(String id, String password) {
+        // Verify that the ID is not null and password matches the default password
+        if (id == null || id.isEmpty()) {
+            System.out.println("Invalid ID.");
             return false;
         }
 
         // Check if the provided password matches the default password
         return password.equals(DEFAULT_PASSWORD);
     }
-
 }

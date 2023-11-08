@@ -2,28 +2,41 @@ import Controllers.*;
 
 public class Main {
     public static void main(String[] args) {
-        // Initialize the StudentsController
+        // Initialize the StudentsController and StaffController
         StudentsController studentsController = new StudentsController();
+        StaffController staffController = new StaffController(); // Assuming StaffController is implemented
 
-        // Initialize the LoginController with the StudentsController
-        LoginController loginController = new LoginController(studentsController);
+        // Initialize the LoginController with both StudentsController and StaffController
+        LoginController loginController = new LoginController(studentsController, staffController);
 
-        // Sample user credentials (email and password)
-        String email = "KOH1@e.ntu.edu.sg";
+        // Sample user ID and password (the ID is the part before "@")
+        String userId = "HUKUMAR"; // Assuming "KOH1" is the ID part of the email
         String password = "password";
 
         // Attempt to log in the user
-        boolean loggedIn = loginController.loginUser(email, password);
+        boolean loggedIn = loginController.loginUser(userId, password);
 
         if (loggedIn) {
-            // User is successfully logged in and is a student
-            // Access student-specific functionalities here
+            // User is successfully logged in and is recognized as a student or staff
+            // Access student-specific or staff-specific functionalities here
 
-            // Example: Get the student's name and faculty from the email
-            String name = studentsController.getStudentName(email);
-            String faculty = studentsController.getStudentFaculty(email);
+            // Example: Get the student's or staff's name and faculty using the complete email
+            String studentEmail = userId + "@e.ntu.edu.sg";
+            String staffEmail = userId + "@NTU.EDU.SG";
+            
+            String name;
+            String faculty;
 
-            // Display the student's name and faculty
+            // Determine if the user is a student or staff and get the name and faculty
+            if (studentsController.verifyStudent(studentEmail)) {
+                name = studentsController.getStudentName(studentEmail);
+                faculty = studentsController.getStudentFaculty(studentEmail);
+            } else {
+                name = staffController.getStaffName(staffEmail);
+                faculty = staffController.getStaffFaculty(staffEmail);
+            }
+
+            // Display the name and faculty
             System.out.println("Name: " + name);
             System.out.println("Faculty: " + faculty);
         }
