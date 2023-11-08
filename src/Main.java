@@ -42,3 +42,27 @@ public class Main {
         }
     }
 }
+
+/**
+import Controllers.*;
+import Models.*;
+
+public class Main {
+    public static void main(String[] args) {
+        // Initialize the StudentsController
+        StudentsController studentsController = new StudentsController();
+
+        // Create a new student object
+        String name = "John";
+        String email = "john@e.ntu.edu.sg";
+        String faculty = "EEE";
+        
+        Student newStudent = new Student(name, email, faculty);
+
+        // Write the new student to the database
+        studentsController.writeStudent(newStudent);
+
+        System.out.println("New student added: " + newStudent.getName());
+    }
+}
+*/
