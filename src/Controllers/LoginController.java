@@ -30,6 +30,12 @@ public class LoginController {
         }
     }
 
+    public String userType(String id){
+        if(studentsController.verifyStudent(id+"@e.ntu.edu.sg"))
+            return "Student";
+        return "Staff";
+    }
+
     private static final String DEFAULT_PASSWORD = "password";
 
     private boolean verifyCredentials(String id, String password) {
