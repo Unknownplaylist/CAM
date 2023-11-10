@@ -43,6 +43,10 @@ public class StudentsController {
             e.printStackTrace();
         }
     }
+
+    public String getStudentMail(String id){ //can remove this function later
+        return (id+"@e.ntu.edu.sg");
+    }
     
     public void updateStudent(String email, Student updatedStudent) {
         List<Student> students = readStudents();
