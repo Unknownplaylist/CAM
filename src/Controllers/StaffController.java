@@ -69,6 +69,10 @@ public class StaffController {
             System.out.println("Staff with email " + email + " not found");
         }
     }
+
+    public String getStaffMail(String id){
+        return (id+"@NTU.EDU.SG");
+    }
     
     public String getStaffFaculty(String email) {
         List<Staff> staffList = readStaff();
