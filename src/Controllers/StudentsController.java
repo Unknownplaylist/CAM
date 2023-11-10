@@ -44,10 +44,6 @@ public class StudentsController {
         }
     }
 
-    public String getStudentMail(String id){ //can remove this function later
-        return (id+"@e.ntu.edu.sg");
-    }
-    
     public void updateStudent(String email, Student updatedStudent) {
         List<Student> students = readStudents();
         boolean studentExists = false;
@@ -74,7 +70,11 @@ public class StudentsController {
             System.out.println("Student with email " + email + " not found");
         }
     }
-    
+
+    public String getStudentMail(String id){ //can remove this function later
+        return (id+"@e.ntu.edu.sg");
+    }
+        
     public String getStudentFaculty(String email) {
         List<Student> students = readStudents();
         for (Student student : students) {
