@@ -31,6 +31,7 @@ public class Main {
     }
     public static void main(String[] args) {
         int exit=0;
+        int loginput=0;
         do
         {
             Main ob = new Main();
@@ -44,7 +45,14 @@ public class Main {
             System.out.println("(1) Log In");
             System.out.println("(2) Exit");
             System.out.print("In : ");
-            int loginput = sc.nextInt();
+            try{
+                loginput=sc.nextInt();
+            }
+            catch(InputMismatchException  e){
+                System.out.println("Invalid Choice\n\n");
+                sc.nextLine();
+                continue;
+            }
             System.out.println();
 
             switch(loginput){
@@ -56,7 +64,7 @@ public class Main {
                     exit=1;
                 break;
                 default : 
-                    System.out.println("Invalid. Try Again");
+                    System.out.println("Try Again");
                 break;
             }
             System.out.println();
