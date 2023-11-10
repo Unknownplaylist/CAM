@@ -2,13 +2,15 @@ package Controllers;
 
 import java.io.*;
 import java.util.*;
-import Models.*;
-
+import Models.Student;
 
 public class StudentsController {
     private static final String FILE_PATH = "src/Database/student.csv";
     private static final String CSV_SEPARATOR = ",";
-    
+    private static final String DEFAULT_PASSWORD = "password";
+
+
+    // Read students from CSV
     public List<Student> readStudents() {
         List<Student> students = new ArrayList<>();
         File file = new File(FILE_PATH);
@@ -20,11 +22,11 @@ public class StudentsController {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(CSV_SEPARATOR);
-                if (data.length < 3) {
+                if (data.length < 5) {
                     System.out.println("Invalid line: " + line);
                     continue;
                 }
-                Student student = new Student(data[0], data[1], data[2]);
+                Student student = new Student(data[0], data[1], data[2], data[3], data[4]);
                 students.add(student);
             }
         } catch (IOException e) {
@@ -33,9 +35,11 @@ public class StudentsController {
         }
         return students;
     }
+
+    // Write a new student to CSV with default password
     public void writeStudent(Student student) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            String data = String.join(CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty());
+            String data = String.join(CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty(), student.getRole(), "password"); // Default password
             bw.write(data);
             bw.newLine();
         } catch (IOException e) {
@@ -44,6 +48,7 @@ public class StudentsController {
         }
     }
 
+    // Update an existing student (excluding password)
     public void updateStudent(String email, Student updatedStudent) {
         List<Student> students = readStudents();
         boolean studentExists = false;
@@ -51,6 +56,8 @@ public class StudentsController {
             if (student.getEmail().equals(email)) {
                 student.setName(updatedStudent.getName());
                 student.setFaculty(updatedStudent.getFaculty());
+                student.setRole(updatedStudent.getRole());
+                // Do not update password here
                 studentExists = true;
                 break;
             }
@@ -58,7 +65,7 @@ public class StudentsController {
         if (studentExists) {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
                 for (Student student : students) {
-                    String data = String.join(CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty());
+                    String data = String.join(CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty(), student.getRole(), student.getPassword());
                     bw.write(data);
                     bw.newLine();
                 }
@@ -71,6 +78,58 @@ public class StudentsController {
         }
     }
 
+    public boolean isFirstLogin(String email) {
+        return checkPassword(email, DEFAULT_PASSWORD); 
+    }
+
+    public boolean checkPassword(String email, String password) {
+        List<Student> students = readStudents();
+        for (Student student : students) {
+            if (student.getEmail().equals(email) && student.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void changePassword(String email, String newPassword) {
+        List<Student> students = readStudents();
+        boolean found = false;
+        for (Student student : students) {
+            if (student.getEmail().equals(email)) {
+                student.setPassword(newPassword);
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            // Write updated list back to the file
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+                for (Student student : students) {
+                    String data = String.join(CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty(), student.getRole(), student.getPassword());
+                    bw.write(data);
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                System.out.println("Error writing student file");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Student with email " + email + " not found");
+        }
+    }
+  
+
+    // Get user role based on email
+    public String getUserRole(String email) {
+        List<Student> students = readStudents();
+        for (Student student : students) {
+            if (student.getEmail().equals(email)) {
+                return student.getRole();
+            }
+        }
+        return "Role not found"; // or null, depending on your handling
+    }
     public String getStudentMail(String id){ //can remove this function later
         return (id+"@e.ntu.edu.sg");
     }

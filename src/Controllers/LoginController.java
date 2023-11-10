@@ -31,21 +31,41 @@ public class LoginController {
     }
 
     public String userType(String id){
-        if(studentsController.verifyStudent(id+"@e.ntu.edu.sg"))
-            return "Student";
-        return "Staff";
+    
+            String studentEmail = id + "@e.ntu.edu.sg";
+            String staffEmail = id + "@NTU.EDU.SG";
+    
+            if (studentsController.verifyStudent(studentEmail)) {
+                return "Student";
+            } else if (staffController.verifyStaff(staffEmail)) {
+                return "Staff";
+            } else {
+                return "Unknown";
+            }
     }
 
-    private static final String DEFAULT_PASSWORD = "password";
-
     private boolean verifyCredentials(String id, String password) {
-        // Verify that the ID is not null and password matches the default password
+        // Verify that the ID is not null
         if (id == null || id.isEmpty()) {
             System.out.println("Invalid ID.");
             return false;
         }
-
-        // Check if the provided password matches the default password
-        return password.equals(DEFAULT_PASSWORD);
+    
+        // Normalize the email domain
+        String studentEmail = (id + "@e.ntu.edu.sg");
+        String staffEmail = (id + "@NTU.EDU.SG");
+    
+        // Check if the user is a student or staff and verify the password
+        if (studentsController.verifyStudent(studentEmail)) {
+            return studentsController.checkPassword(studentEmail, password);
+        } else if (staffController.verifyStaff(staffEmail)) {
+            return staffController.checkPassword(staffEmail, password);
+        } else {
+            System.out.println("User not found.");
+            return false;
+        }
     }
+    
+
+    
 }
