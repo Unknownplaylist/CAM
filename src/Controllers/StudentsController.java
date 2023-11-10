@@ -2,9 +2,7 @@ package Controllers;
 
 import java.io.*;
 import java.util.*;
-
-import Models.Staff;
-import Models.Student;
+import Models.*;
 
 public class StudentsController {
     private static final String FILE_PATH = "src/Database/student.csv";
@@ -136,7 +134,7 @@ public class StudentsController {
         return "Role not found"; // or null, depending on your handling
     }
 
-    
+
     public String getStudentMail(String id){ //can remove this function later
         return (id+"@e.ntu.edu.sg");
     }
