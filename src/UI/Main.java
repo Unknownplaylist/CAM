@@ -49,7 +49,7 @@ public class Main {
                 loginput=sc.nextInt();
             }
             catch(InputMismatchException  e){
-                System.out.println("Invalid Choice\n\n");
+                System.out.println("\nInvalid\n\n");
                 sc.nextLine();
                 continue;
             }
@@ -64,7 +64,7 @@ public class Main {
                     exit=1;
                 break;
                 default : 
-                    System.out.println("Try Again");
+                    System.out.println("Try Again\n");
                 break;
             }
             System.out.println();
