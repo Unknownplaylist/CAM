@@ -2,6 +2,8 @@ package Controllers;
 
 import java.io.*;
 import java.util.*;
+
+import Models.Staff;
 import Models.Student;
 
 public class StudentsController {
@@ -48,7 +50,7 @@ public class StudentsController {
         }
     }
 
-    // Update an existing student (excluding password)
+    // Update an existing student
     public void updateStudent(String email, Student updatedStudent) {
         List<Student> students = readStudents();
         boolean studentExists = false;
@@ -57,7 +59,7 @@ public class StudentsController {
                 student.setName(updatedStudent.getName());
                 student.setFaculty(updatedStudent.getFaculty());
                 student.setRole(updatedStudent.getRole());
-                // Do not update password here
+                student.setPassword(updatedStudent.getPassword());
                 studentExists = true;
                 break;
             }
@@ -97,28 +99,31 @@ public class StudentsController {
         boolean found = false;
         for (Student student : students) {
             if (student.getEmail().equals(email)) {
-                student.setPassword(newPassword);
+                student.setPassword(newPassword); // Change the password
                 found = true;
                 break;
             }
         }
         if (found) {
-            // Write updated list back to the file
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
-                for (Student student : students) {
-                    String data = String.join(CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty(), student.getRole(), student.getPassword());
-                    bw.write(data);
-                    bw.newLine();
-                }
-            } catch (IOException e) {
-                System.out.println("Error writing student file");
-                e.printStackTrace();
-            }
+            updateStudentList(students); // Update the entire list in the file
         } else {
             System.out.println("Student with email " + email + " not found");
         }
     }
-  
+    
+    private void updateStudentList(List<Student> students) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            for (Student student : students) {
+                String data = String.join(CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty(), student.getRole(), student.getPassword());
+                bw.write(data);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing student file");
+            e.printStackTrace();
+        }
+    }
+    
 
     // Get user role based on email
     public String getUserRole(String email) {
@@ -130,6 +135,8 @@ public class StudentsController {
         }
         return "Role not found"; // or null, depending on your handling
     }
+
+    
     public String getStudentMail(String id){ //can remove this function later
         return (id+"@e.ntu.edu.sg");
     }
