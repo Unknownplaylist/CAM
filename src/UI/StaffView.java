@@ -6,6 +6,7 @@ import Models.*;
 public class StaffView {
     static Scanner sc=new Scanner(System.in);
     private String id, name, faculty, email; StaffController staffcont;
+    private int logOff=0;
     public StaffView(String id,StaffController staffcont){
         this.id=id;
         email = staffcont.getStaffMail(this.id);
@@ -20,10 +21,11 @@ public class StaffView {
         String new_pass=sc.next();
         staffcont.changePassword(email, new_pass);
         System.out.println("\nYou will now be logged out.");
+        logOff=2;
     }
 
     public void display(){
-        int logOff=0;
+        logOff=0;
         do{
             System.out.println(name+"\n"+faculty+"\n");
             if(staffcont.isFirstLogin(email)&&logOff==0){
