@@ -77,12 +77,12 @@ public class StaffController {
 
     public boolean isFirstLogin(String email) {
         Staff staff = getStaffByEmail(email);
-        return staff != null && staff.getPassword().equalsIgnoreCase(DEFAULT_PASSWORD);
+        return staff != null && staff.getPassword().equals(DEFAULT_PASSWORD);
     }
 
     public boolean checkPassword(String email, String password) {
         Staff staff = getStaffByEmail(email);
-        return staff != null && staff.getPassword().equalsIgnoreCase(password);
+        return staff != null && staff.getPassword().equals(password);
     }
 
     public void changePassword(String email, String newPassword) {
