@@ -53,7 +53,7 @@ public class StudentsController {
         List<Student> students = readStudents();
         boolean studentExists = false;
         for (Student student : students) {
-            if (student.getEmail().equals(email)) {
+            if (student.getEmail().equalsIgnoreCase(email)) {
                 student.setName(updatedStudent.getName());
                 student.setFaculty(updatedStudent.getFaculty());
                 student.setRole(updatedStudent.getRole());
@@ -85,7 +85,7 @@ public class StudentsController {
     public boolean checkPassword(String email, String password) {
         List<Student> students = readStudents();
         for (Student student : students) {
-            if (student.getEmail().equals(email) && student.getPassword().equals(password)) {
+            if (student.getEmail().equalsIgnoreCase(email) && student.getPassword().equals(password)) {
                 return true;
             }
         }
@@ -96,7 +96,7 @@ public class StudentsController {
         List<Student> students = readStudents();
         boolean found = false;
         for (Student student : students) {
-            if (student.getEmail().equals(email)) {
+            if (student.getEmail().equalsIgnoreCase(email)) {
                 student.setPassword(newPassword); // Change the password
                 found = true;
                 break;
@@ -127,7 +127,7 @@ public class StudentsController {
     public String getUserRole(String email) {
         List<Student> students = readStudents();
         for (Student student : students) {
-            if (student.getEmail().equals(email)) {
+            if (student.getEmail().equalsIgnoreCase(email)) {
                 return student.getRole();
             }
         }
@@ -142,7 +142,7 @@ public class StudentsController {
     public String getStudentFaculty(String email) {
         List<Student> students = readStudents();
         for (Student student : students) {
-            if (student.getEmail().equals(email)) {
+            if (student.getEmail().equalsIgnoreCase(email)) {
                 return student.getFaculty();
             }
         }
@@ -152,7 +152,7 @@ public class StudentsController {
     public String getStudentName(String email) {
         List<Student> students = readStudents();
         for (Student student : students) {
-            if (student.getEmail().equals(email)) {
+            if (student.getEmail().equalsIgnoreCase(email)) {
                 return student.getName();
             }
         }
@@ -162,7 +162,7 @@ public class StudentsController {
     public boolean verifyStudent(String email) {
         List<Student> students = readStudents();
         for (Student student : students) {
-            if (student.getEmail().equals(email)) {
+            if (student.getEmail().equalsIgnoreCase(email)) {
                 return true;
             }
         }
