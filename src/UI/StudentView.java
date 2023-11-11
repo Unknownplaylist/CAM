@@ -6,6 +6,7 @@ import Models.*;
 public class StudentView {
     static Scanner sc=new Scanner(System.in);
     private String id, name, faculty, email; StudentsController studentcont;
+    private int logOff=2;
     public StudentView(String id,StudentsController studentcont){
         this.id=id;
         this.studentcont=studentcont;
@@ -20,10 +21,16 @@ public class StudentView {
         String new_pass=sc.next();
         studentcont.changePassword(email, new_pass);
         System.out.println("\nYou will now be logged out.");
+        logOff=2;
+    }
+
+    public void SubmitEnquiry(){
+        EnquiryController enq_cont = new EnquiryController();
+        enq_cont.createEnquiry(name);
     }
 
     public void display(){
-        int logOff=0;
+        logOff=0;
         do{
             System.out.println(name+"\n"+faculty+"\n");
             if(studentcont.isFirstLogin(email)&&logOff==0){
@@ -43,8 +50,11 @@ public class StudentView {
             System.out.print("In: ");
             int choice = sc.nextInt();
             switch(choice){
-                case 1:case 2:case 3:case 4:case 5:case 6:default:
+                case 1:case 2:case 3:case 4:case 6:default:
                     System.out.println("Needs Implementation!");
+                break;
+                case 5:
+                    SubmitEnquiry();
                 break;
                 case 7:
                     PasswordChange();
