@@ -7,22 +7,21 @@ import java.util.*;
 //Enquiry, Student, Camp, Staff, Reply
 
 /*General Rule for Enquiry Controller
-*Any student can write an enquiry to any camp that he/she can see.
-*Only the staff in charge of the camp can read and reply to the enquiry 
-*The enquiry can only be deleted by the staff in charge when it is read and replied (received?)
-*If the enquiry has not been uploaded, the student can choose to delete the enquiry
-*Student can view the enquiry, including the message, read and reply status
+-Any student can write an enquiry to any camp that he/she can see.
+-Only the staff and camp committee member in charge of the camp can read and reply to the enquiry 
+-If the enquiry has not been uploaded, the student can choose to delete the enquiry
+-Student can view the enquiry, including the message, read and reply status
 
 A student can submit enquiries to any camp he/she can see.
 Cannot be deleted once the enquiry has been answered. It will be stored.
 That reply can be seen by all the committee members and staff of that camp, besides the student who sent inquiry.
 
 
-*Enquiry flow:
-*Student create an enquiry, type in the message (Each camp will only have one active enquiry at a time for simplicity)
-*Take note of the name of the student, the name of the camp and the staff in charge
-*The staff in charge will be notified of the enquiry (how?) (or can just have an checkEnquiry that tells whether there is an enquiry pending his reply?)
-*The staff reads and replies (2 separate functions) to the enquiry, after which the read flag will be ticked and stored in the database. (Or pending approval from the student receving the reply?)
+Enquiry flow:
+-Student create an enquiry, type in the message (Each camp will only have one active enquiry at a time for simplicity)
+-Take note of the name of the student, the name of the camp and the staff in charge
+-The staff in charge can checkEnquiry to see if there is any pending enquiry
+-The staff reads and replies to the enquiry, after which the read flag will be ticked and stored in the database. 
  */
 
 public class EnquiryController {
@@ -32,15 +31,15 @@ public class EnquiryController {
     private String message;
     private String student;
     private String camp;
-    private String staff; //The staff in charge of the camp
+    private String staff; 
     private String read;
     private String reply;
 
     public void createEnquiry(){
         //Generate the enquiry details, including the name of the student and set the read and reply section to ""
         student = "TBD";
-        read = "";
-        reply = "";
+        read = " ";
+        reply = " ";
         staff = "TBD";
 
         Scanner sc = new Scanner(System.in);
@@ -68,7 +67,7 @@ public class EnquiryController {
         //Only when not read and replied
         //cannot be deleted once answered
 
-        //TODO: Figure out how to delete a row
+        //To do later if this is actually needed
 
     }
 
@@ -90,10 +89,9 @@ public class EnquiryController {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Not enough data");
         }
-
     }
 
-    public int checkForEnquiry(String camp){
+    public int checkEnquiry(String camp){
         //Find the enquiry relevant to the camp that is not read and replied
         //return the line number for enquiry in csv file
 
@@ -112,7 +110,7 @@ public class EnquiryController {
             System.out.println("No pending enquiry.");
             return 0;
         } catch (IOException e) {
-            System.out.println("Error reading enquiry file");
+            System.out.println("Error displaying the enquiry");
             e.printStackTrace();
         }
         return -1;
@@ -165,6 +163,10 @@ public class EnquiryController {
         //all camp committee members and staff in charge of that camp can see the enquiry
         
         return reply;
+    }
+
+    public void generateEnquiryReport(){
+        //TODO: create a report for main staff and camp committee member in charge of the camp
     }
 
 
