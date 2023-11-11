@@ -35,9 +35,9 @@ public class EnquiryController {
     private String read;
     private String reply;
 
-    public void createEnquiry(){
+    public void createEnquiry(String student){
         //Generate the enquiry details, including the name of the student and set the read and reply section to ""
-        student = "TBD";
+        this.student = student;
         read = " ";
         reply = " ";
         staff = "TBD";
@@ -50,7 +50,7 @@ public class EnquiryController {
         System.out.println("Type in your message: ");
         message = sc.nextLine();
 
-        sc.close();
+        //sc.close(); - closing the Scanner will affect the Scanner of the main class
 
         String data = String.join(CSV_SEPARATOR,message, student, camp, staff,read,reply);
 
