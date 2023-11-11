@@ -5,17 +5,31 @@ import Models.*;
 
 public class StudentView {
     static Scanner sc=new Scanner(System.in);
-    String userid, name, faculty;
+    private String id, name, faculty, email; StudentsController studentcont;
     public StudentView(String id,StudentsController studentcont){
-        userid=id;
-        name=studentcont.getStudentName(studentcont.getStudentMail(id));
-        faculty=studentcont.getStudentFaculty(studentcont.getStudentMail(id));
+        this.id=id;
+        this.studentcont=studentcont;
+        email = studentcont.getStudentMail(this.id);
+        name=studentcont.getStudentName(email);
+        faculty=studentcont.getStudentFaculty(email);
 
     }
+
+    public void PasswordChange(){
+        System.out.print("Enter your new password: ");
+        String new_pass=sc.next();
+        studentcont.changePassword(email, new_pass);
+        System.out.println("\nYou will now be logged out.");
+    }
+
     public void display(){
         int logOff=0;
         do{
             System.out.println(name+"\n"+faculty+"\n");
+            if(studentcont.isFirstLogin(email)&&logOff==0){
+                System.out.println("This is your first login. Kindly set a new password\n");
+                logOff=1;
+            }
             System.out.println(" Menu ");
             System.out.println("======");
             System.out.println("(1) View Camps");
@@ -29,16 +43,25 @@ public class StudentView {
             System.out.print("In: ");
             int choice = sc.nextInt();
             switch(choice){
-                case 1:case 2:case 3:case 4:case 5:case 6:case 7:default:
+                case 1:case 2:case 3:case 4:case 5:case 6:default:
                     System.out.println("Needs Implementation!");
                 break;
+                case 7:
+                    PasswordChange();
+                break;
                 case 8:
-                    logOff=1;
-                    System.out.println("Logging Off...");
+                    if(studentcont.isFirstLogin(email)){
+                        System.out.println("Kindly Change your password\n");
+                        continue;
+                    }  
+                    else{
+                        logOff=2;
+                        System.out.println("Logging Off...");
+                    }
                 break;
             }
             System.out.println("\n");
-        }while(logOff!=1);
+        }while(logOff!=2);
     }
 
 }
