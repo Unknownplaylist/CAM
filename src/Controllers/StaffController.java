@@ -51,7 +51,7 @@ public class StaffController {
         List<Staff> staffList = readStaff();
         boolean staffExists = false;
         for (Staff staff : staffList) {
-            if (staff.getEmail().equals(email)) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
                 staff.setName(updatedStaff.getName());
                 staff.setFaculty(updatedStaff.getFaculty());
                 staff.setPassword(updatedStaff.getPassword()); // Only update password if needed
@@ -77,18 +77,18 @@ public class StaffController {
 
     public boolean isFirstLogin(String email) {
         Staff staff = getStaffByEmail(email);
-        return staff != null && staff.getPassword().equals(DEFAULT_PASSWORD);
+        return staff != null && staff.getPassword().equalsIgnoreCase(DEFAULT_PASSWORD);
     }
 
     public boolean checkPassword(String email, String password) {
         Staff staff = getStaffByEmail(email);
-        return staff != null && staff.getPassword().equals(password);
+        return staff != null && staff.getPassword().equalsIgnoreCase(password);
     }
 
     public void changePassword(String email, String newPassword) {
         List<Staff> staffList = readStaff();
         for (Staff staff : staffList) {
-            if (staff.getEmail().equals(email)) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
                 staff.setPassword(newPassword);
                 updateStaffList(staffList);
                 return;
@@ -100,7 +100,7 @@ public class StaffController {
     private Staff getStaffByEmail(String email) {
         List<Staff> staffList = readStaff();
         for (Staff staff : staffList) {
-            if (staff.getEmail().equals(email)) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
                 return staff;
             }
         }
@@ -128,7 +128,7 @@ public class StaffController {
     public String getStaffFaculty(String email) {
         List<Staff> staffList = readStaff();
         for (Staff staff : staffList) {
-            if (staff.getEmail().equals(email)) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
                 return staff.getFaculty();
             }
         }
@@ -138,7 +138,7 @@ public class StaffController {
     public String getStaffName(String email) {
         List<Staff> staffList = readStaff();
         for (Staff staff : staffList) {
-            if (staff.getEmail().equals(email)) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
                 return staff.getName();
             }
         }
@@ -148,7 +148,7 @@ public class StaffController {
     public boolean verifyStaff(String email) {
         List<Staff> staffList = readStaff();
         for (Staff staff : staffList) {
-            if (staff.getEmail().equals(email)) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
                 return true;
             }
         }
