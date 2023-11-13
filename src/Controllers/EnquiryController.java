@@ -1,5 +1,5 @@
 package Controllers;
-
+//put interface to show similarity btw enquiry and suggestion
 import java.io.*;
 import java.util.*;
 
@@ -16,7 +16,6 @@ import java.util.*;
 A student can submit enquiries to any camp he/she can see.
 Cannot be deleted once the enquiry has been answered. It will be stored.
 That reply can be seen by all the committee members and staff of that camp, besides the student who sent inquiry.
-
 
 Enquiry flow:
 -Student create an enquiry, type in the message (Each camp will only have one active enquiry at a time for simplicity)
@@ -47,7 +46,7 @@ public class EnquiryController {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Select the camp to send the enquiry to: ");
-        camp = sc.nextLine(); //Need to access camp information to find out the staff in charge, put "TBD" for now
+        camp = sc.nextLine();
         
         System.out.println("Type in your message: ");
         message = sc.nextLine();
@@ -92,7 +91,65 @@ public class EnquiryController {
     }
 
     public void editEnquiry(String student){ //Look for the enquiry based on the student's name, assuming a student can only send one enquiry to one camp
+        String[] studentEnquiry = studentFindEnquiry(student);
+        String editedMessage;
 
+        Scanner sc = new Scanner(System.in);
+
+
+
+        if ((studentEnquiry[3] != " ") && (studentEnquiry[4] != " ")){ //if not read and not replied
+            System.out.println("Edit your enquiry here: ");
+            message = sc.nextLine();
+            studentEnquiry[0] = message;
+
+            String editedEnquiry = String.join(CSV_SEPARATOR, studentEnquiry);
+
+            BufferedReader br = null;
+            BufferedWriter bw = null;
+
+            try {
+                br = new BufferedReader(new FileReader(FILE_PATH));
+                bw = new BufferedWriter(new FileWriter("temp.csv"));
+                String line;
+                String[] data;
+                while ((line = br.readLine()) != null) {
+                    data = line.split(CSV_SEPARATOR);
+                    if (data[1] != student) {
+                        bw.write(line);
+                        bw.newLine();
+                    }
+                    else {
+                        bw.write(editedEnquiry);
+                        bw.newLine();
+                    }
+                }
+                br.close();
+                bw.close();
+
+                // Rename temp file to the original file
+                java.nio.file.Files.deleteIfExists(new File("Enquiry.csv").toPath());
+                new File("temp.csv").renameTo(new File("Enquiry.csv"));
+            } catch (IOException e) {
+                System.out.println("Cannot proceed with your edit request.");
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (br != null)
+                        br.close();
+                    if (bw != null)
+                        bw.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        else {
+            System.out.println("A staff or Camp Committee Member has viewed your enquiry, cannot edit the enquiry.");
+        }
+
+        //sc.close(); - closing the Scanner will affect the Scanner of the main class
+        
     }
 
     public void deleteEnquiry(String student){ //Copy the csv file excluding the enquiry to delete and rename
@@ -100,7 +157,7 @@ public class EnquiryController {
         //Only when not read and replied
         //cannot be deleted once answered
         String[] studentEnquiry = studentFindEnquiry(student);
-        if ((studentEnquiry[3] != " ") && (studentEnquiry[4] != " ")){
+        if ((studentEnquiry[3] != " ") && (studentEnquiry[4] != " ")){ //if not read and not replied
 
             BufferedReader br = null;
             BufferedWriter bw = null;
@@ -123,6 +180,7 @@ public class EnquiryController {
                 java.nio.file.Files.deleteIfExists(new File("Enquiry.csv").toPath());
                 new File("temp.csv").renameTo(new File("Enquiry.csv"));
             } catch (IOException e) {
+                System.out.println("Cannot proceed with your delete request.");
                 e.printStackTrace();
             } finally {
                 try {
@@ -143,6 +201,13 @@ public class EnquiryController {
     public void readReply(String student){
         //return the reply of the enquiry
         //if the enquiry has not been replied (i.e. read == " " and reply == " "), return nothing
+        String[] studentEnquiry = studentFindEnquiry(student);
+        if ((studentEnquiry[3] != " ") && (studentEnquiry[4] != " ")){
+            formatMessage(studentEnquiry);
+        }
+        else {
+            System.out.println("Your enquiry has not been replied. Stay tuned!");
+        }
     }
 
     //IMPLEMENTATIONS FOR STAFF/CAMP COMM
@@ -150,51 +215,47 @@ public class EnquiryController {
         //Find the enquiry relevant to the camp that is not read and replied
         //return the line number for enquiry in csv file
 
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line;
-            int lineNum = 0;
-            while ((line = br.readLine()) != null) {
-                lineNum ++;
-                String[] data = line.split(CSV_SEPARATOR);
-                if (Objects.equals(data[2], camp) && Objects.equals(data[3], " ")){                   
-                    System.out.println("There is an enquiry for your camp pending for reply.");
-                    formatMessage(data);
-                    return data;                    
-                }
-            }
-            System.out.println("No pending enquiry.");
-            return null;
-        } catch (IOException e) {
-            System.out.println("Error displaying the enquiry");
-            e.printStackTrace();
+        String[] data = findEnquiry(camp);
+        if (data != null){
+            System.out.println("There is an enquiry for your camp pending for reply.");
+            formatMessage(data);
+            return data;
         }
-        return null;
+        else {
+            System.out.println("No pending enquiry");
+            return null;
+        }
+        
     }
 
-    public String[] findEnquiry(int lineNum){
+    public String[] findEnquiry(String camp){
         String line;
-        int current = 0;
         String[] data;
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
             while ((line = br.readLine()) != null) {
-                if (current == lineNum){
-                    data = line.split(CSV_SEPARATOR);
+                data = line.split(CSV_SEPARATOR);
+                if (data[2] == camp){
                     return data;
                 }
-                current ++;
             }
         } catch (IOException e) {
             System.out.println("Error reading enquiry file");
             e.printStackTrace();
         }
-        System.out.println("Cannot find the enquiry.");
+        System.out.println("Cannot find the enquiry for " + camp);
         return null;
     }
 
-    public void replyEnquiry(String[] data){ //for staff and CampComm only
+    public void replyEnquiry(String camp){ //for staff and CampComm only
         //ERROR: This function only takes in the data and uploads a new one, the unreplied enquiry is still in the csv
-        //need to find the enquiry first
+        //The same as editEnquiry from the student side
         //take in line num of the enquiry from findEnquiry() if there is a pending enquiry
+        String[] data = findEnquiry(camp);
+
+        if ((data[3] != " ") && (data[4] != " ")){
+            System.out.println("The enquiry has already been replied!");
+            return;
+        } 
         
         Scanner sc = new Scanner(System.in);
         System.out.println("Type in your reply: ");
@@ -215,7 +276,7 @@ public class EnquiryController {
         }
     }
 
-    public String viewReplyToEnquiry(){
+    public String viewReplyToEnquiry(String camp){
         //all camp committee members and staff in charge of that camp can see the enquiry
         
         return reply;
