@@ -36,7 +36,7 @@ public class LoginController {
             String staffEmail = id + "@NTU.EDU.SG";
     
             if (studentsController.verifyStudent(studentEmail)) {
-                return "Student";
+                return studentsController.getUserRole(studentEmail);
             } else if (staffController.verifyStaff(staffEmail)) {
                 return "Staff";
             } else {
