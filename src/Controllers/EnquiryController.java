@@ -51,11 +51,10 @@ public class EnquiryController {
         System.out.println("Type in your message: ");
         message = sc.nextLine();
 
-        //sc.close(); - closing the Scanner will affect the Scanner of the main class
-
         String data = String.join(CSV_SEPARATOR,message, student, camp,read,reply);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+            //writer.newLine();
             writer.write(data);
             writer.newLine();
             
@@ -71,7 +70,7 @@ public class EnquiryController {
             String[] data;
             while ((line = br.readLine()) != null) {
                 data = line.split(CSV_SEPARATOR);
-                if (data[1] == student){
+                if (data[1].equalsIgnoreCase(student)){
                     return data;
                 }
             }
@@ -86,19 +85,26 @@ public class EnquiryController {
 
     public void viewEnquiry(String student){ //customized for student use 
         //if not null
-        String[] data = studentFindEnquiry(student);
-        formatMessage(data);
+        String[]data;
+        if(studentFindEnquiry(student)!=null){
+            data = studentFindEnquiry(student);
+            formatMessage(data);
+        }
+        else
+            System.out.println("No Enquiries to View");
     }
 
     public void editEnquiry(String student){ //Look for the enquiry based on the student's name, assuming a student can only send one enquiry to one camp
         String[] studentEnquiry = studentFindEnquiry(student);
-        String editedMessage;
+        if(studentEnquiry==null){
+            System.out.println("No Enquiries to Edit");
+            return;
+        }
+        //String editedMessage;
 
         Scanner sc = new Scanner(System.in);
 
-
-
-        if ((studentEnquiry[3] != " ") && (studentEnquiry[4] != " ")){ //if not read and not replied
+        if ((studentEnquiry[3].equals(" ")) && (studentEnquiry[4].equals(" "))){ //if not read and not replied
             System.out.println("Edit your enquiry here: ");
             message = sc.nextLine();
             studentEnquiry[0] = message;
@@ -115,7 +121,7 @@ public class EnquiryController {
                 String[] data;
                 while ((line = br.readLine()) != null) {
                     data = line.split(CSV_SEPARATOR);
-                    if (data[1] != student) {
+                    if (!data[1].equalsIgnoreCase(student)) {
                         bw.write(line);
                         bw.newLine();
                     }
@@ -147,8 +153,6 @@ public class EnquiryController {
         else {
             System.out.println("A staff or Camp Committee Member has viewed your enquiry, cannot edit the enquiry.");
         }
-
-        //sc.close(); - closing the Scanner will affect the Scanner of the main class
         
     }
 
@@ -157,7 +161,11 @@ public class EnquiryController {
         //Only when not read and replied
         //cannot be deleted once answered
         String[] studentEnquiry = studentFindEnquiry(student);
-        if ((studentEnquiry[3] != " ") && (studentEnquiry[4] != " ")){ //if not read and not replied
+        if(studentEnquiry==null){
+            System.out.println("No Enquiries to Remove");
+            return;
+        }
+        if ((studentEnquiry[3].equals(" ")) && (studentEnquiry[4].equals(" "))){ //if not read and not replied
 
             BufferedReader br = null;
             BufferedWriter bw = null;
@@ -168,7 +176,7 @@ public class EnquiryController {
                 String[] data;
                 while ((line = br.readLine()) != null) {
                     data = line.split(CSV_SEPARATOR);
-                    if (data[1] != student) {
+                    if (!data[1].equalsIgnoreCase(student)) {
                         bw.write(line);
                         bw.newLine();
                     }
@@ -202,7 +210,7 @@ public class EnquiryController {
         //return the reply of the enquiry
         //if the enquiry has not been replied (i.e. read == " " and reply == " "), return nothing
         String[] studentEnquiry = studentFindEnquiry(student);
-        if ((studentEnquiry[3] != " ") && (studentEnquiry[4] != " ")){
+        if ((!studentEnquiry[3].equals(" ")) && (!studentEnquiry[4].equals(" "))){
             formatMessage(studentEnquiry);
         }
         else {
@@ -234,7 +242,7 @@ public class EnquiryController {
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
             while ((line = br.readLine()) != null) {
                 data = line.split(CSV_SEPARATOR);
-                if (data[2] == camp){
+                if (data[2].equalsIgnoreCase(camp)){
                     return data;
                 }
             }
@@ -252,7 +260,7 @@ public class EnquiryController {
         //take in line num of the enquiry from findEnquiry() if there is a pending enquiry
         String[] data = findEnquiry(camp);
 
-        if ((data[3] != " ") && (data[4] != " ")){
+        if ((!data[3].equals(" ")) && (!data[4].equals(" "))){
             System.out.println("The enquiry has already been replied!");
             return;
         } 
@@ -263,7 +271,7 @@ public class EnquiryController {
         data[3] = "Read";
         data[4] = Reply;
         System.out.println("Reply has been sent!");
-        sc.close();
+        //sc.close();
 
         String upload = String.join(CSV_SEPARATOR,data);
 
