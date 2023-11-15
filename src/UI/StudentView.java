@@ -9,6 +9,7 @@ public class StudentView {
     private StudentsController studentcont;
     private EnquiryController enq;
     private int logOff=2;
+    
     public StudentView(String id,StudentsController studentcont){
         this.id=id;
         this.studentcont=studentcont;
@@ -51,7 +52,7 @@ public class StudentView {
         do{
             System.out.println(name+"\n"+faculty+"\n");
             if(studentcont.isFirstLogin(email)&&logOff==0){
-                System.out.println("This is your first login. Kindly set a new password\n");
+                System.out.println("Your account is not secure - Change from the Default Password\n");
                 logOff=1;
             }
             System.out.println(" Menu ");
