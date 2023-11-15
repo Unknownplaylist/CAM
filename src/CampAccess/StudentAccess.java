@@ -58,6 +58,6 @@ public class StudentAccess {
         studentsController.updateStudent(email, updatedStudent);
     }
 
-    // Other student-specific functionalities can be added here
+    
 }
 
