@@ -97,7 +97,7 @@ public class StaffController {
         System.out.println("Staff not found.");
     }
 
-    private Staff getStaffByEmail(String email) {
+    public Staff getStaffByEmail(String email) {
         List<Staff> staffList = readStaff();
         for (Staff staff : staffList) {
             if (staff.getEmail().equalsIgnoreCase(email)) {
