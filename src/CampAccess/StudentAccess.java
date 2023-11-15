@@ -2,7 +2,7 @@ package CampAccess;
 import Controllers.*;
 import Models.*;
 
-package CampAccess;
+
 
 public class StudentAccess {
     private StudentsController studentsController;
@@ -54,7 +54,7 @@ public class StudentAccess {
 
     // Method to update student profile
     public void updateStudentProfile(String email, String newName, String newFaculty) {
-        Student updatedStudent = new Student(newName, email, newFaculty); // Add parameters as needed
+        Student updatedStudent = new Student(newName, email, newFaculty, newFaculty, newFaculty); // Add parameters as needed
         studentsController.updateStudent(email, updatedStudent);
     }
 

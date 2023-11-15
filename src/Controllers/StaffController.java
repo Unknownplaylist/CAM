@@ -97,15 +97,6 @@ public class StaffController {
         System.out.println("Staff not found.");
     }
 
-    public Staff getStaffByEmail(String email) {
-        List<Staff> staffList = readStaff();
-        for (Staff staff : staffList) {
-            if (staff.getEmail().equalsIgnoreCase(email)) {
-                return staff;
-            }
-        }
-        return null;
-    }
 
     private void updateStaffList(List<Staff> staffList) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
@@ -154,4 +145,15 @@ public class StaffController {
         }
         return false;
     }
+    public Staff getStaffByEmail(String email) {
+        List<Staff> staffList = readStaff();
+        for (Staff staff : staffList) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
+                return staff;
+            }
+        }
+        return null;
+    }
+
+
 }

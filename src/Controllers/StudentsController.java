@@ -168,4 +168,14 @@ public class StudentsController {
         }
         return false;
     }
+
+    public Student getStudentByEmail(String email) {
+        List<Student> students = readStudents();
+        for (Student student : students) {
+            if (student.getEmail().equals(email)) {
+                return student;
+            }
+        }
+        return null; // Student not found
+    }
 }
