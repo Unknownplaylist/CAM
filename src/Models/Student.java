@@ -1,11 +1,15 @@
 package Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Student {
     private String name;
     private String email;
     private String faculty;
     private String role;
     private String password;
+    private List<String> camps_withdrawn = new ArrayList<>();
 
     // Updated constructor
     public Student(String name, String email, String faculty, String role, String password) {
@@ -36,7 +40,23 @@ public class Student {
     public String getFaculty() {
         return faculty;
     }
+
+    public void addWithdrawnCamp(String camp_name){
+        camps_withdrawn.add(camp_name);
+    }
+
+    public boolean hasWithdrawnFromCamp(String camp_name){
+        for(String name : camps_withdrawn){
+            if(name.equalsIgnoreCase(camp_name));
+                return true;
+        }
+        return false;
+    }
     
+    public String getUserId(String email){
+        return (email.substring(0,email.length()-11));
+    }
+
     public void setFaculty(String faculty) {
         this.faculty = faculty;
     }
