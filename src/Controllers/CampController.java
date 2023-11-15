@@ -1,19 +1,20 @@
 package Controllers;
 
-import Models.Camp;
+import Models.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 
 public class CampController {
-    private static final String FILE_PATH = "src/Database/camps.csv";
+    private static final String FILE_PATH = "Database\\camps.csv";
     private static final String CSV_SEPARATOR = ",";
+    StaffController staffcont;
 
     public CampController() {
+        staffcont=new StaffController();
     }
 
     public List<Camp> readCamps() {
@@ -25,8 +26,11 @@ public class CampController {
         } else {
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 String line;
+                br.readLine();
                 while ((line = br.readLine()) != null) {
                     String[] data = line.split(CSV_SEPARATOR);
+                    // for(int i=0;i<data.length;i++)
+                    //      System.out.println(i+"-"+data[i]);
                     if (data.length < 11) {
                         System.out.println("Invalid line: " + line);
                     } else {
@@ -39,7 +43,7 @@ public class CampController {
                         int totalSlots = Integer.parseInt(data[6]);
                         int committeeSlots = Integer.parseInt(data[7]);
                         String description = data[8];
-                        Staff staffInCharge = new Staff(data[9]);
+                        Staff staffInCharge = staffcont.getStaffByEmail(data[9]+"@NTU.EDU.SG");
                         boolean isVisible = Boolean.parseBoolean(data[10]);
 
                         Camp camp = new Camp(campName, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots, committeeSlots, description, staffInCharge);
@@ -56,6 +60,24 @@ public class CampController {
         }
     }
 
+    public Camp getCamp(String name){
+        List <Camp> camps = readCamps();
+        for(Camp camp:camps){
+            if(name.equalsIgnoreCase(camp.getCampName()))
+                return camp;
+        }
+        return null;
+    }
+
+    public boolean checkCamp(String name){
+        List <Camp> camps = readCamps();
+        for(Camp camp:camps){
+            if(camp.getCampName().equalsIgnoreCase(name))
+                return true;
+        }
+        return false;
+    }
+
 
     public void writeCamp(Camp camp) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
@@ -68,7 +90,7 @@ public class CampController {
                     camp.getTotalSlots() + CSV_SEPARATOR +
                     camp.getCommitteeSlots() + CSV_SEPARATOR +
                     camp.getDescription() + CSV_SEPARATOR +
-                    camp.getStaffInCharge().getUserId() + CSV_SEPARATOR +
+                    camp.getStaffInCharge().getUserId(camp.getStaffInCharge().getEmail()) + CSV_SEPARATOR +
                     camp.isVisible();
             bw.write(data);
             bw.newLine();
@@ -81,7 +103,7 @@ public class CampController {
     public void updateCamp(String campName, Camp updatedCamp) {
         List<Camp> camps = readCamps();
         for (int i = 0; i < camps.size(); i++) {
-            if (camps.get(i).getCampName().equals(campName)) {
+            if (camps.get(i).getCampName().equalsIgnoreCase(campName)) {
                 camps.set(i, updatedCamp);
                 break;
             }
@@ -91,6 +113,11 @@ public class CampController {
 
     private void writeAllCamps(List<Camp> camps) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            // Write the header (first line)
+            bw.write("campName,startDate,endDate,registrationCloseDate,userGroup,location,totalSlots,committeeSlots,description,staffInCharge,visible");
+            bw.newLine();
+    
+            // Write the data starting from the second line
             for (Camp camp : camps) {
                 String data = camp.getCampName() + CSV_SEPARATOR +
                         camp.getStartDate() + CSV_SEPARATOR +
@@ -101,7 +128,7 @@ public class CampController {
                         camp.getTotalSlots() + CSV_SEPARATOR +
                         camp.getCommitteeSlots() + CSV_SEPARATOR +
                         camp.getDescription() + CSV_SEPARATOR +
-                        camp.getStaffInCharge().getUserId() + CSV_SEPARATOR +
+                        camp.getStaffInCharge().getUserId(camp.getStaffInCharge().getEmail()) + CSV_SEPARATOR +
                         camp.isVisible();
                 bw.write(data);
                 bw.newLine();
@@ -115,14 +142,15 @@ public class CampController {
     public void deleteCamp(String campName) {
         List<Camp> camps = readCamps();
         List<Camp> updatedCamps = camps.stream()
-                .filter(camp -> !camp.getCampName().equals(campName))
+                .filter(camp -> !camp.getCampName().equalsIgnoreCase(campName))
                 .collect(Collectors.toList());
         writeAllCamps(updatedCamps);
     }
+
     public void toggleCampVisibility(String campName, boolean isVisible) {
         List<Camp> camps = readCamps();
         for (Camp camp : camps) {
-            if (camp.getCampName().equals(campName)) {
+            if (camp.getCampName().equalsIgnoreCase(campName)) {
                 camp.setVisible(isVisible);
                 break;
             }
@@ -141,9 +169,13 @@ public class CampController {
     }
 
     public void registerStudentForCamp(String campName, Student student, boolean asCommitteeMember) {
+        if (student.hasWithdrawnFromCamp(campName)) {
+            System.out.println("Student " + student.getName() + " cannot re-register for the camp " + campName + " as they have previously withdrawn from it.");
+            return;
+        }
         List<Camp> camps = readCamps();
         for (Camp camp : camps) {
-            if (camp.getCampName().equals(campName)) {
+            if (camp.getCampName().equalsIgnoreCase(campName)) {
                 if (asCommitteeMember) {
                     camp.addCommitteeMember(student);
                 } else {
@@ -171,10 +203,10 @@ public class CampController {
             return;
         }
 
-        if (student.hasWithdrawnFromCamp(camp.getCampName())) {
-            System.out.println("Student " + student.getName() + " cannot re-register for the camp " + camp.getCampName() + " as they have previously withdrawn from it.");
-            return;
-        }
+        // if (student.hasWithdrawnFromCamp(camp.getCampName())) {
+        //     System.out.println("Student " + student.getName() + " cannot re-register for the camp " + camp.getCampName() + " as they have previously withdrawn from it.");
+        //     return;
+        // }
 
         if (camp.getRegisteredStudents().remove(student)) {
             student.addWithdrawnCamp(camp.getCampName());
