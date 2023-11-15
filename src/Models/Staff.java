@@ -26,6 +26,10 @@ public class Staff {
     public String getEmail() {
         return email;
     }
+
+    public String getUserId(String email){
+        return (email.substring(0,email.length()-11));
+    }
     
     public void setEmail(String email) {
         this.email = email;
