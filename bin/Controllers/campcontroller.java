@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import java.util.Comparator;
+
 
 public class CampController {
     private static final String FILE_PATH = "src/Database/camps.csv";
@@ -133,17 +135,42 @@ public class CampController {
     public List<Camp> viewAllCamps() {
         return readCamps();
     }
+    public List<Camp> viewAllCamps(LocalDate startDate, LocalDate endDate, String location) {
+        return filterCamps(startDate, endDate, location);
+    }
 
     public List<Camp> viewMyCamps(Staff staff) {
         return readCamps().stream()
                 .filter(camp -> camp.getStaffInCharge().equals(staff))
                 .collect(Collectors.toList());
     }
+    public List<Camp> viewMyCamps(Staff staff, LocalDate startDate, LocalDate endDate, String location) {
+        return filterCamps(startDate, endDate, location).stream()
+                .filter(camp -> camp.getStaffInCharge().equals(staff))
+                .collect(Collectors.toList());
+    }
+    public List<Camp> viewCampsForStudent(Student student) {
+        return readCamps().stream()
+                .filter(camp -> camp.isVisible() && camp.getUserGroup().equals(student.getUserGroup()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Camp> viewCampsForStudents(Student student, LocalDate startDate, LocalDate endDate, String location) {
+        return filterCamps(startDate, endDate, location).stream()
+                .filter(camp -> camp.isVisible() && camp.getUserGroup().equals(student.getUserGroup()))
+                .collect(Collectors.toList());
+    }
+
 
     public void registerStudentForCamp(String campName, Student student, boolean asCommitteeMember) {
         List<Camp> camps = readCamps();
         for (Camp camp : camps) {
             if (camp.getCampName().equals(campName)) {
+                if (hasDateClash(student, camp)) {
+                    System.out.println("Cannot register for " + campName + ". Dates clash with another registered camp.");
+                    return;
+                }
+
                 if (asCommitteeMember) {
                     camp.addCommitteeMember(student);
                 } else {
@@ -153,6 +180,17 @@ public class CampController {
             }
         }
         writeAllCamps(camps);
+    }
+    private boolean hasDateClash(Student student, Camp newCamp) {
+        LocalDate newCampStart = newCamp.getStartDate();
+        LocalDate newCampEnd = newCamp.getEndDate();
+
+        for (Camp registeredCamp : student.getRegisteredCamps()) { // Assuming Student class has a method getRegisteredCamps()
+            if (newCampStart.isBefore(registeredCamp.getEndDate()) && newCampEnd.isAfter(registeredCamp.getStartDate())) {
+                return true;
+            }
+        }
+        return false;
     }
     public List<String> viewCampSlots() {
         List<Camp> camps = readCamps(); // Assumes readCamps() method exists and reads all camps
@@ -184,6 +222,37 @@ public class CampController {
             System.out.println("Student " + student.getName() + " is not registered in " + camp.getCampName());
         }
     }
+
+
+    // displaying camps for students
+    public List<Camp> getCampsForStudent(Student student) {
+        List<Camp> eligibleCamps = new ArrayList<>();
+        List<Camp> allCamps = readCamps();
+        LocalDate currentDate = LocalDate.now(); // Current date
+
+        for (Camp camp : allCamps) {
+            if (camp.isVisible() &&
+                    camp.getUserGroup().equals(student.getUserGroup()) &&
+                    camp.getRegistrationCloseDate().isAfter(currentDate) &&
+                    camp.getAvailableSlots() > 0 &&
+                    !hasDateClash(student, camp)) {
+                eligibleCamps.add(camp);
+            }
+        }
+
+        return eligibleCamps;
+    }
+    public List<Camp> filterCamps(LocalDate startDate, LocalDate endDate, String location) {
+        List<Camp> allCamps = readCamps();
+
+        return allCamps.stream()
+                .filter(camp -> (startDate == null || !camp.getStartDate().isBefore(startDate)) &&
+                        (endDate == null || !camp.getEndDate().isAfter(endDate)) &&
+                        (location == null || camp.getLocation().equalsIgnoreCase(location)))
+                .sorted(Comparator.comparing(Camp::getCampName))
+                .collect(Collectors.toList());
+    }
+
 
 
 }
