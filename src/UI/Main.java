@@ -4,8 +4,9 @@ import Controllers.*;
 import Models.*;
 
 public class Main {
-    StaffView staffview;
-    StudentView studentview;
+    private StaffView staffview;
+    private StudentView studentview;
+    private CampCommitteeView commview;
     static Scanner sc = new Scanner(System.in);
     
     public void UIlogIn(LoginController lgc,StudentsController sdc,StaffController sfc){
@@ -18,9 +19,13 @@ public class Main {
 
         if(loggedIn){
             String user = lgc.userType(userId);
-            if(user.equals("Student")){
+            if(user.equalsIgnoreCase("attendee")){
                 studentview = new StudentView(userId,sdc);
                 studentview.display();
+            }
+            else if(user.equalsIgnoreCase("committee")){
+                commview = new CampCommitteeView(userId, sdc);
+                commview.display();
             }
             else{
                 staffview = new StaffView(userId,sfc);
