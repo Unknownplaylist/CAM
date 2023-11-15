@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,8 +35,9 @@ public class Camp {
         this.description = description;
         this.staffInCharge = staffInCharge;
         // Initialize the lists
-        this.registeredStudents = new ArrayList<>();
-        this.committeeMembers = new ArrayList<>();
+        this.registeredStudents = new ArrayList<Student>();
+        this.committeeMembers = new ArrayList<Student>();
+        isVisible=true;
     }
 
     // Getters and Setters
