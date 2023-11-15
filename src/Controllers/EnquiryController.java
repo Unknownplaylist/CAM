@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 
 //Enquiry.csv:
-//Previously: Enquiry, Student, Camp, STAFF, Read, Reply
 //Enquiry, Student, Camp, Read, Reply
 
 /*General Rule for Enquiry Controller
@@ -26,21 +25,17 @@ Enquiry flow:
 
 public class EnquiryController {
     private static final String FILE_PATH = "src/Database/Enquiry.csv";
-    private static final String TEMP_FILE_PATH = "src/Database/temp.csv"; //The temporary file path used for the delete/edit/reply Enquiry function
     private static final String CSV_SEPARATOR = ",";
 
     private String message;
     private String student;
     private String camp;
-    // private String staff; //Don't need the staff name at all
     private String read;
     private String reply;
 
 
     //IMPLEMENTATIONS FOR STUDENTS
     public void createEnquiry(String student){
-        //Generate the enquiry details, including the name of the student and set the read and reply section to ""
-        this.student = student;
         read = " ";
         reply = " ";
 
@@ -85,8 +80,7 @@ public class EnquiryController {
     }
 
     public void viewEnquiry(String student){ //customized for student use 
-        //if not null
-        String[]data;
+        String[] data;
         if(studentFindEnquiry(student)!=null){
             data = studentFindEnquiry(student);
             formatMessage(data);
@@ -101,53 +95,30 @@ public class EnquiryController {
             System.out.println("No Enquiries to Edit");
             return;
         }
-
         Scanner sc = new Scanner(System.in);
 
-        if ((studentEnquiry[3].equals(" ")) && (studentEnquiry[4].equals(" "))){ //if not read and not replied
+        if ((studentEnquiry[3].equals(" ")) && (studentEnquiry[4].equals(" "))){
             System.out.println("Edit your enquiry here: ");
             message = sc.nextLine();
             studentEnquiry[0] = message;
 
-            String editedEnquiry = String.join(CSV_SEPARATOR, studentEnquiry);
-
-            BufferedReader br = null;
-            BufferedWriter bw = null;
-
-            try {
-                br = new BufferedReader(new FileReader(FILE_PATH));
-                bw = new BufferedWriter(new FileWriter(TEMP_FILE_PATH));
+            try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));){                
                 String line;
                 String[] data;
+                List<String[]> dataList = new ArrayList<>();
                 while ((line = br.readLine()) != null) {
                     data = line.split(CSV_SEPARATOR);
                     if (!data[1].equalsIgnoreCase(student)) {
-                        bw.write(line);
-                        bw.newLine();
+                        dataList.add(data);
                     }
                     else {
-                        bw.write(editedEnquiry);
-                        bw.newLine();
+                        dataList.add(studentEnquiry);
                     }
                 }
-                br.close();
-                bw.close();
-
-                // Rename temp file to the original file
-                java.nio.file.Files.deleteIfExists(new File(FILE_PATH).toPath());
-                new File(TEMP_FILE_PATH).renameTo(new File(FILE_PATH));
+                writeCSV(dataList);
             } catch (IOException e) {
                 System.out.println("Cannot proceed with your edit request.");
                 e.printStackTrace();
-            } finally {
-                try {
-                    if (br != null)
-                        br.close();
-                    if (bw != null)
-                        bw.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
             }
         }
         else {
@@ -156,49 +127,28 @@ public class EnquiryController {
         
     }
 
-    public void deleteEnquiry(String student){ //Copy the csv file excluding the enquiry to delete and rename
-        //Only from the student side, staff and CampComm cannot delete the enquiry
-        //Only when not read and replied
-        //cannot be deleted once answered
+    public void deleteEnquiry(String student){
         String[] studentEnquiry = studentFindEnquiry(student);
         if(studentEnquiry==null){
             System.out.println("No Enquiries to Remove");
             return;
         }
-        if ((studentEnquiry[3].equals(" ")) && (studentEnquiry[4].equals(" "))){ //if not read and not replied
+        if ((studentEnquiry[3].equals(" ")) && (studentEnquiry[4].equals(" "))){
 
-            BufferedReader br = null;
-            BufferedWriter bw = null;
-            try {
-                br = new BufferedReader(new FileReader(FILE_PATH));
-                bw = new BufferedWriter(new FileWriter("temp.csv"));
+            try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));){                
                 String line;
                 String[] data;
+                List<String[]> dataList = new ArrayList<>();
                 while ((line = br.readLine()) != null) {
                     data = line.split(CSV_SEPARATOR);
                     if (!data[1].equalsIgnoreCase(student)) {
-                        bw.write(line);
-                        bw.newLine();
+                        dataList.add(data);
                     }
                 }
-                br.close();
-                bw.close();
-
-                // Rename temp file to the original file
-                java.nio.file.Files.deleteIfExists(new File(FILE_PATH).toPath());
-                new File("temp.csv").renameTo(new File(FILE_PATH));
+                writeCSV(dataList);
             } catch (IOException e) {
-                System.out.println("An error has occured. Cannot proceed with your delete request.");
+                System.out.println("Cannot proceed with your delete request.");
                 e.printStackTrace();
-            } finally {
-                try {
-                    if (br != null)
-                        br.close();
-                    if (bw != null)
-                        bw.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
             }
         }
         else {
@@ -207,8 +157,6 @@ public class EnquiryController {
     }
 
     public void readReply(String student){
-        //return the reply of the enquiry
-        //if the enquiry has not been replied (i.e. read == " " and reply == " "), return nothing
         String[] studentEnquiry;
         if (studentFindEnquiry(student) != null){
             studentEnquiry = studentFindEnquiry(student);
@@ -226,10 +174,7 @@ public class EnquiryController {
     }
 
     //IMPLEMENTATIONS FOR STAFF/CAMP COMM
-    public String[] checkEnquiry(String camp){ //for the staff and CampComm
-        //Find the enquiry relevant to the camp that is not read and replied
-        //return the line number for enquiry in csv file
-
+    public String[] checkEnquiry(String camp){
         String[] data = findEnquiry(camp);
         if (data != null){
             System.out.println("There is an enquiry for your camp pending for reply.");
@@ -261,13 +206,10 @@ public class EnquiryController {
         return null;
     }
 
-    public void replyEnquiry(String camp){ //for staff and CampComm only
-        //ERROR: This function only takes in the data and uploads a new one, the unreplied enquiry is still in the csv
-        //The same as editEnquiry from the student side
-        //take in line num of the enquiry from findEnquiry() if there is a pending enquiry
+    public void replyEnquiry(String camp){
         String[] enquiryToReply = findEnquiry(camp);
 
-        if ((enquiryToReply[3] != " ") && (enquiryToReply[4] != " ")){
+        if ((!enquiryToReply[3].equals(" ")) && (!enquiryToReply[4].equals(" "))){
             System.out.println("The enquiry has already been replied!");
             return;
         } 
@@ -278,52 +220,30 @@ public class EnquiryController {
         enquiryToReply[3] = "Read";
         enquiryToReply[4] = Reply;
         System.out.println("Reply has been saved!");
-        sc.close();
+        //sc.close();
 
-        String upload = String.join(CSV_SEPARATOR,enquiryToReply);
-
-        BufferedReader br = null;
-        BufferedWriter bw = null;
-
-        try {
-            br = new BufferedReader(new FileReader(FILE_PATH));
-            bw = new BufferedWriter(new FileWriter(TEMP_FILE_PATH));
-            String line;
-            String[] data;
-            while ((line = br.readLine()) != null) {
-                data = line.split(CSV_SEPARATOR);
-                if ((data[1] != enquiryToReply[1]) && (data[2] != enquiryToReply[2])) { //check if the data is the same as enquiryToReply
-                    bw.write(line);
-                    bw.newLine();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))){                
+                String line;
+                String[] data;
+                List<String[]> dataList = new ArrayList<>();
+                while ((line = br.readLine()) != null) {
+                    data = line.split(CSV_SEPARATOR);
+                    if ((!data[2].equalsIgnoreCase(enquiryToReply[2])) && (!data[1].equals(enquiryToReply[1]))) { //cross-validate the student name and camp
+                        dataList.add(data);
+                    }
+                    else {
+                        dataList.add(enquiryToReply);
+                    }
                 }
-                else {
-                    bw.write(upload);
-                    bw.newLine();
-                }
-            }
-            br.close();
-            bw.close();
-
-            // Rename temp file to the original file
-            java.nio.file.Files.deleteIfExists(new File(FILE_PATH).toPath());
-            new File(TEMP_FILE_PATH).renameTo(new File(FILE_PATH));
+                writeCSV(dataList);
         } catch (IOException e) {
-            System.out.println("Cannot proceed with your reply request.");
+            System.out.println("Cannot proceed with your edit request.");
             e.printStackTrace();
-        } finally {
-            try {
-                if (br != null)
-                    br.close();
-                if (bw != null)
-                    bw.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+        }   
     }
 
-    public Vector<String[]> execFindEnquiry(String camp){
-        Vector<String[]> enquiryList = new Vector<String[]>();
+    public List<String[]> execFindEnquiry(String camp){
+        List<String[]> enquiryList = new ArrayList<String[]>();
         String line;
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
             String[] data;
@@ -340,13 +260,15 @@ public class EnquiryController {
         return enquiryList;
     }
 
-    public void viewReplyToEnquiry(String camp){ //display all replied enquiries
-        //all camp committee members and staff in charge of that camp can see the enquiry
-        Vector<String[]> enquiryList = execFindEnquiry(camp);
-        for (String[] i : enquiryList){
-            formatMessage(i);
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        }        
+    public void viewReplyToEnquiry(String camp){
+        List<String[]> enquiryList = execFindEnquiry(camp);
+        if (!enquiryList.isEmpty()){
+            for (String[] i : enquiryList){
+                formatMessage(i);
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            }
+        }
+        else System.out.println("No visible enquiries.");       
     }
 
     //IMPLEMENTATIONS FOR ALL
@@ -368,6 +290,19 @@ public class EnquiryController {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Not enough data");
         }
+    }
+
+    public void writeCSV(List<String[]> dataList){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+                    for (String[] i : dataList){
+                        String writeLine = String.join(CSV_SEPARATOR, i);
+                        bw.write(writeLine);
+                        bw.newLine();
+                    }
+                } catch (IOException e) {
+                    System.out.println("Error updating the file");
+                    e.printStackTrace();
+                }
     }
 
 }
