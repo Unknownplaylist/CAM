@@ -5,7 +5,9 @@ import Models.*;
 
 public class StudentView {
     static Scanner sc=new Scanner(System.in);
-    private String id, name, faculty, email; StudentsController studentcont;
+    private String id, name, faculty, email; 
+    private StudentsController studentcont;
+    private EnquiryController enq;
     private int logOff=2;
     public StudentView(String id,StudentsController studentcont){
         this.id=id;
@@ -25,8 +27,23 @@ public class StudentView {
     }
 
     public void SubmitEnquiry(){
-        EnquiryController enq_cont = new EnquiryController();
-        enq_cont.createEnquiry(name);
+        enq = new EnquiryController();
+        enq.createEnquiry(name);
+    }
+
+    public void checkEnquiry(){
+        enq=new EnquiryController();
+        enq.viewEnquiry(name);
+    }
+
+    public void removeEnquiry(){
+        enq=new EnquiryController();
+        enq.deleteEnquiry(name);
+    }
+
+    public void changeEnquiry(){
+        enq=new EnquiryController();
+        enq.editEnquiry(name);
     }
 
     public void display(){
@@ -44,22 +61,33 @@ public class StudentView {
             System.out.println("(3) Register as Camp Committee");
             System.out.println("(4) Withdraw");
             System.out.println("(5) Submit Enquiries");
-            System.out.println("(6) Check Enquiries\n");
-            System.out.println("(7) Change your password");
-            System.out.println("(8) LogOff\n");
+            System.out.println("(6) Check Enquiries");
+            System.out.println("(7) Delete Enquiries");
+            System.out.println("(8) Edit Enquiries\n");
+            System.out.println("(9) Change your password");
+            System.out.println("(10) LogOff\n");
             System.out.print("In: ");
             int choice = sc.nextInt();
             switch(choice){
-                case 1:case 2:case 3:case 4:case 6:default:
+                case 1:case 2:case 3:case 4:default:
                     System.out.println("Needs Implementation!");
                 break;
                 case 5:
                     SubmitEnquiry();
                 break;
+                case 6:
+                    checkEnquiry();
+                break;
                 case 7:
-                    PasswordChange();
+                    removeEnquiry();
                 break;
                 case 8:
+                    changeEnquiry();
+                break;
+                case 9:
+                    PasswordChange();
+                break;
+                case 10:
                     if(studentcont.isFirstLogin(email)){
                         System.out.println("Kindly Change your password\n");
                         continue;
