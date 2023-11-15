@@ -26,6 +26,7 @@ Enquiry flow:
 
 public class EnquiryController {
     private static final String FILE_PATH = "src/Database/Enquiry.csv";
+    private static final String TEMP_FILE_PATH = "src/Database/temp.csv"; //The temporary file path used for the delete/edit/reply Enquiry function
     private static final String CSV_SEPARATOR = ",";
 
     private String message;
@@ -96,11 +97,10 @@ public class EnquiryController {
 
     public void editEnquiry(String student){ //Look for the enquiry based on the student's name, assuming a student can only send one enquiry to one camp
         String[] studentEnquiry = studentFindEnquiry(student);
-        if(studentEnquiry==null){
+        if(studentEnquiry == null){
             System.out.println("No Enquiries to Edit");
             return;
         }
-        //String editedMessage;
 
         Scanner sc = new Scanner(System.in);
 
@@ -116,7 +116,7 @@ public class EnquiryController {
 
             try {
                 br = new BufferedReader(new FileReader(FILE_PATH));
-                bw = new BufferedWriter(new FileWriter("temp.csv"));
+                bw = new BufferedWriter(new FileWriter(TEMP_FILE_PATH));
                 String line;
                 String[] data;
                 while ((line = br.readLine()) != null) {
@@ -134,8 +134,8 @@ public class EnquiryController {
                 bw.close();
 
                 // Rename temp file to the original file
-                java.nio.file.Files.deleteIfExists(new File("Enquiry.csv").toPath());
-                new File("temp.csv").renameTo(new File("Enquiry.csv"));
+                java.nio.file.Files.deleteIfExists(new File(FILE_PATH).toPath());
+                new File(TEMP_FILE_PATH).renameTo(new File(FILE_PATH));
             } catch (IOException e) {
                 System.out.println("Cannot proceed with your edit request.");
                 e.printStackTrace();
@@ -185,10 +185,10 @@ public class EnquiryController {
                 bw.close();
 
                 // Rename temp file to the original file
-                java.nio.file.Files.deleteIfExists(new File("Enquiry.csv").toPath());
-                new File("temp.csv").renameTo(new File("Enquiry.csv"));
+                java.nio.file.Files.deleteIfExists(new File(FILE_PATH).toPath());
+                new File("temp.csv").renameTo(new File(FILE_PATH));
             } catch (IOException e) {
-                System.out.println("Cannot proceed with your delete request.");
+                System.out.println("An error has occured. Cannot proceed with your delete request.");
                 e.printStackTrace();
             } finally {
                 try {
@@ -209,7 +209,14 @@ public class EnquiryController {
     public void readReply(String student){
         //return the reply of the enquiry
         //if the enquiry has not been replied (i.e. read == " " and reply == " "), return nothing
-        String[] studentEnquiry = studentFindEnquiry(student);
+        String[] studentEnquiry;
+        if (studentFindEnquiry(student) != null){
+            studentEnquiry = studentFindEnquiry(student);
+        }
+        else {
+            System.out.println("Cannot find the enquiry");
+            return;
+        }
         if ((!studentEnquiry[3].equals(" ")) && (!studentEnquiry[4].equals(" "))){
             formatMessage(studentEnquiry);
         }
@@ -258,9 +265,9 @@ public class EnquiryController {
         //ERROR: This function only takes in the data and uploads a new one, the unreplied enquiry is still in the csv
         //The same as editEnquiry from the student side
         //take in line num of the enquiry from findEnquiry() if there is a pending enquiry
-        String[] data = findEnquiry(camp);
+        String[] enquiryToReply = findEnquiry(camp);
 
-        if ((!data[3].equals(" ")) && (!data[4].equals(" "))){
+        if ((enquiryToReply[3] != " ") && (enquiryToReply[4] != " ")){
             System.out.println("The enquiry has already been replied!");
             return;
         } 
@@ -268,26 +275,78 @@ public class EnquiryController {
         Scanner sc = new Scanner(System.in);
         System.out.println("Type in your reply: ");
         String Reply = sc.nextLine();
-        data[3] = "Read";
-        data[4] = Reply;
-        System.out.println("Reply has been sent!");
-        //sc.close();
+        enquiryToReply[3] = "Read";
+        enquiryToReply[4] = Reply;
+        System.out.println("Reply has been saved!");
+        sc.close();
 
-        String upload = String.join(CSV_SEPARATOR,data);
+        String upload = String.join(CSV_SEPARATOR,enquiryToReply);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            writer.write(upload);
-            writer.newLine();
+        BufferedReader br = null;
+        BufferedWriter bw = null;
+
+        try {
+            br = new BufferedReader(new FileReader(FILE_PATH));
+            bw = new BufferedWriter(new FileWriter(TEMP_FILE_PATH));
+            String line;
+            String[] data;
+            while ((line = br.readLine()) != null) {
+                data = line.split(CSV_SEPARATOR);
+                if ((data[1] != enquiryToReply[1]) && (data[2] != enquiryToReply[2])) { //check if the data is the same as enquiryToReply
+                    bw.write(line);
+                    bw.newLine();
+                }
+                else {
+                    bw.write(upload);
+                    bw.newLine();
+                }
+            }
+            br.close();
+            bw.close();
+
+            // Rename temp file to the original file
+            java.nio.file.Files.deleteIfExists(new File(FILE_PATH).toPath());
+            new File(TEMP_FILE_PATH).renameTo(new File(FILE_PATH));
         } catch (IOException e) {
-            System.out.println("Error uploading the enquiry");
+            System.out.println("Cannot proceed with your reply request.");
             e.printStackTrace();
+        } finally {
+            try {
+                if (br != null)
+                    br.close();
+                if (bw != null)
+                    bw.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
-    public String viewReplyToEnquiry(String camp){
+    public Vector<String[]> execFindEnquiry(String camp){
+        Vector<String[]> enquiryList = new Vector<String[]>();
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+            String[] data;
+            while ((line = br.readLine()) != null) {
+                data = line.split(CSV_SEPARATOR);
+                if (data[2] == camp){
+                    enquiryList.add(data);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading enquiry file");
+            e.printStackTrace();
+        }
+        return enquiryList;
+    }
+
+    public void viewReplyToEnquiry(String camp){ //display all replied enquiries
         //all camp committee members and staff in charge of that camp can see the enquiry
-        
-        return reply;
+        Vector<String[]> enquiryList = execFindEnquiry(camp);
+        for (String[] i : enquiryList){
+            formatMessage(i);
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        }        
     }
 
     //IMPLEMENTATIONS FOR ALL
@@ -295,7 +354,7 @@ public class EnquiryController {
         //Print out formatted view of the enquiry
         try {
             System.out.println("From: "+data[1]);
-            System.out.println("To "+data[2] + " Organinzing Committee");
+            System.out.println("To "+data[2] + " Organizing Committee");
             if (Objects.equals(data[3]," ")){
                 System.out.println("Read Status: Not read || Reply Status: Not replied");
             }
