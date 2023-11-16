@@ -2,7 +2,6 @@ package Models;
 
 import java.util.*;
 import java.time.LocalDate;
-import java.util.List;
 
 public class Camp {
     private String campName;
@@ -159,6 +158,10 @@ public class Camp {
             System.out.println("No available slots for committee members.");
         }
     }
+
+    public boolean isStudentRegistered(Student student) {
+    return registeredStudents.contains(student) || committeeMembers.contains(student);
+}
 
 }
 

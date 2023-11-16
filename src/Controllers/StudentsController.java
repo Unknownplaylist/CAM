@@ -178,4 +178,28 @@ public class StudentsController {
         }
         return null; // Student not found
     }
+    public boolean setStudentRole(String email, String role) {
+        if (!role.equals("attendee") && !role.equals("committee")) {
+            System.out.println("Invalid role. Only 'attendee' or 'committee' are allowed.");
+            return false;
+        }
+
+        List<Student> students = readStudents();
+        boolean found = false;
+        for (Student student : students) {
+            if (student.getEmail().equalsIgnoreCase(email)) {
+                student.setRole(role);
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            updateStudentList(students); // Update the entire list in the file
+            return true;
+        } else {
+            System.out.println("Student with email " + email + " not found.");
+            return false;
+        }
+    }
 }

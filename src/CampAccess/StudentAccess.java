@@ -1,4 +1,7 @@
 package CampAccess;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import Controllers.*;
 import Models.*;
 
@@ -57,6 +60,26 @@ public class StudentAccess {
         Student updatedStudent = new Student(newName, email, newFaculty, newFaculty, newFaculty); // Add parameters as needed
         studentsController.updateStudent(email, updatedStudent);
     }
+    
+
+    public void viewMyCamps(String studentEmail) {
+    Student student = studentsController.getStudentByEmail(studentEmail);
+    if (student == null) {
+        System.out.println("Student not found.");
+        return;
+    }
+    
+    List<Camp> allCamps = campController.viewAllCamps();
+    List<Camp> myCamps = allCamps.stream()
+                                 .filter(camp -> camp.isStudentRegistered(student))
+                                 .collect(Collectors.toList());
+
+    if (myCamps.isEmpty()) {
+        System.out.println("No camps registered.");
+    } else {
+        myCamps.forEach(System.out::println);
+    }
+}
 
     
 }
