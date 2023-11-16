@@ -9,6 +9,7 @@ public class StaffView {
     static Scanner sc=new Scanner(System.in);
     private String id, name, faculty, email; 
     private StaffController staffcont;
+    private StudentsController studentscont;
     private CampController campcont;
     private int logOff=0;
     public StaffView(String id,StaffController staffcont){
@@ -26,7 +27,7 @@ public class StaffView {
 
     public void visibility(){
         try{
-            campcont = new CampController();
+            campcont = new CampController(studentscont, staffcont);
             System.out.print("Enter the name of the Camp whose visibility you wish to change: ");
             String camp_name=sc.next();
             if(!campcont.checkCamp(camp_name)){

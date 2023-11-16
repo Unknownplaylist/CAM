@@ -1,2 +1,4 @@
-Camp Name,Dates,Registration closing date,User group this camp is open to own school or whole NTU,Location,Total Slots,Camp Committee Slots (max 10),Description,Staff in charge (automatically tied to the staff who created it)
-,,,,,,[name1;name2],,
+campName,startDate,endDate,registrationCloseDate,Faculty,location,totalSlots,committeeSlots,description,staffInCharge,listregisteredStudents,listcommitteeMembers,Visible
+Adventure Camp,1/6/2023,5/6/2023,25/5/2023,NBS,Campsite,50,10,Outdoor activities for computer science students,Arvind,LIU;CHAN,LIN,TRUE
+Leadership Retreat,15/7/2023,20/7/2023,1/7/2023,NBS,Retreat Center,40,5,Leadership skills building camp,Arvind,LIU;CHAN,LIN,TRUE
+Exploration,10/8/2023,15/8/2023,31/7/2023,SCSE,Forest Reserve,60,8,Exploring and learning about nature,Datta,CHERN,LEE,TRUE

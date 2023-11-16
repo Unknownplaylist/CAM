@@ -1,19 +1,21 @@
 package CampAccess;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import Controllers.*;
 import Models.*;
 
-
-
 public class StudentAccess {
     private StudentsController studentsController;
     private CampController campController;
+    private StaffController staffController;
 
-    public StudentAccess(StudentsController studentsController, CampController campController) {
+    public StudentAccess(StudentsController studentsController, CampController campController,
+            StaffController staffController) {
         this.studentsController = studentsController;
         this.campController = campController;
+        this.staffController = staffController;
     }
 
     // Method to register a student for a camp
@@ -33,54 +35,79 @@ public class StudentAccess {
             System.out.println("Student not found.");
             return;
         }
-        String studentFaculty = student.getFaculty();
 
-        campController.viewAllCamps().stream()
-                .filter(camp -> camp.getUserGroup().equals(studentFaculty))
-                .forEach(camp -> System.out.println(camp));
+        String studentFaculty = student.getFaculty();
+        List<Camp> availableCamps = campController.viewAllCamps().stream()
+                .filter(camp -> camp.getFaculty().equalsIgnoreCase(studentFaculty))
+                .collect(Collectors.toList());
+
+        if (availableCamps.isEmpty()) {
+            System.out.println("No camps available for your faculty.");
+        } else {
+            availableCamps.forEach(camp -> System.out.println(camp));
+        }
     }
 
-    // Method to withdraw from a camp
-    public void withdrawFromCamp(String studentEmail, String campName) {
+        public void withdrawFromCamp(String studentEmail, String campName) {
+            // Find the student by email
+            Student student = studentsController.getStudentByEmail(studentEmail);
+            if (student == null) {
+                System.out.println("Student not found with email: " + studentEmail);
+                return;
+            }
+    
+            // Retrieve the camp by name
+            Camp camp = campController.getCamp(campName);
+            if (camp == null) {
+                System.out.println("Camp not found with name: " + campName);
+                return;
+            }
+    
+            // Call the CampController to handle the withdrawal process
+            campController.withdrawStudentFromCamp(camp, student);
+        }
+    
+    
+    
+    
+    
+
+    
+    // Method to update student profile
+    public void updateStudentProfile(String email, String newName, String newFaculty) {
+        Student student = studentsController.getStudentByEmail(email);
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+    
+        Student updatedStudent = new Student(newName, email, newFaculty, student.getRole(), student.getPassword()); 
+        studentsController.updateStudent(email, updatedStudent);
+        System.out.println("Profile updated successfully.");
+    }
+
+    public void viewMyCamps(String studentEmail) {
         Student student = studentsController.getStudentByEmail(studentEmail);
         if (student == null) {
             System.out.println("Student not found.");
             return;
         }
-        Camp camp = campController.getCamp(campName);
-        if (camp == null) {
-            System.out.println("Camp not found.");
-            return;
+    
+        String studentName = student.getName(); // Retrieve the name of the logged-in student
+    
+        List<Camp> myCamps = campController.viewAllCamps().stream()
+                .filter(camp -> camp.getRegisteredStudents().stream()
+                        .anyMatch(registeredStudent -> registeredStudent.getName().equalsIgnoreCase(studentName))) // Check if the student's name is in the registeredStudents list
+                .collect(Collectors.toList());
+    
+        if (myCamps.isEmpty()) {
+            System.out.println("You are not registered for any camps.");
+        } else {
+            System.out.println("Registered Camps:");
+            myCamps.forEach(camp -> System.out.println(camp.getCampName())); // Print the name of the camp
         }
-        campController.withdrawStudentFromCamp(camp, student);
-    }
-
-    // Method to update student profile
-    public void updateStudentProfile(String email, String newName, String newFaculty) {
-        Student updatedStudent = new Student(newName, email, newFaculty, newFaculty, newFaculty); // Add parameters as needed
-        studentsController.updateStudent(email, updatedStudent);
     }
     
-
-    public void viewMyCamps(String studentEmail) {
-    Student student = studentsController.getStudentByEmail(studentEmail);
-    if (student == null) {
-        System.out.println("Student not found.");
-        return;
-    }
     
-    List<Camp> allCamps = campController.viewAllCamps();
-    List<Camp> myCamps = allCamps.stream()
-                                 .filter(camp -> camp.isStudentRegistered(student))
-                                 .collect(Collectors.toList());
-
-    if (myCamps.isEmpty()) {
-        System.out.println("No camps registered.");
-    } else {
-        myCamps.forEach(System.out::println);
-    }
-}
-
     
 }
-

@@ -202,4 +202,14 @@ public class StudentsController {
             return false;
         }
     }
+
+    public Student getStudentByName(String name) {
+        List<Student> students = readStudents();
+        for (Student student : students) {
+            if (student.getName().equalsIgnoreCase(name)) {
+                return student;
+            }
+        }
+        return null; // Return null if no student with the given name is found
+    }
 }

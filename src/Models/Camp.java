@@ -8,7 +8,7 @@ public class Camp {
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate registrationCloseDate;
-    private String userGroup; // "Own School" or "Whole NTU"
+    private String faculty; // Updated from userGroup
     private String location;
     private int totalSlots;
     private int committeeSlots; // Max 10
@@ -16,27 +16,25 @@ public class Camp {
     private Staff staffInCharge;
     private List<Student> registeredStudents;
     private List<Student> committeeMembers;
-
     private boolean isVisible;
 
     // Constructors
     public Camp(String campName, LocalDate startDate, LocalDate endDate,
-                LocalDate registrationCloseDate, String userGroup, String location,
+                LocalDate registrationCloseDate, String faculty, String location,
                 int totalSlots, int committeeSlots, String description, Staff staffInCharge) {
         this.campName = campName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.registrationCloseDate = registrationCloseDate;
-        this.userGroup = userGroup;
+        this.faculty = faculty; // Updated
         this.location = location;
         this.totalSlots = totalSlots;
         this.committeeSlots = committeeSlots;
         this.description = description;
         this.staffInCharge = staffInCharge;
-        // Initialize the lists
-        this.registeredStudents = new ArrayList<Student>();
-        this.committeeMembers = new ArrayList<Student>();
-        isVisible=true;
+        this.registeredStudents = new ArrayList<>();
+        this.committeeMembers = new ArrayList<>();
+        isVisible = true;
     }
 
     // Getters and Setters
@@ -72,14 +70,13 @@ public class Camp {
         this.registrationCloseDate = registrationCloseDate;
     }
 
-    public String getUserGroup() {
-        return userGroup;
+     public String getFaculty() {
+        return faculty;
     }
 
-    public void setUserGroup(String userGroup) {
-        this.userGroup = userGroup;
+    public void setFaculty(String faculty) {
+        this.faculty = faculty;
     }
-
     public String getLocation() {
         return location;
     }
@@ -162,6 +159,21 @@ public class Camp {
     public boolean isStudentRegistered(Student student) {
     return registeredStudents.contains(student) || committeeMembers.contains(student);
 }
+@Override
+public String toString() {
+    return "Camp Name: " + campName + "\n" +
+           "Start Date: " + startDate + "\n" +
+           "End Date: " + endDate + "\n" +
+           "Registration Close Date: " + registrationCloseDate + "\n" +
+           "Faculty: " + faculty + "\n" + 
+           "Location: " + location + "\n" +
+           "Total Slots: " + totalSlots + "\n" +
+           "Committee Slots: " + committeeSlots + "\n" +
+           "Description: " + description + "\n" +
+           "Staff In Charge: " + staffInCharge.getName() + "\n" + 
+           "Visibility: " + (isVisible ? "Visible" : "Hidden");
+}
+
 
 }
 

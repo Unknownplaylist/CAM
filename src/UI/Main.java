@@ -20,7 +20,7 @@ public class Main {
         if(loggedIn){
             String user = lgc.userType(userId);
             if(user.equalsIgnoreCase("attendee")){
-                studentview = new StudentView(userId,sdc);
+                studentview = new StudentView(userId,sdc,sfc);
                 studentview.display();
             }
             else if(user.equalsIgnoreCase("committee")){

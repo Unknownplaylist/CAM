@@ -154,6 +154,14 @@ public class StaffController {
         }
         return null;
     }
-
+    public Staff getStaffByName(String name) {
+        List<Staff> staffList = readStaff();
+        for (Staff staff : staffList) {
+            if (staff.getName().equalsIgnoreCase(name)) {
+                return staff;
+            }
+        }
+        return null; // Return null if no staff with the given name is found
+    }
 
 }

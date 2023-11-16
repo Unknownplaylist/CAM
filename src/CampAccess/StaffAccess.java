@@ -6,8 +6,10 @@ import Models.*;
 
 public class StaffAccess {
     static Scanner sc=new Scanner(System.in);
-    private CampController campcont = new CampController();
+    
     private StaffController staffcont=new StaffController();
+    private StudentsController studentscont=new StudentsController();
+    private CampController campcont = new CampController(studentscont, staffcont);
     private Camp camp;
     private String staffid;
     private Staff staff;
