@@ -83,11 +83,31 @@ public class StaffAccess {
         }
     }
 
-    public void delCamp(){
-        
+    public void delCamp() {
+        System.out.print("Enter the name of the camp to delete: ");
+        String campName = sc.nextLine();
+
+        if (campcont.checkCamp(campName)) {
+            campcont.deleteCamp(campName);
+            System.out.println("Camp " + campName + " deleted successfully.");
+        } else {
+            System.out.println("Camp " + campName + " not found.");
+        }
     }
 
-    public void changeVisibility(boolean set){
+    public void changeVisibility() {
+        System.out.print("Enter the name of the camp to change visibility: ");
+        String campName = sc.nextLine();
 
+        if (!campcont.checkCamp(campName)) {
+            System.out.println("Camp " + campName + " not found.");
+            return;
+        }
+
+        System.out.print("Set camp visibility (true for visible, false for hidden): ");
+        boolean isVisible = sc.nextBoolean();
+
+        campcont.toggleCampVisibility(campName, isVisible);
+        System.out.println("Visibility of camp " + campName + " updated to " + (isVisible ? "visible" : "hidden") + ".");
     }
 }
