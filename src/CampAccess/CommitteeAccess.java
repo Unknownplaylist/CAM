@@ -2,6 +2,7 @@ package CampAccess;
 
 import java.util.*;
 //import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import Controllers.*;
 import Models.*;
@@ -96,4 +97,63 @@ public class CommitteeAccess {
         }
         System.out.println();
     }
+
+    
+    public void viewAvailableCamps(String studentEmail) {
+        Student student = studentController.getStudentByEmail(studentEmail);
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+
+        String studentFaculty = student.getFaculty();
+        List<Camp> availableCamps = campController.viewAllCamps().stream()
+                .filter(camp -> camp.getFaculty().equalsIgnoreCase(studentFaculty) && camp.isVisible())
+                .collect(Collectors.toList());
+
+        if (availableCamps.isEmpty()) {
+            System.out.println("No camps available for your faculty.");
+        } else {
+            availableCamps.forEach(camp -> System.out.println(camp));
+        }
+
+
+    }
+
+    public void viewMyCamps(String studentEmail) {
+        Student student = studentController.getStudentByEmail(studentEmail);
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+    
+        String studentName = student.getName(); // Retrieve the name of the logged-in student
+    
+        List<Camp> myCamps = campController.viewAllCamps().stream()
+                .filter(camp -> {
+                    List<Student> registeredStudents = camp.getRegisteredStudents();
+                    List<Student> committeeMembers = camp.getCommitteeMembers();
+                    boolean isRegistered = registeredStudents != null && registeredStudents.stream()
+                                        .anyMatch(registeredStudent -> registeredStudent != null &&
+                                                registeredStudent.getName().equalsIgnoreCase(studentName));
+                    boolean isCommitteeMember = committeeMembers != null && committeeMembers.stream()
+                                        .anyMatch(committeeMember -> committeeMember != null &&
+                                                committeeMember.getName().equalsIgnoreCase(studentName));
+                    return isRegistered || isCommitteeMember;
+                })
+                .collect(Collectors.toList());
+    
+        if (myCamps.isEmpty()) {
+            System.out.println("You are not registered for any camps.");
+        } else {
+            System.out.println("Registered Camps:");
+            myCamps.forEach(camp -> {
+                System.out.println(camp.getCampName() + " - " + (camp.getCommitteeMembers().stream()
+                    .anyMatch(committeeMember -> committeeMember != null && 
+                        committeeMember.getName().equalsIgnoreCase(studentName)) ? "Committee Member" : "Attendee"));
+            });
+        }
+    }
+    
+
 }
