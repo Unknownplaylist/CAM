@@ -74,7 +74,7 @@ public class CampController {
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         // Assuming you have constructors for these controllers without parameters
         StudentsController studentController = new StudentsController();
         StaffController staffController = new StaffController();
@@ -97,7 +97,7 @@ public class CampController {
             System.out.println("Is Visible: " + camp.isVisible());
             System.out.println("---------------------------------");
         }
-    }
+    }*/
 
     public Camp getCamp(String name) {
         return readCamps().stream()
@@ -349,6 +349,34 @@ public class CampController {
 
         // Write the sorted list back to the CSV
         writeAllCamps(camps);
+    }
+
+    public static void main(String[] args) {
+        // Assuming you have constructors for these controllers
+        StudentsController studentsController = new StudentsController();
+        StaffController staffController = new StaffController();
+
+        // Create CampController with the required controllers
+        CampController campController = new CampController(studentsController, staffController);
+
+        // Print camps before sorting
+        System.out.println("Camps before sorting:");
+        printCamps(campController);
+
+        // Sorting camps by start date
+        campController.sortCampsByStartDateAndWrite();
+
+        // Print camps after sorting
+        System.out.println("\nCamps after sorting by start date:");
+        printCamps(campController);
+    }
+
+    // Utility method to print camp details
+    private static void printCamps(CampController campController) {
+        List<Camp> camps = campController.readCamps();
+        for (Camp camp : camps) {
+            System.out.println("Camp Name: " + camp.getCampName() + ", Start Date: " + camp.getStartDate());
+        }
     }
 
     /*
