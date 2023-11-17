@@ -1,6 +1,7 @@
 package CampAccess;
 
-import java.util.Scanner;
+import java.util.*;
+//import java.util.Scanner;
 
 import Controllers.*;
 import Models.*;
@@ -19,22 +20,27 @@ public class CommitteeAccess {
         this.student_controller = student_controller;
     }
     
+    public void viewCamps(){
 
+    }
+
+    public void viewYourCamps(){
+
+    }
+        
     public void viewCampDetails(){
+
     }
     /* 
     //SuggestionController
-    public void submitSuggestion(String studentEmail){ 
-        String studentName = student_controller.getStudentName(studentEmail);
-        suggestion_controller.createSuggestion(studentName);
+    public void submitSuggestion(String campCommName){ 
+        suggestion_controller.createSuggestion(campCommName);
     }
-    public void viewSuggestion(String studentEmail){
-        String studentName = student_controller.getStudentName(studentEmail);
-        suggestion_controller.viewSuggestion(studentName);
+    public void viewSuggestion(String campCommName){
+        suggestion_controller.viewSuggestion(campCommName);
     }
-    public void editSuggestion(String studentEmail){
-        String studentName = student_controller.getStudentName(studentEmail);
-        suggestion_controller.editSuggestion(studentName);
+    public void editSuggestion(String campCommName){
+        suggestion_controller.editSuggestion(campCommName);
 
     }
     public void deleteSuggestion(String studentEmail){//to extend the suggestion controller to take in camp
@@ -43,17 +49,16 @@ public class CommitteeAccess {
     }*/
 
     //EnquiryController
-    public void checkEnquiry(){
-
+    public void checkEnquiry(String camp){
+        //get his camp
+        List<String[]> unrepliedEnquiriesList = enquiry_controller.execFindUnrepliedEnquiry(camp);
+        enquiry_controller.formatMessageList(unrepliedEnquiriesList);
     }
-    public void viewEnquiry(String studentEmail){
-        String studentName = student_controller.getStudentName(studentEmail);
-        enquiry_controller.viewEnquiry(studentName);
-
+    public void viewEnquiry(String camp){
+        enquiry_controller.viewReplyToEnquiry(camp);
     }
-    public void replyEnquiry(String studentEmail){
-        String studentName = student_controller.getStudentName(studentEmail);
-        enquiry_controller.replyEnquiry(studentName);
+    public void replyEnquiry(String camp){
+        enquiry_controller.execReplyEnquiry(camp);
     }
 
 
