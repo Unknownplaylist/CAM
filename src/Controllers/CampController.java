@@ -307,8 +307,47 @@ public class CampController {
     
     
     
-
+   
     
+        public void sortCampsAlphabeticallyAndWrite() {
+            List<Camp> camps = readCamps(); // Method to read camps from CSV
+    
+            // Sorting the camps by name
+            camps.sort(Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER));
+    
+            // Write the sorted list back to the CSV
+            writeAllCamps(camps);
+        }
+    
+        public void sortCampsByStartDateAndWrite() {
+            List<Camp> camps = readCamps(); // Method to read camps from CSV
+    
+            // Sorting the camps by start date
+            camps.sort(Comparator.comparing(Camp::getStartDate));
+    
+            // Write the sorted list back to the CSV
+            writeAllCamps(camps);
+        }    
+    
+    public void sortCampsByEndDateAndWrite() {
+            List<Camp> camps = readCamps(); // Method to read camps from CSV
+    
+            // Sorting the camps by End date
+            camps.sort(Comparator.comparing(Camp::getEndDate));
+    
+            // Write the sorted list back to the CSV
+            writeAllCamps(camps);
+        }   
+        
+        public void sortCampsLocationAndWrite() {
+            List<Camp> camps = readCamps(); // Method to read camps from CSV
+    
+            // Sorting the Location by name
+            camps.sort(Comparator.comparing(Camp::getLocation, String.CASE_INSENSITIVE_ORDER));
+    
+            // Write the sorted list back to the CSV
+            writeAllCamps(camps);
+        }
 
    /*  public List<Camp> getCampsForStudent(Student student) {
         List<Camp> eligibleCamps = new ArrayList<>();
