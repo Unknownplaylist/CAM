@@ -10,9 +10,10 @@ public class CampCommitteeView {
     private String id, name, faculty, email; StudentsController studentcont;
     private CommitteeAccess committeeAccess;
     private int logOff=2;
-    public CampCommitteeView(String id,StudentsController studentcont){
+    public CampCommitteeView(String id,StudentsController studentcont, CommitteeAccess committeeAccess){
         this.id=id;
         this.studentcont=studentcont;
+        this.committeeAccess = committeeAccess;
         email = studentcont.getStudentMail(this.id);
         name=studentcont.getStudentName(email);
         faculty=studentcont.getStudentFaculty(email);

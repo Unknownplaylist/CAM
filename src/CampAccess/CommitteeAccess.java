@@ -24,11 +24,11 @@ public class CommitteeAccess {
 
     }
 
-    public void viewYourCamps(){
+    public void viewYourCamps(){ //View the list of camps that he/she is in
 
     }
         
-    public void viewCampDetails(){
+    public void viewCampDetails(){ //View details of the camp he/she has registered for
 
     }
 
