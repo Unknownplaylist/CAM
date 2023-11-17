@@ -92,9 +92,14 @@ public class StudentAccess {
         List<Camp> myCamps = campController.viewAllCamps().stream()
                 .filter(camp -> {
                     List<Student> registeredStudents = camp.getRegisteredStudents();
-                    return registeredStudents != null && registeredStudents.stream()
-                            .anyMatch(registeredStudent -> registeredStudent != null &&
-                                    registeredStudent.getName().equalsIgnoreCase(studentName));
+                    List<Student> committeeMembers = camp.getCommitteeMembers();
+                    boolean isRegistered = registeredStudents != null && registeredStudents.stream()
+                                        .anyMatch(registeredStudent -> registeredStudent != null &&
+                                                registeredStudent.getName().equalsIgnoreCase(studentName));
+                    boolean isCommitteeMember = committeeMembers != null && committeeMembers.stream()
+                                        .anyMatch(committeeMember -> committeeMember != null &&
+                                                committeeMember.getName().equalsIgnoreCase(studentName));
+                    return isRegistered || isCommitteeMember;
                 })
                 .collect(Collectors.toList());
     
@@ -102,7 +107,11 @@ public class StudentAccess {
             System.out.println("You are not registered for any camps.");
         } else {
             System.out.println("Registered Camps:");
-            myCamps.forEach(camp -> System.out.println(camp.getCampName())); // Print the name of the camp
+            myCamps.forEach(camp -> {
+                System.out.println(camp.getCampName() + " - " + (camp.getCommitteeMembers().stream()
+                    .anyMatch(committeeMember -> committeeMember != null && 
+                        committeeMember.getName().equalsIgnoreCase(studentName)) ? "Committee Member" : "Attendee"));
+            });
         }
     }
     
