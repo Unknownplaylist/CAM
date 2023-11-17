@@ -9,18 +9,6 @@ import java.util.*;
 /*General Rule for Enquiry Controller
 -Any student can write an enquiry to any camp that he/she can see.
 -Only the staff and camp committee member in charge of the camp can read and reply to the enquiry 
--If the enquiry has not been uploaded, the student can choose to delete the enquiry
--Student can view, edit, delete the enquiry before it is processed.
-
-A student can submit enquiries to any camp he/she can see.
-Cannot be deleted once the enquiry has been answered. It will be stored.
-That reply can be seen by all the committee members and staff of that camp, besides the student who sent inquiry.
-
-Enquiry flow:
--Student create an enquiry, type in the message (Each camp will only have one active enquiry at a time for simplicity)
--Take note of the name of the student, the name of the camp and the staff in charge
--The staff in charge can checkEnquiry to see if there is any pending enquiry
--The staff reads and replies to the enquiry, after which the read flag will be ticked and stored in the database. 
  */
 
 public class EnquiryController {
@@ -237,7 +225,7 @@ public class EnquiryController {
                 }
                 writeCSV(dataList);
         } catch (IOException e) {
-            System.out.println("Cannot proceed with your edit request.");
+            System.out.println("Cannot proceed with your reply request.");
             e.printStackTrace();
         }   
     }
