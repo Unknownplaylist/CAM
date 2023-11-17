@@ -59,7 +59,8 @@ public class StaffAccess {
             group=group.substring(0, group.length()-3);
 
             System.out.print("Enter Location: ");
-            String location=sc.next();
+            String location=sc.nextLine();
+            location=sc.nextLine();
 
             System.out.print("Enter total number of slots: ");
             int slots=sc.nextInt();
@@ -72,7 +73,8 @@ public class StaffAccess {
             }
 
             System.out.print("Enter Description for the Camp: ");
-            String description=sc.next();
+            String description=sc.nextLine();
+            description=sc.nextLine();
 
             camp=new Camp(camp_name, startdate, enddate, regdate, group, location, slots, commslots, description, staff);
             campcont.writeCamp(camp);
