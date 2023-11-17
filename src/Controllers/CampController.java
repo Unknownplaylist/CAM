@@ -178,14 +178,16 @@ public class CampController {
     public void withdrawStudentFromCamp(Camp camp, Student student) {
         List<Camp> camps = readCamps(); // Read all camps
         Optional<Camp> targetCamp = camps.stream()
-                                         .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
-                                         .findFirst();
-    
+                .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
+                .findFirst();
+
         if (targetCamp.isPresent()) {
             Camp updatedCamp = targetCamp.get();
-            boolean removedFromRegistered = updatedCamp.getRegisteredStudents().removeIf(s -> s.getName().equalsIgnoreCase(student.getName()));
-            boolean removedFromCommittee = updatedCamp.getCommitteeMembers().removeIf(s -> s.getName().equalsIgnoreCase(student.getName()));
-            
+            boolean removedFromRegistered = updatedCamp.getRegisteredStudents()
+                    .removeIf(s -> s.getName().equalsIgnoreCase(student.getName()));
+            boolean removedFromCommittee = updatedCamp.getCommitteeMembers()
+                    .removeIf(s -> s.getName().equalsIgnoreCase(student.getName()));
+
             if (removedFromRegistered || removedFromCommittee) {
                 writeAllCamps(camps); // Pass the updated camps list
                 System.out.println("Student successfully withdrawn from the camp.");
@@ -196,16 +198,18 @@ public class CampController {
             System.out.println("Camp not found in the list.");
         }
     }
+
     public void withdrawStudentFromAttendees(Camp camp, Student student) {
         List<Camp> camps = readCamps(); // Read all camps
         Optional<Camp> targetCamp = camps.stream()
-                                         .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
-                                         .findFirst();
-    
+                .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
+                .findFirst();
+
         if (targetCamp.isPresent()) {
             Camp updatedCamp = targetCamp.get();
-            boolean removed = updatedCamp.getRegisteredStudents().removeIf(s -> s.getEmail().equalsIgnoreCase(student.getEmail()));
-    
+            boolean removed = updatedCamp.getRegisteredStudents()
+                    .removeIf(s -> s.getEmail().equalsIgnoreCase(student.getEmail()));
+
             if (removed) {
                 writeAllCamps(camps); // Update the camps list
                 System.out.println("Student successfully withdrawn from the camp attendees.");
@@ -216,16 +220,18 @@ public class CampController {
             System.out.println("Camp not found in the list.");
         }
     }
+
     public void withdrawStudentFromCommittee(Camp camp, Student student) {
         List<Camp> camps = readCamps(); // Read all camps
         Optional<Camp> targetCamp = camps.stream()
-                                         .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
-                                         .findFirst();
-    
+                .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
+                .findFirst();
+
         if (targetCamp.isPresent()) {
             Camp updatedCamp = targetCamp.get();
-            boolean removed = updatedCamp.getCommitteeMembers().removeIf(s -> s.getEmail().equalsIgnoreCase(student.getEmail()));
-    
+            boolean removed = updatedCamp.getCommitteeMembers()
+                    .removeIf(s -> s.getEmail().equalsIgnoreCase(student.getEmail()));
+
             if (removed) {
                 writeAllCamps(camps); // Update the camps list
                 System.out.println("Student successfully withdrawn from the camp committee.");
@@ -236,37 +242,36 @@ public class CampController {
             System.out.println("Camp not found in the list.");
         }
     }
-    
-    
-    
-    
 
     private void writeAllCamps(List<Camp> camps) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            bw.write("campName,startDate,endDate,registrationCloseDate,Faculty,location,totalSlots,committeeSlots,description,staffInCharge,listregisteredStudents,listcommitteeMembers,Visible\n");
-    
+            bw.write(
+                    "campName,startDate,endDate,registrationCloseDate,Faculty,location,totalSlots,committeeSlots,description,staffInCharge,listregisteredStudents,listcommitteeMembers,Visible\n");
+
             for (Camp camp : camps) {
-                String registeredStudents = String.join(";", camp.getRegisteredStudents().stream().map(Student::getName).collect(Collectors.toList()));
-                String committeeMembers = String.join(";", camp.getCommitteeMembers().stream().map(Student::getName).collect(Collectors.toList()));
-    
-                String staffInChargeName =  camp.getStaffInCharge().getName(); //camp.getStaffInCharge() != null) ? camp.getStaffInCharge().getName() : "";
-    
+                String registeredStudents = String.join(";",
+                        camp.getRegisteredStudents().stream().map(Student::getName).collect(Collectors.toList()));
+                String committeeMembers = String.join(";",
+                        camp.getCommitteeMembers().stream().map(Student::getName).collect(Collectors.toList()));
+
+                String staffInChargeName = camp.getStaffInCharge().getName(); // camp.getStaffInCharge() != null) ?
+                                                                              // camp.getStaffInCharge().getName() : "";
+
                 String line = String.join(CSV_SEPARATOR, Arrays.asList(
-                    camp.getCampName(),
-                    camp.getStartDate().format(DateTimeFormatter.ofPattern("d/M/yyyy")),
-                    camp.getEndDate().format(DateTimeFormatter.ofPattern("d/M/yyyy")),
-                    camp.getRegistrationCloseDate().format(DateTimeFormatter.ofPattern("d/M/yyyy")),
-                    camp.getFaculty(),
-                    camp.getLocation(),
-                    String.valueOf(camp.getTotalSlots()),
-                    String.valueOf(camp.getCommitteeSlots()),
-                    camp.getDescription(),
-                    staffInChargeName,
-                    registeredStudents,
-                    committeeMembers,
-                    String.valueOf(camp.isVisible())
-                ));
-    
+                        camp.getCampName(),
+                        camp.getStartDate().format(DateTimeFormatter.ofPattern("d/M/yyyy")),
+                        camp.getEndDate().format(DateTimeFormatter.ofPattern("d/M/yyyy")),
+                        camp.getRegistrationCloseDate().format(DateTimeFormatter.ofPattern("d/M/yyyy")),
+                        camp.getFaculty(),
+                        camp.getLocation(),
+                        String.valueOf(camp.getTotalSlots()),
+                        String.valueOf(camp.getCommitteeSlots()),
+                        camp.getDescription(),
+                        staffInChargeName,
+                        registeredStudents,
+                        committeeMembers,
+                        String.valueOf(camp.isVisible())));
+
                 bw.write(line);
                 bw.newLine();
             }
@@ -274,7 +279,7 @@ public class CampController {
             System.out.println("Error writing to camps file: " + e.getMessage());
         }
     }
-    
+
     public Camp getCampByCommitteeMember(String studentName) {
         List<Camp> camps = readCamps(); // Assuming this method returns the list of all camps
         for (Camp camp : camps) {
@@ -286,102 +291,104 @@ public class CampController {
         }
         return null; // Return null if the student is not a committee member in any camp
     }
+
     public boolean isStudentRegisteredInCamp(String studentEmail, String campName) {
         try {
             Camp camp = getCamp(campName);
             if (camp == null) {
                 return false; // Camp not found
             }
-    
+
             boolean isRegistered = camp.getRegisteredStudents().stream()
-                                       .anyMatch(student -> student.getEmail().equalsIgnoreCase(studentEmail));
+                    .anyMatch(student -> student.getEmail().equalsIgnoreCase(studentEmail));
             boolean isCommitteeMember = camp.getCommitteeMembers().stream()
-                                            .anyMatch(student -> student.getEmail().equalsIgnoreCase(studentEmail));
-    
+                    .anyMatch(student -> student.getEmail().equalsIgnoreCase(studentEmail));
+
             return isRegistered || isCommitteeMember;
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
         }
     }
-    
-    
-    
-   
-    
-        public void sortCampsAlphabeticallyAndWrite() {
-            List<Camp> camps = readCamps(); // Method to read camps from CSV
-    
-            // Sorting the camps by name
-            camps.sort(Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER));
-    
-            // Write the sorted list back to the CSV
-            writeAllCamps(camps);
-        }
-    
-        public void sortCampsByStartDateAndWrite() {
-            List<Camp> camps = readCamps(); // Method to read camps from CSV
-    
-            // Sorting the camps by start date
-            camps.sort(Comparator.comparing(Camp::getStartDate));
-    
-            // Write the sorted list back to the CSV
-            writeAllCamps(camps);
-        }    
-    
+
+    public void sortCampsAlphabeticallyAndWrite() {
+        List<Camp> camps = readCamps(); // Method to read camps from CSV
+
+        // Sorting the camps by name
+        camps.sort(Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER));
+
+        // Write the sorted list back to the CSV
+        writeAllCamps(camps);
+    }
+
+    public void sortCampsByStartDateAndWrite() {
+        List<Camp> camps = readCamps(); // Method to read camps from CSV
+
+        // Sorting the camps by start date
+        camps.sort(Comparator.comparing(Camp::getStartDate));
+
+        // Write the sorted list back to the CSV
+        writeAllCamps(camps);
+    }
+
     public void sortCampsByEndDateAndWrite() {
-            List<Camp> camps = readCamps(); // Method to read camps from CSV
-    
-            // Sorting the camps by End date
-            camps.sort(Comparator.comparing(Camp::getEndDate));
-    
-            // Write the sorted list back to the CSV
-            writeAllCamps(camps);
-        }   
-        
-        public void sortCampsLocationAndWrite() {
-            List<Camp> camps = readCamps(); // Method to read camps from CSV
-    
-            // Sorting the Location by name
-            camps.sort(Comparator.comparing(Camp::getLocation, String.CASE_INSENSITIVE_ORDER));
-    
-            // Write the sorted list back to the CSV
-            writeAllCamps(camps);
-        }
+        List<Camp> camps = readCamps(); // Method to read camps from CSV
 
-   /*  public List<Camp> getCampsForStudent(Student student) {
-        List<Camp> eligibleCamps = new ArrayList<>();
-        List<Camp> allCamps = readCamps();
-        LocalDate currentDate = LocalDate.now(); 
+        // Sorting the camps by End date
+        camps.sort(Comparator.comparing(Camp::getEndDate));
 
-        for (Camp camp : allCamps) {
-            if (camp.isVisible() &&
-                    camp.getFaculty().equals(student.getFaculty()) &&
-                    camp.getRegistrationCloseDate().isAfter(currentDate) &&
-                    camp.getTotalSlots() > 0 &&
-                    !hasDateClash(student, camp)) {
-                eligibleCamps.add(camp);
-            }
-        }
-
-        return eligibleCamps;
+        // Write the sorted list back to the CSV
+        writeAllCamps(camps);
     }
 
-    public List<Camp> filterCamps(LocalDate startDate, LocalDate endDate, String location) {
-        List<Camp> allCamps = readCamps();
+    public void sortCampsLocationAndWrite() {
+        List<Camp> camps = readCamps(); // Method to read camps from CSV
 
-        return allCamps.stream()
-                .filter(camp -> (startDate == null || !camp.getStartDate().isBefore(startDate)) &&
-                        (endDate == null || !camp.getEndDate().isAfter(endDate)) &&
-                        (location == null || camp.getLocation().equalsIgnoreCase(location)))
-                .sorted(Comparator.comparing(Camp::getCampName))
-                .collect(Collectors.toList());
+        // Sorting the Location by name
+        camps.sort(Comparator.comparing(Camp::getLocation, String.CASE_INSENSITIVE_ORDER));
+
+        // Write the sorted list back to the CSV
+        writeAllCamps(camps);
     }
 
-    private boolean hasDateClash(Student student, Camp camp) {
-        // Implement logic to check for date clashes with the student's schedule
-        // This can be based on other camps the student is registered for, or any other
-        // criteria relevant to the system
-        return false; // Placeholder
-    }*/
+    /*
+     * public List<Camp> getCampsForStudent(Student student) {
+     * List<Camp> eligibleCamps = new ArrayList<>();
+     * List<Camp> allCamps = readCamps();
+     * LocalDate currentDate = LocalDate.now();
+     * 
+     * for (Camp camp : allCamps) {
+     * if (camp.isVisible() &&
+     * camp.getFaculty().equals(student.getFaculty()) &&
+     * camp.getRegistrationCloseDate().isAfter(currentDate) &&
+     * camp.getTotalSlots() > 0 &&
+     * !hasDateClash(student, camp)) {
+     * eligibleCamps.add(camp);
+     * }
+     * }
+     * 
+     * return eligibleCamps;
+     * }
+     * 
+     * public List<Camp> filterCamps(LocalDate startDate, LocalDate endDate, String
+     * location) {
+     * List<Camp> allCamps = readCamps();
+     * 
+     * return allCamps.stream()
+     * .filter(camp -> (startDate == null ||
+     * !camp.getStartDate().isBefore(startDate)) &&
+     * (endDate == null || !camp.getEndDate().isAfter(endDate)) &&
+     * (location == null || camp.getLocation().equalsIgnoreCase(location)))
+     * .sorted(Comparator.comparing(Camp::getCampName))
+     * .collect(Collectors.toList());
+     * }
+     * 
+     * private boolean hasDateClash(Student student, Camp camp) {
+     * // Implement logic to check for date clashes with the student's schedule
+     * // This can be based on other camps the student is registered for, or any
+     * other
+     * // criteria relevant to the system
+     * return false; // Placeholder
+     * }
+     */
 }
