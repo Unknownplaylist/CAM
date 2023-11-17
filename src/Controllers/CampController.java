@@ -203,7 +203,7 @@ public class CampController {
 
     private void writeAllCamps(List<Camp> camps) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            bw.write("CampName,StartDate,EndDate,RegistrationCloseDate,Faculty,Location,TotalSlots,CommitteeSlots,Description,StaffInCharge,RegisteredStudents,CommitteeMembers,IsVisible\n");
+            bw.write("campName,startDate,endDate,registrationCloseDate,Faculty,location,totalSlots,committeeSlots,description,staffInCharge,listregisteredStudents,listcommitteeMembers,Visible\n");
     
             for (Camp camp : camps) {
                 String registeredStudents = String.join(";", camp.getRegisteredStudents().stream().map(Student::getName).collect(Collectors.toList()));
