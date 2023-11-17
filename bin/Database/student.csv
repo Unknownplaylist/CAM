@@ -1,5 +1,5 @@
 Name,Email,Faculty,Role,Password
-CHERN,YCHERN@e.ntu.edu.sg,SCSE,attendee,password
+CHERN,YCHERN@e.ntu.edu.sg,SCSE,attendee,p
 KOH,KOH1@e.ntu.edu.sg,ADM,committee,password
 BRANDON,BR015@e.ntu.edu.sg,EEE,committee,password
 CALVIN,CT113@e.ntu.edu.sg,SCSE,committee,password
@@ -11,3 +11,4 @@ LEE,LE51@e.ntu.edu.sg,SCSE,committee,password
 LIU,SL22@e.ntu.edu.sg,NBS,attendee,password
 RAWAL,AKY013@e.ntu.edu.sg,SSS,attendee,password
 LIN,L22@e.ntu.edu.sg,NBS,committee,password
+t,t@e.ntu.edu.sg,SCSE,attendee,t

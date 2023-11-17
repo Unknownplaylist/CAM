@@ -185,12 +185,52 @@ public class CampController {
             Camp updatedCamp = targetCamp.get();
             boolean removedFromRegistered = updatedCamp.getRegisteredStudents().removeIf(s -> s.getName().equalsIgnoreCase(student.getName()));
             boolean removedFromCommittee = updatedCamp.getCommitteeMembers().removeIf(s -> s.getName().equalsIgnoreCase(student.getName()));
-    
+            
             if (removedFromRegistered || removedFromCommittee) {
                 writeAllCamps(camps); // Pass the updated camps list
                 System.out.println("Student successfully withdrawn from the camp.");
             } else {
                 System.out.println("Student was not registered in this camp.");
+            }
+        } else {
+            System.out.println("Camp not found in the list.");
+        }
+    }
+    public void withdrawStudentFromAttendees(Camp camp, Student student) {
+        List<Camp> camps = readCamps(); // Read all camps
+        Optional<Camp> targetCamp = camps.stream()
+                                         .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
+                                         .findFirst();
+    
+        if (targetCamp.isPresent()) {
+            Camp updatedCamp = targetCamp.get();
+            boolean removed = updatedCamp.getRegisteredStudents().removeIf(s -> s.getEmail().equalsIgnoreCase(student.getEmail()));
+    
+            if (removed) {
+                writeAllCamps(camps); // Update the camps list
+                System.out.println("Student successfully withdrawn from the camp attendees.");
+            } else {
+                System.out.println("Student was not registered as an attendee in this camp.");
+            }
+        } else {
+            System.out.println("Camp not found in the list.");
+        }
+    }
+    public void withdrawStudentFromCommittee(Camp camp, Student student) {
+        List<Camp> camps = readCamps(); // Read all camps
+        Optional<Camp> targetCamp = camps.stream()
+                                         .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
+                                         .findFirst();
+    
+        if (targetCamp.isPresent()) {
+            Camp updatedCamp = targetCamp.get();
+            boolean removed = updatedCamp.getCommitteeMembers().removeIf(s -> s.getEmail().equalsIgnoreCase(student.getEmail()));
+    
+            if (removed) {
+                writeAllCamps(camps); // Update the camps list
+                System.out.println("Student successfully withdrawn from the camp committee.");
+            } else {
+                System.out.println("Student was not registered as a committee member in this camp.");
             }
         } else {
             System.out.println("Camp not found in the list.");
@@ -235,11 +275,39 @@ public class CampController {
         }
     }
     
+    public Camp getCampByCommitteeMember(String studentName) {
+        List<Camp> camps = readCamps(); // Assuming this method returns the list of all camps
+        for (Camp camp : camps) {
+            for (Student committeeMember : camp.getCommitteeMembers()) {
+                if (committeeMember.getName().equalsIgnoreCase(studentName)) {
+                    return camp;
+                }
+            }
+        }
+        return null; // Return null if the student is not a committee member in any camp
+    }
+    public boolean isStudentRegisteredInCamp(String studentEmail, String campName) {
+        try {
+            Camp camp = getCamp(campName);
+            if (camp == null) {
+                return false; // Camp not found
+            }
+    
+            boolean isRegistered = camp.getRegisteredStudents().stream()
+                                       .anyMatch(student -> student.getEmail().equalsIgnoreCase(studentEmail));
+            boolean isCommitteeMember = camp.getCommitteeMembers().stream()
+                                            .anyMatch(student -> student.getEmail().equalsIgnoreCase(studentEmail));
+    
+            return isRegistered || isCommitteeMember;
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+            return false;
+        }
+    }
     
     
     
-    
-    
+
     
 
    /*  public List<Camp> getCampsForStudent(Student student) {

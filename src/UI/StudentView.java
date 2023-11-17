@@ -15,6 +15,8 @@ public class StudentView {
     private EnquiryController enq;
     private StudentAccess studentAccess;
     private StaffController staffCont; // Add StaffController
+    
+    
 
     private int logOff = 2;
 
@@ -23,7 +25,7 @@ public class StudentView {
         this.id = id;
         this.studentCont = studentCont;
         this.staffCont = staffCont; // Initialize staffCont
-
+        
         // Initialize StudentAccess with StaffController
         this.studentAccess = new StudentAccess(studentCont, new CampController(studentCont, staffCont), staffCont);
 
@@ -59,11 +61,37 @@ public class StudentView {
         enq = new EnquiryController();
         enq.editEnquiry(name);
     }
+
     public void registerAsCampCommittee() {
         System.out.print("Enter the name of the camp to register as a committee member: ");
-        String campName = sc.next();
+        String campName = sc.next();  
+
+        CampController campController = new CampController(studentCont, staffCont); // Initialize campController
+
+        Camp camp = campController.getCamp(campName);
+        if (camp == null) {
+            System.out.println("Camp not found.");
+            return;
+        }
+
+        // Check if the student is already registered as a participant or committee member
+        if (campController.isStudentRegisteredInCamp(email, campName)) {
+            System.out.println("You are already registered in this camp.");
+            return;
+        }
+    
+        // Register the student as a committee member
         studentAccess.registerForCamp(email, campName, true);
+        studentCont.setStudentRole(email, "committee");
+        System.out.println("You have been successfully registered as a committee member for the camp: " + campName+ "\n");
+
+        System.out.println("Please Relogin logging off...");
+        logOff = 2;
+
     }
+    
+    
+
     public void withdrawFromCamp() {
         System.out.print("Enter the name of the camp you wish to withdraw from: ");
         String campName = sc.next();

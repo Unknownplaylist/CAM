@@ -38,7 +38,7 @@ public class StudentAccess {
 
         String studentFaculty = student.getFaculty();
         List<Camp> availableCamps = campController.viewAllCamps().stream()
-                .filter(camp -> camp.getFaculty().equalsIgnoreCase(studentFaculty))
+                .filter(camp -> camp.getFaculty().equalsIgnoreCase(studentFaculty) && camp.isVisible())
                 .collect(Collectors.toList());
 
         if (availableCamps.isEmpty()) {
@@ -48,31 +48,25 @@ public class StudentAccess {
         }
     }
 
-        public void withdrawFromCamp(String studentEmail, String campName) {
-            // Find the student by email
-            Student student = studentsController.getStudentByEmail(studentEmail);
-            if (student == null) {
-                System.out.println("Student not found with email: " + studentEmail);
-                return;
-            }
-    
-            // Retrieve the camp by name
-            Camp camp = campController.getCamp(campName);
-            if (camp == null) {
-                System.out.println("Camp not found with name: " + campName);
-                return;
-            }
-    
-            // Call the CampController to handle the withdrawal process
-            campController.withdrawStudentFromCamp(camp, student);
+    public void withdrawFromCamp(String studentEmail, String campName) {
+        // Find the student by email
+        Student student = studentsController.getStudentByEmail(studentEmail);
+        if (student == null) {
+            System.out.println("Student not found with email: " + studentEmail);
+            return;
         }
-    
-    
-    
-    
-    
 
-    
+        // Retrieve the camp by name
+        Camp camp = campController.getCamp(campName);
+        if (camp == null) {
+            System.out.println("Camp not found with name: " + campName);
+            return;
+        }
+
+        // Call the CampController to handle the withdrawal process
+        campController.withdrawStudentFromAttendees(camp, student);
+    }
+
     // Method to update student profile
     public void updateStudentProfile(String email, String newName, String newFaculty) {
         Student student = studentsController.getStudentByEmail(email);
@@ -80,8 +74,8 @@ public class StudentAccess {
             System.out.println("Student not found.");
             return;
         }
-    
-        Student updatedStudent = new Student(newName, email, newFaculty, student.getRole(), student.getPassword()); 
+
+        Student updatedStudent = new Student(newName, email, newFaculty, student.getRole(), student.getPassword());
         studentsController.updateStudent(email, updatedStudent);
         System.out.println("Profile updated successfully.");
     }
@@ -96,8 +90,12 @@ public class StudentAccess {
         String studentName = student.getName(); // Retrieve the name of the logged-in student
     
         List<Camp> myCamps = campController.viewAllCamps().stream()
-                .filter(camp -> camp.getRegisteredStudents().stream()
-                        .anyMatch(registeredStudent -> registeredStudent.getName().equalsIgnoreCase(studentName))) // Check if the student's name is in the registeredStudents list
+                .filter(camp -> {
+                    List<Student> registeredStudents = camp.getRegisteredStudents();
+                    return registeredStudents != null && registeredStudents.stream()
+                            .anyMatch(registeredStudent -> registeredStudent != null &&
+                                    registeredStudent.getName().equalsIgnoreCase(studentName));
+                })
                 .collect(Collectors.toList());
     
         if (myCamps.isEmpty()) {
@@ -108,6 +106,5 @@ public class StudentAccess {
         }
     }
     
-    
-    
+
 }
