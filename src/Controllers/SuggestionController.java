@@ -8,25 +8,7 @@ import java.util.*;
 //A camp committee member can get one point for each suggestion given. One extra point for each accepted suggestion
 
 //Enquiry.csv:
-//Suggestion,CampCommitteeMember,Camp,Staff,Read,Accept
-
-/*General Rule for Suggestion Controller
--Only campCommitteeMember can write a suggestion to his/her camp.
--Only the staff in charge of the camp can read and accept/decline the suggestion 
--If the enquiry has not been uploaded, the student can choose to delete the suggestion
--campCommitteeMember can view the suggestion, including the message, read and accept status
-
-A student can submit suggestion to any camp he/she can see.
-Cannot be deleted once the enquiry has been answered. It will be stored.
-That reply can be seen by all the committee members and staff of that camp, besides the student who sent inquiry.
-
-
-Enquiry flow:
--CampCommitteeMember create suggestion, type in the message (Each camp will only have one active suggestion at a time for simplicity)
--Take note of the name of the CampCommitteeMember, the name of the camp and the staff in charge
--The staff in charge can checkSuggestion to see if there is any pending suggestion
--The staff reads and accepts/declines the enquiry, after which the read flag will be ticked and stored in the database.
- */
+//Suggestion,CampCommitteeMember,Camp,Read,Review
 
 public class SuggestionController {
     private static final String FILE_PATH = "src/Database/Suggestion.csv";
@@ -35,134 +17,285 @@ public class SuggestionController {
     private String suggestion;
     private String campCommitteeMember;
     private String camp;
-    private String staff;
+    //private String staff;
     private String read;
-    private String accepted; //Either "Accepted" or "Rejected"
+    private String review; //Either "Accepted" or "Rejected"
 
-    public void createSuggestion(){
-        //Generate the enquiry details, including the name of the student and set the read and reply section to ""
-        campCommitteeMember = "TBD";
+    //IMPLEMENTATIONS FOR CAMP COMMITTEE MEMBER
+    public void createSuggestion(String campCommitteeMember){
         read = " ";
-        accepted = " ";
-        staff = "TBD";
+        review = " ";
 
         Scanner sc = new Scanner(System.in);
 
-        //get camp of the campCommitteeMember first, put arbitrary camp for now
-        camp = "SCSE Camp";
-    
+        System.out.println("Select the camp to send the suggestion to: ");
+        camp = sc.nextLine();
+        
         System.out.println("Type in your suggestion: ");
         suggestion = sc.nextLine();
 
-        sc.close();
-
-        String data = String.join(CSV_SEPARATOR,suggestion, campCommitteeMember, camp, staff,read,accepted);
+        String data = String.join(CSV_SEPARATOR,suggestion, campCommitteeMember, camp,read,review);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+            //writer.newLine();
             writer.write(data);
             writer.newLine();
-        } catch (IOException e) {
-            System.out.println("Error uploading the enquiry");
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteSuggestion(){
-        //to do later
-    }
-
-    public void formatSuggestion(String[] data){
-        //Print out formatted view of the enquiry
-        try {
-            System.out.println("From: "+data[1]);
-            System.out.println("About "+data[2] + ".To "+data[3]);
-            if (Objects.equals(data[4]," ")){
-                System.out.println("Read Status: Not read || Status: Pending");
-            }
-            else { //Add accepted and rejected
-                System.out.println("Read Status: Read || Status: "+data[5]);
-            }
-            System.out.println("--------------------------------");
-            System.out.println("Message: " + data[0]);
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Error displaying the suggestion.");
-        }
-    }
-
-    public int checkSuggestion(String camp){
-        //Find the enquiry relevant to the camp that is not read and replied
-        //return the line number for enquiry in csv file
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line;
-            int lineNum = 0;
-            while ((line = br.readLine()) != null) {
-                lineNum ++;
-                String[] data = line.split(CSV_SEPARATOR);
-                if (Objects.equals(data[2], camp) ){                   
-                    System.out.println("There is a suggestion for your camp pending for reply.");
-                    formatSuggestion(data);
-                    return lineNum;                    
-                }
-            }
-            System.out.println("No pending suggestion.");
-            return 0;
-        } catch (IOException e) {
-            System.out.println("Error reading suggestion file");
-            e.printStackTrace();
-        }
-        return -1;
-    }
-    
-    public String[] findSuggestion(int lineNum){
-        String line;
-        int current = 0;
-        String[] data;
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
-            while ((line = br.readLine()) != null) {
-                if (current == lineNum){
-                    data = line.split(CSV_SEPARATOR);
-                    return data;
-                }
-                current ++;
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading suggestion file");
-            e.printStackTrace();
-        }
-        System.out.println("Cannot find the suggestion.");
-        return null;
-    }
-
-    public void acceptSuggestion(String[] data){
-        //need to find the enquiry first
-        //take in line num of the enquiry from findEnquiry() if there is a pending enquiry
-        
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Type in your decision: Accepted/Rejected");
-        String Reply = sc.nextLine();
-        data[4] = "Read";
-        data[5] = Reply;
-        System.out.println("Suggestion have been updated!");
-        sc.close();
-
-        String upload = String.join(CSV_SEPARATOR,data);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            writer.write(upload);
-            writer.newLine();
+            
         } catch (IOException e) {
             System.out.println("Error uploading the suggestion");
             e.printStackTrace();
         }
     }
 
-    public String viewSuggestionDecision(){
-        //the campCommitteeMember can view the decision
-        
-        return accepted;
+    public String[] studentFindSuggestion(String campCommitteeMember){
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+            String[] data;
+            while ((line = br.readLine()) != null) {
+                data = line.split(CSV_SEPARATOR);
+                if (data[1].equalsIgnoreCase(campCommitteeMember)){
+                    return data;
+                }
+            }
+            System.out.println("Cannot find your suggestion. Have you submitted a suggestion?");
+            return null;
+        } catch (IOException e) {
+            System.out.println("Error reading suggestion file");
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public void generateSuggestionReport(){
-        //TODO: create a report for main staff and camp committee member in charge of the camp
+    public void viewSuggestion(String campCommitteeMember){
+        String[] data;
+        if(studentFindSuggestion(campCommitteeMember)!=null){
+            data = studentFindSuggestion(campCommitteeMember);
+            formatMessage(data);
+        }
+        else
+            System.out.println("No Suggestions to View");
+    }
+
+    public void editSuggestion(String campCommitteeMember){ //Look for the enquiry based on the student's name, assuming a student can only send one enquiry to one camp
+        String[] studentSuggestion = studentFindSuggestion(campCommitteeMember);
+        if(studentSuggestion == null){
+            System.out.println("No Suggestions to Edit");
+            return;
+        }
+        Scanner sc = new Scanner(System.in);
+
+        if ((studentSuggestion[3].equals(" ")) && (studentSuggestion[4].equals(" "))){
+            System.out.println("Edit your enquiry here: ");
+            suggestion = sc.nextLine();
+            studentSuggestion[0] = suggestion;
+
+            try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));){                
+                String line;
+                String[] data;
+                List<String[]> dataList = new ArrayList<>();
+                while ((line = br.readLine()) != null) {
+                    data = line.split(CSV_SEPARATOR);
+                    if (!data[1].equalsIgnoreCase(campCommitteeMember)) {
+                        dataList.add(data);
+                    }
+                    else {
+                        dataList.add(studentSuggestion);
+                    }
+                }
+                writeCSV(dataList);
+            } catch (IOException e) {
+                System.out.println("Cannot proceed with your edit request.");
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("A staff has viewed your suggestion, cannot edit the suggestion.");
+        }
+        
+    }
+
+    public void deleteSuggestion(String campCommitteeMember){
+        String[] studentSuggestion = studentFindSuggestion(campCommitteeMember);
+        if(studentSuggestion == null){
+            System.out.println("No Suggestions to Remove");
+            return;
+        }
+        if ((studentSuggestion[3].equals(" ")) && (studentSuggestion[4].equals(" "))){
+
+            try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));){                
+                String line;
+                String[] data;
+                List<String[]> dataList = new ArrayList<>();
+                while ((line = br.readLine()) != null) {
+                    data = line.split(CSV_SEPARATOR);
+                    if (!data[1].equalsIgnoreCase(campCommitteeMember)) {
+                        dataList.add(data);
+                    }
+                }
+                writeCSV(dataList);
+            } catch (IOException e) {
+                System.out.println("Cannot proceed with your delete request.");
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("A staff has viewed your suggestion, cannot delete the suggestion.");
+        }
+    }
+
+    public void readSuggestion(String campCommitteeMember){
+        String[] studentSuggestion;
+        if (studentFindSuggestion(campCommitteeMember) != null){
+            studentSuggestion = studentFindSuggestion(campCommitteeMember);
+        }
+        else {
+            System.out.println("Cannot find the suggestion");
+            return;
+        }
+        if ((!studentSuggestion[3].equals(" ")) && (!studentSuggestion[4].equals(" "))){
+            formatMessage(studentSuggestion);
+        }
+        else {
+            System.out.println("Your suggestion has not been reviewed. Stay tuned!");
+        }
+    }
+
+    //IMPLEMENTATIONS FOR STAFF
+    public String[] checkSuggestion(String camp){
+        String[] data = findSuggestion(camp);
+        if (data != null){
+            System.out.println("There is a suggestion for your camp pending for review.");
+            formatMessage(data);
+            return data;
+        }
+        else {
+            System.out.println("No pending suggestion");
+            return null;
+        }
+        
+    }
+
+    public String[] findSuggestion(String camp){
+        String line;
+        String[] data;
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+            while ((line = br.readLine()) != null) {
+                data = line.split(CSV_SEPARATOR);
+                if (data[2].equalsIgnoreCase(camp)){
+                    return data;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading suggestion file");
+            e.printStackTrace();
+        }
+        System.out.println("Cannot find the suggestion for " + camp);
+        return null;
+    }
+
+    public void reviewSuggestion(String camp){
+        String[] suggestionToReview = findSuggestion(camp);
+
+        if ((!suggestionToReview[3].equals(" ")) && (!suggestionToReview[4].equals(" "))){
+            System.out.println("The suggestion has already been reviewed!");
+            return;
+        } 
+        
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Choose to accept/reject this suggestion: \n1.Accept\n2.Reject"); 
+        int choice = sc.nextInt();
+        String decision = new String();
+        switch (choice) {
+            case 1:
+                decision = "Accepted";
+            case 2: 
+                decision = "Rejected";
+        }
+        suggestionToReview[3] = "Read";
+        suggestionToReview[4] = decision;
+        System.out.println("Decision has been saved!");
+        //sc.close();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))){                
+                String line;
+                String[] data;
+                List<String[]> dataList = new ArrayList<>();
+                while ((line = br.readLine()) != null) {
+                    data = line.split(CSV_SEPARATOR);
+                    if ((!data[2].equalsIgnoreCase(suggestionToReview[2])) && (!data[1].equals(suggestionToReview[1]))) { //cross-validate the student name and camp
+                        dataList.add(data);
+                    }
+                    else {
+                        dataList.add(suggestionToReview);
+                    }
+                }
+                writeCSV(dataList);
+        } catch (IOException e) {
+            System.out.println("Cannot proceed with your decision request.");
+            e.printStackTrace();
+        }   
+    }
+
+    public List<String[]> execFindSuggestion(String camp){
+        List<String[]> suggestionList = new ArrayList<String[]>();
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+            String[] data;
+            while ((line = br.readLine()) != null) {
+                data = line.split(CSV_SEPARATOR);
+                if (data[2] == camp){
+                    suggestionList.add(data);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading suggestion file");
+            e.printStackTrace();
+        }
+        return suggestionList;
+    }
+
+    public void viewReviewToSuggestion(String camp){
+        List<String[]> suggestionList = execFindSuggestion(camp);
+        if (!suggestionList.isEmpty()){
+            for (String[] i : suggestionList){
+                formatMessage(i);
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            }
+        }
+        else System.out.println("No visible suggestions.");       
+    }
+
+    //IMPLEMENTATIONS FOR ALL
+    public void formatMessage(String[] data){
+        //Print out formatted view of the enquiry
+        try {
+            System.out.println("From: "+data[1]);
+            System.out.println("To "+data[2] + " Staff");
+            System.out.println("--------------------------------");
+            if (Objects.equals(data[3]," ")){
+                System.out.println("Read Status: Not read || Review Status: Not reviewed");
+            }
+            else {
+                System.out.println("Read Status: Read || Review Status: " + data[4]);
+                
+            }
+            System.out.println("--------------------------------");
+            System.out.println("Suggestion: " + data[0]);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Not enough data");
+        }
+    }
+
+    public void writeCSV(List<String[]> dataList){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
+                    for (String[] i : dataList){
+                        String writeLine = String.join(CSV_SEPARATOR, i);
+                        bw.write(writeLine);
+                        bw.newLine();
+                    }
+                } catch (IOException e) {
+                    System.out.println("Error updating the file");
+                    e.printStackTrace();
+                }
     }
 }
