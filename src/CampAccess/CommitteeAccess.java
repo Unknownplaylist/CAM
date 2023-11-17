@@ -31,7 +31,7 @@ public class CommitteeAccess {
     public void viewCampDetails(){
 
     }
-    /* 
+    
     //SuggestionController
     public void submitSuggestion(String campCommName){ 
         suggestion_controller.createSuggestion(campCommName);
@@ -46,7 +46,7 @@ public class CommitteeAccess {
     public void deleteSuggestion(String studentEmail){//to extend the suggestion controller to take in camp
         String studentName = student_controller.getStudentName(studentEmail);
         suggestion_controller.editSuggestion(studentName);
-    }*/
+    }
 
     //EnquiryController
     public void checkEnquiry(String camp){
