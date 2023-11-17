@@ -1,4 +1,4 @@
 campName,startDate,endDate,registrationCloseDate,Faculty,location,totalSlots,committeeSlots,description,staffInCharge,listregisteredStudents,listcommitteeMembers,Visible
-Leadership Retreat,1/8/2023,8/8/2023,1/7/2023,NBS,Retreat Center,40,5,Leadership skills building camp,Arvind,LIU;CHAN,LIN,true
-Exploration,10/8/2023,6/8/2023,31/7/2023,SCSE,Forest Reserve,60,8,Exploring and learning about nature,Datta,CHERN,LEE,true
 Adventure Camp,16/8/2023,1/8/2023,25/5/2023,NBS,Campsite,50,10,Outdoor activities for computer science students,Arvind,LIU;CHAN,LIN,true
+Exploration,10/8/2023,6/8/2023,31/7/2023,SCSE,Forest Reserve,60,8,Exploring and learning about nature,Datta,CHERN,LEE,true
+Leadership Retreat,1/8/2023,8/8/2023,1/7/2023,NBS,Retreat Center,40,5,Leadership skills building camp,Arvind,LIU;CHAN,LIN,true

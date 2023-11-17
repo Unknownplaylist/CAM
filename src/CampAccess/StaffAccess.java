@@ -1,6 +1,8 @@
 package CampAccess;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import Controllers.*;
 import Models.*;
 
@@ -87,11 +89,56 @@ public class StaffAccess {
         }
     }
 
+    public void viewCamps(boolean your){
+        int choice;
+        System.out.println("How do you want to view the Camps?");
+        System.out.println("(1) By Name\n(2) By Starting Date\n(3) By Ending Date\n(4) By Location");
+        System.out.print("Enter your preferred view (by number): ");
+        try{
+            choice = sc.nextInt();
+            System.out.println();
+        }
+        catch(Exception e){
+            System.out.println("Invalid input - Redirecting you to Menu");
+            return;
+        }
+        switch(choice){
+            case 1 : campcont.sortCampsAlphabeticallyAndWrite();
+            break;
+            case 2 : campcont.sortCampsByStartDateAndWrite();
+            break;
+            case 3 : campcont.sortCampsByEndDateAndWrite();
+            break;
+            case 4 : campcont.sortCampsLocationAndWrite();
+            break;
+            default:
+                System.out.println("Invalid input - Redirecting you to Menu");
+                return;
+        }
+        List <Camp> campviewer=campcont.viewAllCamps().stream().collect(Collectors.toList());;
+        if(your){
+            campviewer = campcont.viewAllCamps().stream()
+                .filter(camp -> (camp.getStaffInCharge().getName()).equals(staff.getName()))
+                .collect(Collectors.toList()); 
+            if (campviewer.isEmpty()){
+                System.out.println("You have created no camps");
+                return;
+            }
+
+        }           
+
+        campviewer.forEach(camp -> System.out.println(camp+"\n"));
+    }
+
     public void delCamp() {
         System.out.print("Enter the name of the camp to delete: ");
         String campName = sc.nextLine();
 
         if (campcont.checkCamp(campName)) {
+            if(!campcont.isYourCamp(staffid, campName)){
+                System.out.println("Camp " + campName + " is not yours.");
+                return;
+            }
             campcont.deleteCamp(campName);
             System.out.println("Camp " + campName + " deleted successfully.");
         } else {
@@ -105,6 +152,11 @@ public class StaffAccess {
 
         if (!campcont.checkCamp(campName)) {
             System.out.println("Camp " + campName + " not found.");
+            return;
+        }
+
+        if(!campcont.isYourCamp(staffid, campName)){
+            System.out.println("Camp " + campName + " is not yours.");
             return;
         }
 

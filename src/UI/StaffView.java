@@ -12,6 +12,7 @@ public class StaffView {
     private StudentsController studentscont;
     private CampController campcont;
     private int logOff=0;
+    private StaffAccess access;
     public StaffView(String id,StaffController staffcont){
         this.id=id;
         email = staffcont.getStaffMail(this.id);
@@ -21,32 +22,28 @@ public class StaffView {
 
     }
 
-    public void removeCamp(){
+    public void viewcamps(){
+        access = new StaffAccess(id,staffcont);
+        access.viewCamps(false);
+    }
 
+    public void viewmycamps(){
+        access = new StaffAccess(id,staffcont);
+        access.viewCamps(true);
+    }
+
+    public void removeCamp(){
+        access = new StaffAccess(id,staffcont);
+        access.delCamp();
     }
 
     public void visibility(){
-        try{
-            campcont = new CampController(studentscont, staffcont);
-            System.out.print("Enter the name of the Camp whose visibility you wish to change: ");
-            String camp_name=sc.next();
-            if(!campcont.checkCamp(camp_name)){
-                System.out.println("There is no camp by that name");
-                return;
-            }
-            System.out.print("Enter the visibility: ");
-            boolean visibility=sc.nextBoolean();
-            
-            campcont.toggleCampVisibility(camp_name, visibility);
-        }
-        catch(Exception e){
-            System.out.println("Error Input - Redirecting to Menu");
-            return;
-        }
+        access = new StaffAccess(id,staffcont);
+        access.changeVisibility();
     }
 
     public void CreatCamp(){
-        StaffAccess access = new StaffAccess(id,staffcont);
+        access = new StaffAccess(id,staffcont);
         access.createCamp();
     }
 
@@ -97,7 +94,7 @@ public class StaffView {
             }
             System.out.println();
             switch(choice){
-                case 2:case 5:case 6:case 7:default:
+                case 2:case 7:case 8: case 9 :default:
                     System.out.println("Needs Implementation!");
                 break;
                 case 1:
@@ -108,6 +105,12 @@ public class StaffView {
                 break;
                 case 4:
                     visibility();
+                break;
+                case 5:
+                    viewcamps();
+                break;
+                case 6:
+                    viewmycamps();
                 break;
                 case 10:
                     PasswordChange();

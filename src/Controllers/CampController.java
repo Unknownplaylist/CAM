@@ -132,6 +132,15 @@ public class CampController {
         writeAllCamps(camps);
     }
 
+    public boolean isYourCamp(String staff_id,String camp_name){
+        staffController = new StaffController();
+        Camp check_camp=getCamp(camp_name);
+        if((check_camp.getStaffInCharge().getName()).equals(staffController.getStaffName(staffController.getStaffMail(staff_id)))){
+            return true;
+        }
+        return false;
+    }
+
     public void toggleCampVisibility(String campName, boolean isVisible) {
         List<Camp> camps = readCamps();
         camps.forEach(camp -> {
