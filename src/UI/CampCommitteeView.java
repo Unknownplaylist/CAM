@@ -55,7 +55,7 @@ public class CampCommitteeView {
             System.out.println("(4) Withdraw"); //Camp Committee cannot withdraw from camp
             System.out.println("(5) Submit Suggestions");
             System.out.println("(6) View/Edit/Delete Suggestions");
-            System.out.println("(7) Check Enquiries\n");
+            System.out.println("(7) Check Enquiries");
             System.out.println("(8) Reply Enquiries");
             System.out.println("(9) Change your password");
             System.out.println("(10) LogOff\n");
@@ -77,7 +77,6 @@ public class CampCommitteeView {
                     committeeAccess.submitSuggestion(name);
                     break;
                 case 6: //View/Edit/Delete Suggestions
-                    //Add another switch/case
                     System.out.println(" Suggestions ");
                     System.out.println("======");
                     System.out.println("(1) View Suggestions");
@@ -98,15 +97,10 @@ public class CampCommitteeView {
                     }
                     break;
                 case 7: //CheckEnquiries
-                    System.out.println("Type in the camp that you are in charge to view its enquiries: ");
-                    String camp1 = sc.nextLine();
-                    //if (not in charge of that camp): deny access
-                    committeeAccess.checkEnquiry(camp1); //GET THE CAMP FIRST
+                    committeeAccess.checkEnquiry(name); //GET THE CAMP FIRST
                     break;
                 case 8: //Reply Enquiries
-                    System.out.println("Type in the camp that you are in charge to view its enquiries: ");
-                    String camp2 = sc.nextLine();
-                    committeeAccess.replyEnquiry(camp2);
+                    committeeAccess.replyEnquiry(name); //account for multiple number of enquiries for one camp
                     break;
                 case 9: //Change Password
                     PasswordChange();

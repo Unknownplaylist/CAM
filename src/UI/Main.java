@@ -32,7 +32,6 @@ public class Main {
                 staffview.display();
             }
         }
-        
     }
     public static void main(String[] args) {
         int exit=0;

@@ -15,20 +15,20 @@ public class SuggestionController {
     private static final String FILE_PATH = "src/Database/Suggestion.csv";
     private static final String CSV_SEPARATOR = ",";
 
-    private String suggestion;
-    private String campCommitteeMember;
-    private String camp;
-    //private String staff;
-    private String read;
-    private String review; //Either "Accepted" or "Rejected"
+    // private String suggestion;
+    // private String campCommitteeMember;
+    // private String camp;
+    // private String staff;
+    // private String read;
+    // private String review; //Either "Accepted" or "Rejected"
 
     //IMPLEMENTATIONS FOR CAMP COMMITTEE MEMBER
     public void createSuggestion(String campCommitteeMember, String campName){
-        read = " ";
-        review = " ";
+        String read = " ";
+        String review = " ";
         
         System.out.println("Type in your suggestion: ");
-        suggestion = sc.nextLine();
+        String suggestion = sc.nextLine();
 
         String data = String.join(CSV_SEPARATOR,suggestion, campCommitteeMember, campName,read,review);
 
@@ -36,7 +36,6 @@ public class SuggestionController {
             //writer.newLine();
             writer.write(data);
             writer.newLine();
-            
         } catch (IOException e) {
             System.out.println("Error uploading the suggestion");
             e.printStackTrace();
@@ -78,11 +77,10 @@ public class SuggestionController {
             System.out.println("No Suggestions to Edit");
             return;
         }
-        Scanner sc = new Scanner(System.in);
 
         if ((studentSuggestion[3].equals(" ")) && (studentSuggestion[4].equals(" "))){
             System.out.println("Edit your enquiry here: ");
-            suggestion = sc.nextLine();
+            String suggestion = sc.nextLine();
             studentSuggestion[0] = suggestion;
 
             try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));){                
@@ -265,6 +263,7 @@ public class SuggestionController {
     public void formatMessage(String[] data){
         //Print out formatted view of the enquiry
         try {
+            System.out.println("--------------------------------");
             System.out.println("From: "+data[1]);
             System.out.println("To "+data[2] + " Staff");
             System.out.println("--------------------------------");
