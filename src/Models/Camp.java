@@ -166,8 +166,7 @@ public String toString() {
            "Total Slots: " + totalSlots + "\n" +
            "Committee Slots: " + committeeSlots + "\n" +
            "Description: " + description + "\n" +
-           "Staff In Charge: " + staffInCharge.getName() + "\n" + 
-           "Visibility: " + (isVisible ? "Visible" : "Hidden");
+           "Staff In Charge: " + staffInCharge.getName();
 }
 
 

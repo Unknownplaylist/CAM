@@ -57,6 +57,15 @@ public class CampController {
             return camps;
         }
     }
+    public void createCamp(String campName, LocalDate startDate, LocalDate endDate, LocalDate registrationCloseDate, String userGroup, String location, int totalSlots, int committeeSlots, String description, Staff staffInCharge) {
+        Camp newCamp = new Camp(campName, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots, committeeSlots, description, staffInCharge);
+
+        List<Camp> camps = readCamps();
+        camps.add(newCamp);
+
+        writeAllCamps(camps);
+    }
+
 
 
     public void writeCamp(Camp camp) {

@@ -18,23 +18,25 @@ public class EnquiryController {
 
     private CampController campComtroller;
 
-    private String message;
-    private String student;
-    private String camp;
-    private String read;
-    private String reply;
+    // private String message;
+    // private String student;
+    // private String camp;
+    // private String read;
+    // private String reply;
 
-
+    //###################################################################################
     //IMPLEMENTATIONS FOR STUDENTS
+    //###################################################################################
     public void createEnquiry(String student){
-        read = " ";
-        reply = " ";
+        String read = " ";
+        String reply = " ";
 
-        System.out.println("Select the camp to send the enquiry to: ");
-        camp = sc.nextLine();
+        //would be better to add in functions to see if the camp exists or not based on the input
+        System.out.print("Select the camp to send the enquiry to: ");
+        String camp = sc.nextLine();
         
-        System.out.println("Type in your message: ");
-        message = sc.nextLine();
+        System.out.print("Type in your message: ");
+        String message = sc.nextLine();
 
         String data = String.join(CSV_SEPARATOR,message, student, camp,read,reply);
 
@@ -68,10 +70,13 @@ public class EnquiryController {
         return null;
     }
 
-    public void viewEnquiry(String student){ //customized for student use 
+    public void viewEnquiry(String student){
         String[] data;
-        System.out.println("Type in the name of the Camp to view Enquiry: ");
+
+        //check if camp exists
+        System.out.print("Type in the name of the Camp to view Enquiry: ");
         String camp  = sc.nextLine();
+
         if(studentFindEnquiry(student, camp)!=null){
             data = studentFindEnquiry(student, camp);
             formatMessage(data);
@@ -81,8 +86,10 @@ public class EnquiryController {
     }
 
     public void editEnquiry(String student){
+        //check if camp exists
         System.out.println("Type in the name of the Camp to edit Enquiry: ");
         String camp  = sc.nextLine();
+
         String[] studentEnquiry = studentFindEnquiry(student, camp);
         if(studentEnquiry == null){
             System.out.println("No Enquiries to Edit");
@@ -90,7 +97,7 @@ public class EnquiryController {
         }
         if ((studentEnquiry[3].equals(" ")) && (studentEnquiry[4].equals(" "))){
             System.out.println("Edit your enquiry here: ");
-            message = sc.nextLine();
+            String message = sc.nextLine();
             studentEnquiry[0] = message;
 
             try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));){                
@@ -119,8 +126,10 @@ public class EnquiryController {
     }
 
     public void deleteEnquiry(String student){
+        //check if camp exists
         System.out.println("Type in the name of the Camp to delete Enquiry: ");
         String camp  = sc.nextLine();
+
         String[] studentEnquiry = studentFindEnquiry(student, camp);
         if(studentEnquiry==null){
             System.out.println("No Enquiries to Remove");
@@ -150,6 +159,7 @@ public class EnquiryController {
     }
 
     public void readReply(String student){
+        //check if camp exists
         String[] studentEnquiry;
         System.out.println("Type in the name of the Camp to read Reply to Enquiry: ");
         String camp  = sc.nextLine();
@@ -167,8 +177,9 @@ public class EnquiryController {
             System.out.println("Your enquiry has not been replied. Stay tuned!");
         }
     }
-
+    //###################################################################################
     //IMPLEMENTATIONS FOR STAFF/CAMP COMM
+    //###################################################################################
     public String[] checkEnquiry(String camp){
         String[] data = findEnquiry(camp);
         if (data != null){
@@ -222,13 +233,11 @@ public class EnquiryController {
     }
 
     public void replyEnquiry(String[] enquiryToReply){       
-        //Scanner sc = new Scanner(System.in);
-        System.out.println("Type in your reply: ");
+        System.out.print("Type in your reply: ");
         String Reply = sc.nextLine();
         enquiryToReply[3] = "Read";
         enquiryToReply[4] = Reply;
         System.out.println("Reply has been saved!");
-        //sc.close();
 
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))){                
                 String line;
@@ -236,11 +245,13 @@ public class EnquiryController {
                 List<String[]> dataList = new ArrayList<>();
                 while ((line = br.readLine()) != null) {
                     data = line.split(CSV_SEPARATOR);
-                    if ((!data[2].equalsIgnoreCase(enquiryToReply[2])) && (!data[1].equals(enquiryToReply[1]))) { //cross-validate the student name and camp
-                        dataList.add(data);
+                    if ((data[2].equalsIgnoreCase(enquiryToReply[2])) 
+                        && (data[1].equalsIgnoreCase(enquiryToReply[1])) 
+                        && (data[0].equalsIgnoreCase(enquiryToReply[0]))) { //cross-validate the student name and camp
+                        dataList.add(enquiryToReply);
                     }
                     else {
-                        dataList.add(enquiryToReply);
+                        dataList.add(data);
                     }
                 }
                 writeCSV(dataList);
@@ -257,7 +268,7 @@ public class EnquiryController {
             String[] data;
             while ((line = br.readLine()) != null) {
                 data = line.split(CSV_SEPARATOR);
-                if (data[2] == camp){
+                if (data[2].equals(camp)){
                     enquiryList.add(data);
                 }
             }
@@ -270,34 +281,33 @@ public class EnquiryController {
 
     public List<String[]> execFindUnrepliedEnquiry(String camp){
         List<String[]> enquiryList = execFindEnquiry(camp);
-
-        List<String[]> unrepliedEnquiry = new ArrayList<String[]>();
-
+        List<String[]> unrepliedEnquiryList = new ArrayList<String[]>();
         for (String[] i : enquiryList){
             if ((i[3].equals(" ")) && (i[4].equals(" "))){
-                unrepliedEnquiry.add(i);
+                unrepliedEnquiryList.add(i);
             }
         }
-
-        if (unrepliedEnquiry.size() !=  0){
-            System.out.println(unrepliedEnquiry.size() + " enquiry/enquiries for your camp pending for reply.");
+        if (unrepliedEnquiryList.size() !=  0){
+            System.out.println(unrepliedEnquiryList.size() + " enquiry/enquiries for your camp pending for reply.");
         }
         else {
             System.out.println("No pending enquiry");
         }
-
-        return unrepliedEnquiry;
+        return unrepliedEnquiryList;
     }
 
     public void execReplyEnquiry(String camp){
-        System.out.println("Type in the name of the sender to reply to: ");
+        System.out.print("Type in the name of the sender to reply to: ");
         String name = sc.nextLine();
 
         String[] enquiryToReply = null;
 
         List<String[]> enquiryList = execFindEnquiry(camp);
+        if (enquiryList == null) {
+            System.out.println("Error loading the enquiry list.");
+        }
         for (String[] i : enquiryList){
-            if (i[1].equals(name)){
+            if ((i[1].equals(name)) && (i[2].equals(camp))){
                 enquiryToReply = i;
                 break;
             }
@@ -328,7 +338,9 @@ public class EnquiryController {
         else System.out.println("No visible enquiries.");       
     }
 
+    //###################################################################################
     //IMPLEMENTATIONS FOR ALL
+    //###################################################################################
     public void formatMessage(String[] data){
         //Print out formatted view of the enquiry
         try {
@@ -351,15 +363,17 @@ public class EnquiryController {
 
     public void formatMessageList(List<String[]> enquiryList){
         for (String[] i : enquiryList){
+            System.out.println("--------------------------------");
             formatMessage(i);
+            System.out.println("--------------------------------");
         }
-
     }
 
     public void writeCSV(List<String[]> dataList){
+        String writeLine;
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
                     for (String[] i : dataList){
-                        String writeLine = String.join(CSV_SEPARATOR, i);
+                        writeLine = String.join(CSV_SEPARATOR, i);
                         bw.write(writeLine);
                         bw.newLine();
                     }

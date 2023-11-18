@@ -24,7 +24,7 @@ public class Main {
                 studentview.display();
             }
             else if(user.equalsIgnoreCase("committee")){
-                //commview = new CampCommitteeView(userId, sdc);
+                commview = new CampCommitteeView(userId, sdc);
                 commview.display();
             }
             else{
@@ -32,7 +32,6 @@ public class Main {
                 staffview.display();
             }
         }
-        
     }
     public static void main(String[] args) {
         int exit=0;

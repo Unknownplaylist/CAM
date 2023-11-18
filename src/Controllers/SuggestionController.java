@@ -11,36 +11,31 @@ import java.util.*;
 //Suggestion,CampCommitteeMember,Camp,Read,Review
 
 public class SuggestionController {
+    static Scanner sc = new Scanner(System.in);
     private static final String FILE_PATH = "src/Database/Suggestion.csv";
     private static final String CSV_SEPARATOR = ",";
 
-    private String suggestion;
-    private String campCommitteeMember;
-    private String camp;
-    //private String staff;
-    private String read;
-    private String review; //Either "Accepted" or "Rejected"
+    // private String suggestion;
+    // private String campCommitteeMember;
+    // private String camp;
+    // private String staff;
+    // private String read;
+    // private String review; //Either "Accepted" or "Rejected"
 
     //IMPLEMENTATIONS FOR CAMP COMMITTEE MEMBER
-    public void createSuggestion(String campCommitteeMember){
-        read = " ";
-        review = " ";
-
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("Select the camp to send the suggestion to: ");
-        camp = sc.nextLine();
+    public void createSuggestion(String campCommitteeMember, String campName){
+        String read = " ";
+        String review = " ";
         
         System.out.println("Type in your suggestion: ");
-        suggestion = sc.nextLine();
+        String suggestion = sc.nextLine();
 
-        String data = String.join(CSV_SEPARATOR,suggestion, campCommitteeMember, camp,read,review);
+        String data = String.join(CSV_SEPARATOR,suggestion, campCommitteeMember, campName,read,review);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             //writer.newLine();
             writer.write(data);
             writer.newLine();
-            
         } catch (IOException e) {
             System.out.println("Error uploading the suggestion");
             e.printStackTrace();
@@ -82,11 +77,10 @@ public class SuggestionController {
             System.out.println("No Suggestions to Edit");
             return;
         }
-        Scanner sc = new Scanner(System.in);
 
         if ((studentSuggestion[3].equals(" ")) && (studentSuggestion[4].equals(" "))){
             System.out.println("Edit your enquiry here: ");
-            suggestion = sc.nextLine();
+            String suggestion = sc.nextLine();
             studentSuggestion[0] = suggestion;
 
             try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));){                
@@ -269,6 +263,7 @@ public class SuggestionController {
     public void formatMessage(String[] data){
         //Print out formatted view of the enquiry
         try {
+            System.out.println("--------------------------------");
             System.out.println("From: "+data[1]);
             System.out.println("To "+data[2] + " Staff");
             System.out.println("--------------------------------");
