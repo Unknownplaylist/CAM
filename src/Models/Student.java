@@ -10,6 +10,7 @@ public class Student {
     private String role;
     private String password;
     private List<String> camps_withdrawn = new ArrayList<>();
+    private int point;
 
     // Updated constructor
     public Student(String name, String email, String faculty, String role, String password, List<String> camps_withdrawn) {
@@ -19,6 +20,7 @@ public class Student {
         this.role = role;
         this.password = password;
         this.camps_withdrawn = camps_withdrawn;
+        this.point = 0;
     }
 
     // Getters and setters for all fields
@@ -85,6 +87,14 @@ public class Student {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addOnePoint(){
+        point ++;
+    }
+
+    public int getPoint(){
+        return point;   
     }
 
     // toString method for printing

@@ -16,13 +16,16 @@ public class CommitteeAccess {
     private StaffController staff_controller;
     private CampController camp_controller;
 
+    private Student student;
+
     public CommitteeAccess(SuggestionController suggestionController, EnquiryController enquiryController,
-            StudentsController studentController, StaffController staffController, CampController campController) {
+            StudentsController studentController, StaffController staffController, CampController campController, String campCommName) {
         this.suggestion_controller = suggestionController;
         this.enquiry_controller = enquiryController;
         this.student_controller = studentController;
         this.staff_controller = staffController;
         this.camp_controller = campController;
+        this.student = student_controller.getStudentByName(campCommName);
     }
 
     //CampController
@@ -133,6 +136,9 @@ public class CommitteeAccess {
             return;
         }
         enquiry_controller.execReplyEnquiry(camp.getCampName());
+        //add one point for every reply to enquiry
+        //Student student = student_controller.getStudentByName(campCommName);
+        student.addOnePoint();
     }
 
     public void generateStudentList(String studentEmail) {
@@ -161,5 +167,11 @@ public class CommitteeAccess {
             System.out.println(" - " + committeeMemberInCamp.getName() + " (Role: Committee Member)");
         }
         System.out.println();
+    }
+
+    public void viewPoint(String campCommName){
+        //Student student = student_controller.getStudentByName(campCommName);
+        int point = student.getPoint();
+        System.out.println("Your current point is: " + point);
     }
 }
