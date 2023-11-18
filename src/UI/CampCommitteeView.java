@@ -17,8 +17,6 @@ public class CampCommitteeView {
     
     private CommitteeAccess committeeAccess;
 
-    
-
     private int logOff=2;
     public CampCommitteeView(String id,StudentsController studentcont){
         this.id=id;
@@ -69,6 +67,7 @@ public class CampCommitteeView {
                     committeeAccess.viewMyCamps(name);
                     break;
                 case 3: // viewCampDetails
+                    committeeAccess.generateStudentList(email);
                     break;
                 case 4: //Withdraw
                     System.out.println("Cannot withdraw from camp where you are in the Camp Committee!");
