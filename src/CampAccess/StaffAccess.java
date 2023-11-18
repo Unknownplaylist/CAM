@@ -11,6 +11,8 @@ public class StaffAccess {
     
     private StaffController staffcont=new StaffController();
     private StudentsController studentscont=new StudentsController();
+    private EnquiryController enq = new EnquiryController();
+    private SuggestionController sugg = new SuggestionController();
     private CampController campcont = new CampController(studentscont, staffcont);
     private Camp camp;
     private String staffid;
@@ -85,6 +87,78 @@ public class StaffAccess {
         }
         catch(Exception e){
             System.out.println("Error creating Camp - Redirecting to Menu");
+            return;
+        }
+    }
+
+    public void reviewSuggestions(){
+        System.out.print("Enter the name of the camp whose Suggestions you want to review : ");
+        String camp_name = sc.nextLine();
+        if(campcont.checkCamp(camp_name)){
+            if(campcont.isYourCamp(staffid, camp_name)){
+                sugg.reviewSuggestion(camp_name);
+            }
+            else{
+                System.out.println("Camp "+camp_name+" is not yours to access");
+                return;
+            }
+        }
+        else{
+            System.out.println("Camp "+camp_name+" is not a camp");
+            return;
+        }
+    }
+
+    public void viewSuggestions(){
+        System.out.print("Enter the name of the camp whose Suggestions you want to view : ");
+        String camp_name = sc.nextLine();
+        if(campcont.checkCamp(camp_name)){
+            if(campcont.isYourCamp(staffid, camp_name)){
+                sugg.checkSuggestion(camp_name);
+            }
+            else{
+                System.out.println("Camp "+camp_name+" is not yours to access");
+                return;
+            }
+        }
+        else{
+            System.out.println("Camp "+camp_name+" is not a camp");
+            return;
+        }
+    }
+
+    public void replytoEnquiries(){
+        System.out.print("Enter the name of the camp whose Enquiries you want to reply to : ");
+        String camp_name = sc.nextLine();
+        if(campcont.checkCamp(camp_name)){
+            if(campcont.isYourCamp(staffid, camp_name)){
+                enq.execReplyEnquiry(camp_name);
+            }
+            else{
+                System.out.println("Camp "+camp_name+" is not yours to access");
+                return;
+            }
+        }
+        else{
+            System.out.println("Camp "+camp_name+" is not a camp");
+            return;
+        }
+    }
+
+    public void viewEnquiries(){
+        System.out.print("Enter the name of the camp whose Enquiries you want to view : ");
+        String camp_name = sc.nextLine();
+        if(campcont.checkCamp(camp_name)){
+            if(campcont.isYourCamp(staffid, camp_name)){
+                enq.checkEnquiry(camp_name);
+            }
+            else{
+                System.out.println("Camp "+camp_name+" is not yours to access");
+                return;
+            }
+        }
+        else{
+            System.out.println("Camp "+camp_name+" is not a camp");
             return;
         }
     }

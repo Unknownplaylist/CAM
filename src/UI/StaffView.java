@@ -9,10 +9,12 @@ public class StaffView {
     static Scanner sc=new Scanner(System.in);
     private String id, name, faculty, email; 
     private StaffController staffcont;
-    private StudentsController studentscont;
-    private CampController campcont;
+    // private StudentsController studentscont;
+    // private CampController campcont;
     private int logOff=0;
     private StaffAccess access;
+    // private EnquiryController enq;
+    // private SuggestionController sugg;
     public StaffView(String id,StaffController staffcont){
         this.id=id;
         email = staffcont.getStaffMail(this.id);
@@ -22,12 +24,32 @@ public class StaffView {
 
     }
 
-    public void viewcamps(){
+    public void reviewSuggestions(){
+        access = new StaffAccess(id,staffcont);
+        access.reviewSuggestions();
+    }
+
+    public void viewSuggestions(){
+        access = new StaffAccess(id,staffcont);
+        access.viewSuggestions();
+    }
+
+    public void replyEnquiries(){
+        access = new StaffAccess(id,staffcont);
+        access.replytoEnquiries();
+    }
+
+    public void viewEnquiries(){
+        access = new StaffAccess(id,staffcont);
+        access.viewEnquiries();
+    }
+
+    public void viewCamps(){
         access = new StaffAccess(id,staffcont);
         access.viewCamps(false);
     }
 
-    public void viewmycamps(){
+    public void viewMyCamps(){
         access = new StaffAccess(id,staffcont);
         access.viewCamps(true);
     }
@@ -84,10 +106,12 @@ public class StaffView {
             System.out.println("(5) View all Camps");
             System.out.println("(6) Your Camps");
             System.out.println("(7) View Enquiries");
-            System.out.println("(8) View Suggestions");
-            System.out.println("(9) Generate Report\n");
-            System.out.println("(10) Change Password");
-            System.out.println("(11) LogOff\n");
+            System.out.println("(8) Reply to Enquiries");
+            System.out.println("(9) View Suggestions");
+            System.out.println("(10) Review Suggestions");
+            System.out.println("(11) Generate Report\n");
+            System.out.println("(12) Change Password");
+            System.out.println("(13) LogOff\n");
             System.out.print("In: ");
             try{
                choice=sc.nextInt();
@@ -99,7 +123,7 @@ public class StaffView {
             }
             System.out.println();
             switch(choice){
-                case 7:case 8: case 9 :default:
+                case 11 :default:
                     System.out.println("Needs Implementation!");
                 break;
                 case 1:
@@ -115,14 +139,26 @@ public class StaffView {
                     visibility();
                 break;
                 case 5:
-                    viewcamps();
+                    viewCamps();
                 break;
                 case 6:
-                    viewmycamps();
+                    viewMyCamps();
+                break;
+                case 7:
+                    viewEnquiries();
+                break;
+                case 8:
+                    replyEnquiries();
+                break;
+                case 9:
+                    viewSuggestions();
                 break;
                 case 10:
+                    reviewSuggestions();
+                break;
+                case 12:
                     PasswordChange();
-                case 11:
+                case 13:
                     if(staffcont.isFirstLogin(email)){
                         System.out.println("Kindly Change your password\n");
                         continue;
