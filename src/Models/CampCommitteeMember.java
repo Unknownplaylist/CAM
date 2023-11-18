@@ -9,7 +9,7 @@ public class CampCommitteeMember extends Student {
     private int point;
 
     CampCommitteeMember(String name, String email, String faculty, String role, String password, int point){
-        super(name, email, faculty, role, password);
+        super(name, email, faculty, role, password, null);
         point = 0;
     }
 

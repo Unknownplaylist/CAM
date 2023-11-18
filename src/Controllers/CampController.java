@@ -163,18 +163,42 @@ public class CampController {
 
     public void registerStudentForCamp(String campName, Student student, boolean asCommitteeMember) {
         List<Camp> camps = readCamps();
+        boolean isRegistered = false; // Flag to check if registration happened
+    
         for (Camp camp : camps) {
             if (camp.getCampName().equalsIgnoreCase(campName)) {
                 if (asCommitteeMember) {
-                    camp.addCommitteeMember(student);
+                    int committeeSlots = camp.getCommitteeSlots();
+                    if (committeeSlots > 0) { // Check if committee slots are available
+                        camp.addCommitteeMember(student);
+                        camp.setCommitteeSlots(committeeSlots - 1);
+                        isRegistered = true;
+                    } else {
+                        System.out.println("No committee slots available in this camp.");
+                        break; // Exit the loop if no committee slots are available
+                    }
                 } else {
-                    camp.addRegisteredStudent(student);
+                    int totalSlots = camp.getTotalSlots();
+                    if (totalSlots > 0) { // Check if total slots are available
+                        camp.addRegisteredStudent(student);
+                        camp.setTotalSlots(totalSlots - 1);
+                        isRegistered = true;
+                    } else {
+                        System.out.println("No slots available in this camp.");
+                        break; // Exit the loop if no total slots are available
+                    }
                 }
-                break;
+                break; // Break the loop as the camp has been found
             }
         }
-        writeAllCamps(camps);
+    
+        if (isRegistered) {
+            writeAllCamps(camps); // Write back to storage only if registration happened
+            System.out.println("Student successfully registered for " + (asCommitteeMember ? "committee member" : "participant") + " in the camp: " + campName);
+        }
     }
+    
+    
 
     public List<String> viewCampSlots() {
         return readCamps().stream()
@@ -208,27 +232,34 @@ public class CampController {
         }
     }
 
-    public void withdrawStudentFromAttendees(Camp camp, Student student) {
-        List<Camp> camps = readCamps(); // Read all camps
+    public boolean withdrawStudentFromAttendees(Camp camp, Student student) {
+        List<Camp> camps = readCamps();
         Optional<Camp> targetCamp = camps.stream()
-                .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
-                .findFirst();
-
+                                         .filter(c -> c.getCampName().equalsIgnoreCase(camp.getCampName()))
+                                         .findFirst();
+    
         if (targetCamp.isPresent()) {
             Camp updatedCamp = targetCamp.get();
             boolean removed = updatedCamp.getRegisteredStudents()
-                    .removeIf(s -> s.getEmail().equalsIgnoreCase(student.getEmail()));
-
+                                         .removeIf(s -> s.getEmail().equalsIgnoreCase(student.getEmail()));
+    
             if (removed) {
-                writeAllCamps(camps); // Update the camps list
+                int totalSlots = updatedCamp.getTotalSlots();
+                updatedCamp.setTotalSlots(totalSlots + 1);
+    
+                writeAllCamps(camps);
                 System.out.println("Student successfully withdrawn from the camp attendees.");
+                return true;  // Indicate successful removal
             } else {
                 System.out.println("Student was not registered as an attendee in this camp.");
             }
         } else {
             System.out.println("Camp not found in the list.");
         }
+        return false; // Indicate unsuccessful removal or camp not found
     }
+    
+    
 
     public void withdrawStudentFromCommittee(Camp camp, Student student) {
         List<Camp> camps = readCamps(); // Read all camps

@@ -89,7 +89,28 @@ public class StudentView {
         logOff = 2;
 
     }
+    public void registerForCamp() {
+        System.out.print("Enter the name of the camp to register: ");
+        String campName = sc.next();
     
+        CampController campController = new CampController(studentCont, staffCont); // Initialize campController
+    
+        Camp camp = campController.getCamp(campName);
+        if (camp == null) {
+            System.out.println("Camp not found.");
+            return;
+        }
+    
+        // Check if the student is already registered in the camp
+        if (campController.isStudentRegisteredInCamp(email, campName)) {
+            System.out.println("You are already registered in this camp.");
+            return;
+        }
+    
+        // Register the student as a participant
+        studentAccess.registerForCamp(email, campName, false); // false indicates a regular participant
+       
+    }
     
 
     public void withdrawFromCamp() {
@@ -115,14 +136,15 @@ public class StudentView {
             System.out.println("======");
             System.out.println("(1) View Camps");
             System.out.println("(2) View your Camps");
-            System.out.println("(3) Register as Camp Committee");
-            System.out.println("(4) Withdraw");
-            System.out.println("(5) Submit Enquiries");
-            System.out.println("(6) Check Enquiries");
-            System.out.println("(7) Delete Enquiries");
-            System.out.println("(8) Edit Enquiries\n");
-            System.out.println("(9) Change your password");
-            System.out.println("(10) LogOff\n");
+            System.out.println("(3) Register for Camp");
+            System.out.println("(4) Register as Camp Committee");
+            System.out.println("(5) Withdraw");
+            System.out.println("(6) Submit Enquiries");
+            System.out.println("(7) Check Enquiries");
+            System.out.println("(8) Delete Enquiries");
+            System.out.println("(9) Edit Enquiries\n");
+            System.out.println("(10) Change your password");
+            System.out.println("(11) LogOff\n");
             System.out.print("In: ");
             int choice = sc.nextInt();
             switch (choice) {
@@ -133,27 +155,30 @@ public class StudentView {
                     viewMyCamps();
                     break;
                 case 3:
+                registerForCamp();
+                    break;    
+                case 4:
                     registerAsCampCommittee();
                     break;
-                case 4:
+                case 5:
                     withdrawFromCamp();
                     break;
-                case 5:
+                case 6:
                     SubmitEnquiry();
                     break;
-                case 6:
+                case 7:
                     checkEnquiry();
                     break;
-                case 7:
+                case 8:
                     removeEnquiry();
                     break;
-                case 8:
+                case 9:
                     changeEnquiry();
                     break;
-                case 9:
+                case 10:
                     PasswordChange();
                     break;
-                case 10:
+                case 11:
                     if (studentCont.isFirstLogin(email)) {
                         System.out.println("Kindly Change your password\n");
                         continue;

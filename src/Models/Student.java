@@ -12,12 +12,13 @@ public class Student {
     private List<String> camps_withdrawn = new ArrayList<>();
 
     // Updated constructor
-    public Student(String name, String email, String faculty, String role, String password) {
+    public Student(String name, String email, String faculty, String role, String password, List<String> camps_withdrawn) {
         this.name = name;
         this.email = email;
         this.faculty = faculty;
         this.role = role;
         this.password = password;
+        this.camps_withdrawn = camps_withdrawn;
     }
 
     // Getters and setters for all fields
@@ -41,17 +42,23 @@ public class Student {
         return faculty;
     }
 
-    public void addWithdrawnCamp(String camp_name){
-        camps_withdrawn.add(camp_name);
+    
+    public void addWithdrawnCamp(String campName) {
+        if (!camps_withdrawn.contains(campName)) {
+            camps_withdrawn.add(campName);
+        }
+    }
+    
+
+    public List<String> getCampsWithdrawn() {
+        return new ArrayList<>(camps_withdrawn); // Return a copy to avoid external modifications
     }
 
-    public boolean hasWithdrawnFromCamp(String camp_name){
-        for(String name : camps_withdrawn){
-            if(name.equalsIgnoreCase(camp_name));
-                return true;
-        }
-        return false;
+    public boolean hasWithdrawnFromCamp(String campName) {
+        return camps_withdrawn.stream()
+                              .anyMatch(withdrawnCamp -> withdrawnCamp.equalsIgnoreCase(campName.trim()));
     }
+    
     
     public String getUserId(String email){
         return (email.substring(0,email.length()-11));
@@ -60,7 +67,10 @@ public class Student {
     public void setFaculty(String faculty) {
         this.faculty = faculty;
     }
-
+    public void setCampsWithdrawn(List<String> campsWithdrawn) {
+        
+        this.camps_withdrawn = new ArrayList<>(campsWithdrawn);
+    }
     public String getRole() {
         return role;
     }
