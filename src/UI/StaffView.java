@@ -37,6 +37,11 @@ public class StaffView {
         access.delCamp();
     }
 
+    public void editCamp(){
+        access = new StaffAccess(id,staffcont);
+        access.editCamp();
+    }
+
     public void visibility(){
         access = new StaffAccess(id,staffcont);
         access.changeVisibility();
@@ -94,11 +99,14 @@ public class StaffView {
             }
             System.out.println();
             switch(choice){
-                case 2:case 7:case 8: case 9 :default:
+                case 7:case 8: case 9 :default:
                     System.out.println("Needs Implementation!");
                 break;
                 case 1:
                     CreatCamp();
+                break;
+                case 2:
+                    editCamp();
                 break;
                 case 3:
                     removeCamp();

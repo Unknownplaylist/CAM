@@ -130,6 +130,60 @@ public class StaffAccess {
         campviewer.forEach(camp -> System.out.println(camp+"\n"+"Visibility: "+(camp.isVisible()?"Visible":"Hidden")+"\n"));
     }
 
+    public void editCamp(){
+        System.out.print("Enter the name of the Camp you wish to Edit : ");
+        String camp_name=sc.nextLine();
+        if(campcont.checkCamp(camp_name)){
+            if(campcont.isYourCamp(staffid, camp_name)){
+                try{
+                    Camp curr=campcont.getCamp(camp_name);
+
+                    System.out.print("Enter Changed Starting Date (YYYY-MM-DD): ");
+                    String start_date=sc.next();
+                    LocalDate startdate = LocalDate.parse(start_date);
+
+                    System.out.print("Enter Changed Ending Date (YYYY-MM-DD): ");
+                    String end_date=sc.next();
+                    LocalDate enddate = LocalDate.parse(end_date);
+                    if(enddate.isBefore(startdate) || enddate.isEqual(startdate)){
+                        System.out.println("Invalid Input");
+                        return;
+                    }
+
+                    System.out.print("Enter Changed Registration Close Date (YYYY-MM-DD): ");
+                    String reg_date=sc.next();
+                    LocalDate regdate = LocalDate.parse(reg_date);
+                    if(regdate.isAfter(startdate) || regdate.isEqual(startdate)){
+                        System.out.println("Invalid Input - Last Registration Data must be before Start Date");
+                        return;
+                    }
+                    System.out.print("Enter Location: ");
+                    String location=sc.nextLine();
+                    location=sc.nextLine();
+
+                    System.out.print("Enter Description for the Camp: ");
+                    String description=sc.nextLine();
+
+                    Camp newcamp = new Camp(camp_name, startdate, enddate, regdate, curr.getFaculty(), location, curr.getTotalSlots(), curr.getCommitteeSlots(), description, staff);
+                    campcont.updateCamp(camp_name, newcamp);
+
+                }
+                catch(Exception e){
+                    System.out.println("Invalid Input - Redirecting to Menu");
+                    return;
+                }
+            }
+            else{
+                System.out.println("Camp "+camp_name+"is not yours to Edit");
+                return;
+            }
+        }
+        else{
+            System.out.println("Camp "+camp_name+" is not a camp");
+            return;
+        }
+    }
+
     public void delCamp() {
         System.out.print("Enter the name of the camp to delete: ");
         String campName = sc.nextLine();
