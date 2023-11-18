@@ -154,8 +154,9 @@ public class StudentsController {
     private void updateStudentList(List<Student> students) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (Student student : students) {
+                String campsWithdrawnString = String.join(";", student.getCampsWithdrawn());
                 String data = String.join(CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty(),
-                        student.getRole(), student.getPassword());
+                        student.getRole(), student.getPassword(),campsWithdrawnString);
                 bw.write(data);
                 bw.newLine();
             }
