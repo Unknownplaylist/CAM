@@ -392,7 +392,27 @@ public class CampController {
     }
 
   
-
+    public boolean hasDateClash(Student student, Camp targetCamp) {
+        List<Camp> allCamps = readCamps();
+        for (Camp camp : allCamps) {
+            // Check if the student is registered in this camp
+            
+            if (isStudentRegisteredInCamp(student.getEmail(), camp.getCampName())) {
+                
+                // Check for date clash with the target camp
+                if (targetCamp.getStartDate().equals(camp.getStartDate())) {
+        
+                    return true; // Date clash found
+                }
+            }
+        }
+        return false; // No date clash found
+    }
+    
+    
+    
+    
+    
     /*
      * public List<Camp> getCampsForStudent(Student student) {
      * List<Camp> eligibleCamps = new ArrayList<>();
@@ -425,12 +445,6 @@ public class CampController {
      * .collect(Collectors.toList());
      * }
      * 
-     * private boolean hasDateClash(Student student, Camp camp) {
-     * // Implement logic to check for date clashes with the student's schedule
-     * // This can be based on other camps the student is registered for, or any
-     * other
-     * // criteria relevant to the system
-     * return false; // Placeholder
-     * }
+    
      */
 }

@@ -141,19 +141,15 @@ public class Camp {
     }
 
     public void addRegisteredStudent(Student student) {
-        if (this.registeredStudents.size() < this.totalSlots ) {//- this.committeeSlots
+        
             this.registeredStudents.add(student);
-        } else {
-            System.out.println("No available slots for registered students.");
-        }
+        
     }
 
     public void addCommitteeMember(Student student) {
-        if (this.committeeMembers.size() < this.committeeSlots) {
+       
             this.committeeMembers.add(student);
-        } else {
-            System.out.println("No available slots for committee members.");
-        }
+        
     }
 
     public boolean isStudentRegistered(Student student) {
