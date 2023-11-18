@@ -1,6 +1,7 @@
 package CampAccess;
 
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import Controllers.*;
@@ -10,6 +11,7 @@ public class StudentAccess {
     private StudentsController studentsController;
     private CampController campController;
     private StaffController staffController;
+    static Scanner sc = new Scanner(System.in);
 
     public StudentAccess(StudentsController studentsController, CampController campController,
             StaffController staffController) {
@@ -50,16 +52,42 @@ public class StudentAccess {
         }
 
         campController.registerStudentForCamp(campName, student, asCommitteeMember);
-        //System.out.println("Student successfully registered for " + (asCommitteeMember ? "committee member" : "participant") + " in the camp: " + campName);
+        // System.out.println("Student successfully registered for " +
+        // (asCommitteeMember ? "committee member" : "participant") + " in the camp: " +
+        // campName);
     }
-
 
     // Method to view available camps for a student's faculty
     public void viewAvailableCamps(String studentEmail) {
         Student student = studentsController.getStudentByEmail(studentEmail);
-        if (student == null) {
-            System.out.println("Student not found.");
+
+        int choice;
+        System.out.println("How do you want to view the Camps?");
+        System.out.println("(1) By Name\n(2) By Starting Date\n(3) By Ending Date\n(4) By Location");
+        System.out.print("Enter your preferred view (by number): ");
+        try {
+            choice = sc.nextInt();
+            System.out.println();
+        } catch (Exception e) {
+            System.out.println("Invalid input - Redirecting you to Menu");
             return;
+        }
+        switch (choice) {
+            case 1:
+                campController.sortCampsAlphabeticallyAndWrite();
+                break;
+            case 2:
+                campController.sortCampsByStartDateAndWrite();
+                break;
+            case 3:
+                campController.sortCampsByEndDateAndWrite();
+                break;
+            case 4:
+                campController.sortCampsLocationAndWrite();
+                break;
+            default:
+                System.out.println("Invalid input - Redirecting you to Menu");
+                return;
         }
 
         String studentFaculty = student.getFaculty();
@@ -70,7 +98,7 @@ public class StudentAccess {
         if (availableCamps.isEmpty()) {
             System.out.println("No camps available for your faculty.");
         } else {
-            availableCamps.forEach(camp -> System.out.println(camp));
+            availableCamps.forEach(camp -> System.out.println(camp+"\n"));
         }
     }
 
