@@ -13,15 +13,16 @@ public class CommitteeAccess {
     private SuggestionController suggestion_controller;
     private EnquiryController enquiry_controller;
     private StudentsController student_controller;
-    private CampController campController;
-    private StudentsController studentController;
+    private StaffController staff_controller;
+    private CampController camp_controller;
 
     public CommitteeAccess(SuggestionController suggestionController, EnquiryController enquiryController,
-            StudentsController studentController, CampController campController) {
+            StudentsController studentController, StaffController staffController, CampController campController) {
         this.suggestion_controller = suggestionController;
         this.enquiry_controller = enquiryController;
         this.student_controller = studentController;
-        this.campController = campController;
+        this.staff_controller = staffController;
+        this.camp_controller = campController;
     }
 
     public void viewCamps() {
@@ -38,6 +39,8 @@ public class CommitteeAccess {
 
     // SuggestionController
     public void submitSuggestion(String campCommName) {
+        Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
+        String campName = camp.getCampName();
         suggestion_controller.createSuggestion(campCommName);
     }
 
@@ -47,12 +50,10 @@ public class CommitteeAccess {
 
     public void editSuggestion(String campCommName) {
         suggestion_controller.editSuggestion(campCommName);
-
     }
 
-    public void deleteSuggestion(String studentEmail) {// to extend the suggestion controller to take in camp
-        String studentName = student_controller.getStudentName(studentEmail);
-        suggestion_controller.editSuggestion(studentName);
+    public void deleteSuggestion(String campCommName) {// to extend the suggestion controller to take in camp
+        suggestion_controller.deleteSuggestion(campCommName);
     }
 
     // EnquiryController
@@ -72,13 +73,13 @@ public class CommitteeAccess {
 
     public void generateStudentList(String studentEmail) {
         // Assuming 'getStudentByEmail' method exists in StudentsController
-        Student committeeMember = studentController.getStudentByEmail(studentEmail);
+        Student committeeMember = student_controller.getStudentByEmail(studentEmail);
         if (committeeMember == null) {
             System.out.println("Student not found.");
             return;
         }
 
-        Camp camp = campController.getCampByCommitteeMember(committeeMember.getName());
+        Camp camp = camp_controller.getCampByCommitteeMember(committeeMember.getName());
         if (camp == null) {
             System.out.println(committeeMember.getName() + " is not a committee member of any camp.");
             return;
@@ -100,14 +101,14 @@ public class CommitteeAccess {
 
     
     public void viewAvailableCamps(String studentEmail) {
-        Student student = studentController.getStudentByEmail(studentEmail);
+        Student student = student_controller.getStudentByEmail(studentEmail);
         if (student == null) {
             System.out.println("Student not found.");
             return;
         }
 
         String studentFaculty = student.getFaculty();
-        List<Camp> availableCamps = campController.viewAllCamps().stream()
+        List<Camp> availableCamps = camp_controller.viewAllCamps().stream()
                 .filter(camp -> camp.getFaculty().equalsIgnoreCase(studentFaculty) && camp.isVisible())
                 .collect(Collectors.toList());
 
@@ -121,7 +122,7 @@ public class CommitteeAccess {
     }
 
     public void viewMyCamps(String studentEmail) {
-        Student student = studentController.getStudentByEmail(studentEmail);
+        Student student = student_controller.getStudentByEmail(studentEmail);
         if (student == null) {
             System.out.println("Student not found.");
             return;
@@ -129,7 +130,7 @@ public class CommitteeAccess {
     
         String studentName = student.getName(); // Retrieve the name of the logged-in student
     
-        List<Camp> myCamps = campController.viewAllCamps().stream()
+        List<Camp> myCamps = camp_controller.viewAllCamps().stream()
                 .filter(camp -> {
                     List<Student> registeredStudents = camp.getRegisteredStudents();
                     List<Student> committeeMembers = camp.getCommitteeMembers();

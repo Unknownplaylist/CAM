@@ -7,34 +7,43 @@ import Models.*;
 
 public class CampCommitteeView {
     static Scanner sc=new Scanner(System.in);
-    private String id, name, faculty, email; StudentsController studentcont;
+    private String id, name, faculty, email;
+
+    private StudentsController student_controller = new StudentsController();
+    private StaffController staff_controller = new StaffController();
+    private SuggestionController suggestion_controller = new SuggestionController();
+    private EnquiryController enquiry_controller = new EnquiryController();
+    private CampController camp_controller = new CampController(student_controller, staff_controller);
+    
     private CommitteeAccess committeeAccess;
+
+    
+
     private int logOff=2;
-    public CampCommitteeView(String id,StudentsController studentcont, CommitteeAccess committeeAccess){
+    public CampCommitteeView(String id,StudentsController studentcont){
         this.id=id;
-        this.studentcont=studentcont;
-        this.committeeAccess = committeeAccess;
+        this.student_controller=studentcont;
+
+        this.committeeAccess = new CommitteeAccess(suggestion_controller, enquiry_controller, studentcont, staff_controller, camp_controller);
+        
         email = studentcont.getStudentMail(this.id);
         name=studentcont.getStudentName(email);
         faculty=studentcont.getStudentFaculty(email);
-
     }
 
     public void PasswordChange(){
         System.out.print("Enter your new password: ");
         String new_pass=sc.next();
-        studentcont.changePassword(email, new_pass);
+        student_controller.changePassword(email, new_pass);
         System.out.println("\nYou will now be logged out.");
         logOff=2;
     }
-
-    public void SubmitSuggestion(){} //implement!
 
     public void display(){
         logOff=0;
         do{
             System.out.println(name+" - Committee"+"\n"+faculty+"\n");
-            if(studentcont.isFirstLogin(email)&&logOff==0){
+            if(student_controller.isFirstLogin(email)&&logOff==0){
                 System.out.println("This is your first login. Kindly set a new password\n");
                 logOff=1;
             }
@@ -88,20 +97,20 @@ public class CampCommitteeView {
                     break;
                 case 7: //CheckEnquiries
                     System.out.println("Type in the camp that you are in charge to view its enquiries: ");
-                    String camp = sc.nextLine();
+                    String camp1 = sc.nextLine();
                     //if (not in charge of that camp): deny access
-                    committeeAccess.checkEnquiry(camp); //GET THE CAMP FIRST
+                    committeeAccess.checkEnquiry(camp1); //GET THE CAMP FIRST
                     break;
                 case 8: //Reply Enquiries
                     System.out.println("Type in the camp that you are in charge to view its enquiries: ");
-                    String camp1 = sc.nextLine();
-                    committeeAccess.replyEnquiry(camp1);
+                    String camp2 = sc.nextLine();
+                    committeeAccess.replyEnquiry(camp2);
                     break;
                 case 9: //Change Password
                     PasswordChange();
                     break;
                 case 10: //LogOff
-                    if(studentcont.isFirstLogin(email)){
+                    if(student_controller.isFirstLogin(email)){
                         System.out.println("Kindly Change your password\n");
                         continue;
                     }  
