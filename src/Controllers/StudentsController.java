@@ -213,7 +213,7 @@ public class StudentsController {
     public Student getStudentByEmail(String email) {
         List<Student> students = readStudents();
         for (Student student : students) {
-            if (student.getEmail().equals(email)) {
+            if (student.getEmail().equalsIgnoreCase(email)) {
                 return student;
             }
         }
