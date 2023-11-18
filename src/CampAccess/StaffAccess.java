@@ -127,7 +127,7 @@ public class StaffAccess {
 
         }           
 
-        campviewer.forEach(camp -> System.out.println(camp+"\n"+"Visibility: "+camp.isVisible()+"\n"));
+        campviewer.forEach(camp -> System.out.println(camp+"\n"+"Visibility: "+(camp.isVisible()?"Visible":"Hidden")+"\n"));
     }
 
     public void delCamp() {
