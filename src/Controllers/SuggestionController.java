@@ -11,6 +11,7 @@ import java.util.*;
 //Suggestion,CampCommitteeMember,Camp,Read,Review
 
 public class SuggestionController {
+    static Scanner sc = new Scanner(System.in);
     private static final String FILE_PATH = "src/Database/Suggestion.csv";
     private static final String CSV_SEPARATOR = ",";
 
@@ -22,19 +23,14 @@ public class SuggestionController {
     private String review; //Either "Accepted" or "Rejected"
 
     //IMPLEMENTATIONS FOR CAMP COMMITTEE MEMBER
-    public void createSuggestion(String campCommitteeMember){
+    public void createSuggestion(String campCommitteeMember, String campName){
         read = " ";
         review = " ";
-
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("Select the camp to send the suggestion to: ");
-        camp = sc.nextLine();
         
         System.out.println("Type in your suggestion: ");
         suggestion = sc.nextLine();
 
-        String data = String.join(CSV_SEPARATOR,suggestion, campCommitteeMember, camp,read,review);
+        String data = String.join(CSV_SEPARATOR,suggestion, campCommitteeMember, campName,read,review);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             //writer.newLine();

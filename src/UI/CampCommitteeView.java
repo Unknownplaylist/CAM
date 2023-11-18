@@ -63,8 +63,10 @@ public class CampCommitteeView {
             int choice = sc.nextInt();
             switch(choice){
                 case 1: //ViewCamps
+                    committeeAccess.viewAvailableCamps(email);
                     break;
                 case 2: //View your Camps
+                    committeeAccess.viewMyCamps(name);
                     break;
                 case 3: // viewCampDetails
                     break;
@@ -82,7 +84,7 @@ public class CampCommitteeView {
                     System.out.println("(2) Edit Suggestions");
                     System.out.println("(3) Delete Suggestions");
                     int caseChoice =sc.nextInt();
-
+                
                     switch (caseChoice){
                         case 1: //viewSuggestion
                             committeeAccess.viewSuggestion(name);

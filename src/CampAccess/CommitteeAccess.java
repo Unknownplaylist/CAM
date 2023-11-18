@@ -25,23 +25,11 @@ public class CommitteeAccess {
         this.camp_controller = campController;
     }
 
-    public void viewCamps() {
-
-    }
-
-    public void viewYourCamps() {
-
-    }
-
-    public void viewCampDetails() {
-
-    }
-
     // SuggestionController
     public void submitSuggestion(String campCommName) {
         Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
         String campName = camp.getCampName();
-        suggestion_controller.createSuggestion(campCommName);
+        suggestion_controller.createSuggestion(campCommName, campName);
     }
 
     public void viewSuggestion(String campCommName) {
@@ -115,20 +103,26 @@ public class CommitteeAccess {
         if (availableCamps.isEmpty()) {
             System.out.println("No camps available for your faculty.");
         } else {
+            System.out.println("\nList of Camps available for your Faculty");
+            System.out.println("----------------------------");
             availableCamps.forEach(camp -> System.out.println(camp));
+            for (Camp camp : availableCamps){
+                System.out.println(camp);
+                System.out.println("----------------------------");
+            }
         }
 
 
     }
 
-    public void viewMyCamps(String studentEmail) {
-        Student student = student_controller.getStudentByEmail(studentEmail);
-        if (student == null) {
+    public void viewMyCamps(String studentName) {
+        //Student student = student_controller.getStudentByEmail(studentEmail);
+        if (studentName == null) {
             System.out.println("Student not found.");
             return;
         }
     
-        String studentName = student.getName(); // Retrieve the name of the logged-in student
+        //String studentName = student.getName(); // Retrieve the name of the logged-in student
     
         List<Camp> myCamps = camp_controller.viewAllCamps().stream()
                 .filter(camp -> {
