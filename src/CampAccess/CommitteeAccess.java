@@ -9,6 +9,7 @@ import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Controllers.CampStaffManagement.StaffController;
 import Controllers.CampStudentManagement.StudentsController;
+import Controllers.CampSuggestionManagement.SuggestionController;
 import Models.*;
 
 public class CommitteeAccess {
@@ -97,12 +98,12 @@ public class CommitteeAccess {
             return;
         }
         String campName = camp.getCampName();
-        suggestion_controller.createSuggestion(campCommName, campName);
+        suggestion_controller.suggestionService.createSuggestion(suggestion_controller, campCommName, campName);
     }
     //a student can only be a camp committee member in one camp
     //assume that a camp committee member can only send one suggestion
     public void viewSuggestion(String campCommName) {
-        suggestion_controller.viewSuggestion(campCommName);
+        suggestion_controller.suggestionViewController.viewSuggestion(suggestion_controller, campCommName);
     }
 
     public void editSuggestion(String campCommName) {
@@ -112,7 +113,7 @@ public class CommitteeAccess {
             return;
         }
         String campName = camp.getCampName();
-        suggestion_controller.editSuggestion(campCommName, campName);
+        suggestion_controller.suggestionService.editSuggestion(suggestion_controller, campCommName, campName);
     }
 
     public void deleteSuggestion(String campCommName) {// to extend the suggestion controller to take in camp
@@ -122,7 +123,7 @@ public class CommitteeAccess {
             return;
         }
         String campName = camp.getCampName();
-        suggestion_controller.deleteSuggestion(campCommName, campName);
+        suggestion_controller.suggestionService.deleteSuggestion(suggestion_controller, campCommName, campName);
     }
 
     // EnquiryController

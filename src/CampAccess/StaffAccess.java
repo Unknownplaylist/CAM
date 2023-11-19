@@ -8,6 +8,7 @@ import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Controllers.CampStaffManagement.StaffController;
 import Controllers.CampStudentManagement.StudentsController;
+import Controllers.CampSuggestionManagement.SuggestionController;
 import Models.*;
 
 public class StaffAccess {
@@ -143,7 +144,7 @@ public class StaffAccess {
         String camp_name = sc.nextLine();
         if(campcont.campService.checkCamp(campcont, camp_name)){
             if(campcont.campService.isYourCamp(campcont, staffid, camp_name)){
-                sugg.execReviewSuggestion(camp_name);
+                sugg.suggestionReviewService.execReviewSuggestion(sugg, camp_name);
             }
             else{
                 System.out.println("Camp "+camp_name+" is not yours to access");
@@ -161,8 +162,8 @@ public class StaffAccess {
         String camp_name = sc.nextLine();
         if(campcont.campService.checkCamp(campcont, camp_name)){
             if(campcont.campService.isYourCamp(campcont, staffid, camp_name)){
-                List<String[]> unrepliedSuggestionList = sugg.execFindUnrepliedSuggestion(camp_name);
-                sugg.formatMessageList(unrepliedSuggestionList);
+                List<String[]> unrepliedSuggestionList = sugg.suggestionReviewService.execFindUnrepliedSuggestion(camp_name);
+                sugg.suggestionViewController.formatMessageList(sugg, unrepliedSuggestionList);
             }
             else{
                 System.out.println("Camp "+camp_name+" is not yours to access");
