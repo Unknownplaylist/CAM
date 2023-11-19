@@ -86,7 +86,7 @@ public class StudentView {
         }
     
         // Register the student as a committee member
-        studentAccess.registerForCamp(email, campName, true);
+        studentAccess.studentCampRegistrationService.registerForCamp(studentAccess, email, campName, true);
         studentCont.studentService.setStudentRole(studentCont, email, "committee");
         System.out.println("You have been successfully registered as a committee member for the camp: " + campName+ "\n");
 
@@ -113,7 +113,7 @@ public class StudentView {
         }
     
         // Register the student as a participant
-        studentAccess.registerForCamp(email, campName, false); // false indicates a regular participant
+        studentAccess.studentCampRegistrationService.registerForCamp(studentAccess, email, campName, false); // false indicates a regular participant
        
     }
     
@@ -121,13 +121,13 @@ public class StudentView {
     public void withdrawFromCamp() {
         System.out.print("Enter the name of the camp you wish to withdraw from: ");
         String campName = sc.next();
-        studentAccess.withdrawFromCamp(email, campName);
+        studentAccess.studentCampRegistrationService.withdrawFromCamp(studentAccess, email, campName);
     }
     public void viewCamps() {
-        studentAccess.viewAvailableCamps(email);
+        studentAccess.studentCampViewService.viewAvailableCamps(studentAccess, email);
     }
     public void viewMyCamps() {
-        studentAccess.viewMyCamps(email);
+        studentAccess.studentCampViewService.viewMyCamps(studentAccess, email);
     }
     public void display() {
         logOff = 0;
