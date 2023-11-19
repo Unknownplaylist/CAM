@@ -3,6 +3,11 @@ package Controllers.SuggestionManagement;
 import java.io.*;
 import java.util.*;
 
+import Controllers.SuggestionManagementInterface.SuggestionFileHandlerInterface;
+import Controllers.SuggestionManagementInterface.SuggestionReviewServiceInterface;
+import Controllers.SuggestionManagementInterface.SuggestionServiceInterface;
+import Controllers.SuggestionManagementInterface.SuggestionViewControllerInterface;
+
 //A camp committee member can submit suggestions to staff
 //A camp committee member can view, edit and delete the details of his/her suggestions before being processed
 //A camp committee member can get one point for each suggestion given. One extra point for each accepted suggestion
@@ -14,10 +19,10 @@ public class SuggestionController {
     static Scanner sc = new Scanner(System.in);
     static final String FILE_PATH = "src/Database/Suggestion.csv";
     static final String CSV_SEPARATOR = ",";
-    SuggestionFileHandler suggestionFileHandler;
-    public SuggestionService suggestionService;
-    public SuggestionViewController suggestionViewController;
-    public SuggestionReviewService suggestionReviewService;
+    SuggestionFileHandlerInterface suggestionFileHandler;
+    public SuggestionServiceInterface suggestionService;
+    public SuggestionViewControllerInterface suggestionViewController;
+    public SuggestionReviewServiceInterface suggestionReviewService;
 
     public SuggestionController(){
         suggestionFileHandler = new SuggestionFileHandler();

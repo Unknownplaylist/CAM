@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Controllers.StudentManagementInterface.StudentFileHandlerInterface;
 import Models.Student;
 
-public class StudentFileHandler {
+public class StudentFileHandler implements StudentFileHandlerInterface {
     static final String FILE_PATH = "src/Database/student.csv";
+    @Override
     public List<Student> readStudents() {
         List<Student> students = new ArrayList<>();
         File file = new File(StudentsController.FILE_PATH);
@@ -41,6 +43,7 @@ public class StudentFileHandler {
         return students;
     }
 
+    @Override
     public void writeStudent(Student student) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             String data = String.join(StudentsController.CSV_SEPARATOR, student.getName(), student.getEmail(), student.getFaculty(),
@@ -53,7 +56,8 @@ public class StudentFileHandler {
         }
     }
 
-    void updateStudentList(List<Student> students) {
+    @Override
+    public void updateStudentList(List<Student> students) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (Student student : students) {
                 String campsWithdrawnString = String.join(";", student.getCampsWithdrawn());

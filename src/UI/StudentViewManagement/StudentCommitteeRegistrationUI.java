@@ -2,9 +2,11 @@ package UI.StudentViewManagement;
 
 import Controllers.CampManagementSystem.CampController;
 import Models.Camp;
+import UI.StudentViewManagementInterface.StudentCommitteeRegistrationUIInterface;
 
-public class StudentCommitteeRegistrationUI {
+public class StudentCommitteeRegistrationUI implements StudentCommitteeRegistrationUIInterface {
 
+    @Override
     public void registerAsCampCommittee(StudentView studentView) {
         System.out.print("Enter the name of the camp to register as a committee member: ");
         String campName = StudentView.sc.next();  

@@ -3,13 +3,15 @@ package Controllers.CampManagementSystem;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import Controllers.CampManagementSystemInterface.CampServiceInterface;
 import Controllers.StaffManagement.StaffController;
 import Models.Camp;
 import Models.Staff;
 import Models.Student;
 
-public class CampService {
+public class CampService implements CampServiceInterface {
 
+    @Override
     public Camp getCamp(CampController campController, String name) {
         return campController.campFileHandler.readCamps(campController).stream()
                 .filter(camp -> camp.getCampName().equalsIgnoreCase(name))
@@ -17,17 +19,20 @@ public class CampService {
                 .orElse(null);
     }
 
+    @Override
     public boolean checkCamp(CampController campController, String name) {
         return campController.campFileHandler.readCamps(campController).stream()
                 .anyMatch(camp -> camp.getCampName().equalsIgnoreCase(name));
     }
 
+    @Override
     public void writeCamp(CampController campController, Camp camp) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController);
         camps.add(camp);
         campController.campFileHandler.writeAllCamps(camps);
     }
 
+    @Override
     public boolean hasDateClash(CampController campController, Student student, Camp targetCamp) {
         List<Camp> allCamps = campController.campFileHandler.readCamps(campController);
         for (Camp camp : allCamps) {
@@ -45,6 +50,7 @@ public class CampService {
         return false; // No date clash found
     }
 
+    @Override
     public void deleteCamp(CampController campController, String campName) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController).stream()
                 .filter(camp -> !camp.getCampName().equalsIgnoreCase(campName))
@@ -52,6 +58,7 @@ public class CampService {
         campController.campFileHandler.writeAllCamps(camps);
     }
 
+    @Override
     public boolean isYourCamp(CampController campController, String staff_id, String camp_name){
         campController.staffController = new StaffController();
         Camp check_camp=getCamp(campController, camp_name);
@@ -61,6 +68,7 @@ public class CampService {
         return false;
     }
 
+    @Override
     public void toggleCampVisibility(CampController campController, String campName, boolean isVisible) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController);
         camps.forEach(camp -> {
@@ -71,16 +79,19 @@ public class CampService {
         campController.campFileHandler.writeAllCamps(camps);
     }
 
+    @Override
     public List<Camp> viewAllCamps(CampController campController) {
         return campController.campFileHandler.readCamps(campController);
     }
 
+    @Override
     public List<Camp> viewMyCamps(CampController campController, Staff staff) {
         return campController.campFileHandler.readCamps(campController).stream()
                 .filter(camp -> camp.getStaffInCharge().equals(staff))
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Camp getCampByCommitteeMember(CampController campController, String studentName) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Assuming this method returns the list of all camps
         for (Camp camp : camps) {
@@ -93,6 +104,7 @@ public class CampService {
         return null; // Return null if the student is not a committee member in any camp
     }
 
+    @Override
     public boolean isStudentRegisteredInCamp(CampController campController, String studentEmail, String campName) {
         try {
             Camp camp = getCamp(campController, campName);
@@ -112,6 +124,7 @@ public class CampService {
         }
     }
 
+    @Override
     public List<Camp> getCampsByLocation(CampController campController, String location) {
         List<Camp> camps = viewAllCamps(campController).stream()
             .filter(camp -> camp.getLocation().equalsIgnoreCase(location))
@@ -126,6 +139,7 @@ public class CampService {
         }
     }
 
+    @Override
     public List<Camp> getCampsByStartingAlphabet(CampController campController, String startingAlphabet) {
         List<Camp> camps = viewAllCamps(campController).stream()
             .filter(camp -> (camp.getCampName().toUpperCase()).startsWith(startingAlphabet.toUpperCase()))
@@ -141,6 +155,7 @@ public class CampService {
         }
     }
 
+    @Override
     public List<Camp> getCampsByAttendeeName(CampController campController, String attendeeName) {
         List<Camp> camps = viewAllCamps(campController).stream()
             .filter(camp -> camp.getRegisteredStudents().stream()
@@ -156,6 +171,7 @@ public class CampService {
         }
     }
 
+    @Override
     public void updateCamp(CampController campController, String campName, Camp updatedCamp) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController);
         for(int i=0;i<camps.size();i++){

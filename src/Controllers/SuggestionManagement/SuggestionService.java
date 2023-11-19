@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SuggestionService {
+import Controllers.SuggestionManagementInterface.SuggestionServiceInterface;
+
+public class SuggestionService implements SuggestionServiceInterface {
     static final String FILE_PATH = "src/Database/Suggestion.csv";
+    @Override
     public void createSuggestion(SuggestionController suggestionController, String campCommitteeMember, String campName){
         String read = " ";
         String review = " ";
@@ -21,6 +24,7 @@ public class SuggestionService {
         suggestionController.suggestionFileHandler.writeSuggestionToFile(suggestion);
     }
 
+    @Override
     public void editSuggestion(SuggestionController suggestionController, String campCommitteeMember, String camp){ //Look for the enquiry based on the student's name, assuming a student can only send one enquiry to one camp
         String[] studentSuggestion = suggestionController.suggestionService.studentSuggestionBasedOnIDandCamp(campCommitteeMember, camp);
     
@@ -59,6 +63,7 @@ public class SuggestionService {
         
     }
 
+    @Override
     public void deleteSuggestion(SuggestionController suggestionController, String campCommitteeMember, String camp){
         String[] studentSuggestion = suggestionController.suggestionService.studentSuggestionBasedOnIDandCamp(campCommitteeMember, camp);
     
@@ -93,6 +98,7 @@ public class SuggestionService {
         }
     }
 
+    @Override
     public List<String[]> studentFindSuggestion(String campCommitteeMember){
         List<String[]> suggestionList = new ArrayList<>();
         String line;
@@ -111,6 +117,7 @@ public class SuggestionService {
         return suggestionList;
     }
 
+    @Override
     public String[] studentSuggestionBasedOnIDandCamp(String student, String camp){
         List<String[]> studentEnquiryList = studentFindSuggestion(student);
         if(studentEnquiryList.isEmpty()){

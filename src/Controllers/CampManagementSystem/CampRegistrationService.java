@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import Controllers.CampManagementSystemInterface.CampRegistrationServiceInterface;
 import Models.Camp;
 import Models.Student;
 
-public class CampRegistrationService {
+public class CampRegistrationService implements CampRegistrationServiceInterface {
 
+    @Override
     public void registerStudentForCamp(CampController campController, String campName, Student student, boolean asCommitteeMember) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController);
         boolean isRegistered = false; // Flag to check if registration happened
@@ -46,6 +48,7 @@ public class CampRegistrationService {
         }
     }
 
+    @Override
     public void withdrawStudentFromCamp(CampController campController, Camp camp, Student student) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Read all camps
         Optional<Camp> targetCamp = camps.stream()
@@ -70,6 +73,7 @@ public class CampRegistrationService {
         }
     }
 
+    @Override
     public boolean withdrawStudentFromAttendees(CampController campController, Camp camp, Student student) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController);
         Optional<Camp> targetCamp = camps.stream()
@@ -97,6 +101,7 @@ public class CampRegistrationService {
         return false; // Indicate unsuccessful removal or camp not found
     }
 
+    @Override
     public void withdrawStudentFromCommittee(CampController campController, Camp camp, Student student) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Read all camps
         Optional<Camp> targetCamp = camps.stream()
@@ -119,6 +124,7 @@ public class CampRegistrationService {
         }
     }
 
+    @Override
     public List<String> viewCampSlots(CampController campController) {
         return campController.campFileHandler.readCamps(campController).stream()
                 .map(camp -> camp.getCampName() + ": " +

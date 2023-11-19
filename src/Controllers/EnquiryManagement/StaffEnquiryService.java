@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StaffEnquiryService {
+import Controllers.EnquiryManagementInterface.StaffEnquiryServiceInterface;
+
+public class StaffEnquiryService implements StaffEnquiryServiceInterface {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
+    @Override
     public void execReplyEnquiry(EnquiryController enquiryController, String camp){
         System.out.print("Type in the Enquiry ID to reply to: ");
         String ID = EnquiryController.sc.nextLine();
@@ -45,6 +48,7 @@ public class StaffEnquiryService {
         }
     }
 
+    @Override
     public List<String[]> execFindUnrepliedEnquiry(EnquiryController enquiryController, String camp){
         List<String[]> enquiryList = enquiryController.staffEnquiryService.execFindEnquiry(camp);
         List<String[]> unrepliedEnquiryList = new ArrayList<String[]>();
@@ -68,6 +72,7 @@ public class StaffEnquiryService {
         return unrepliedEnquiryList;
     }
 
+    @Override
     public List<String[]> execFindEnquiry(String camp){ //generate the list of all enquiries for that camp, both replied and unreplied
         List<String[]> enquiryList = new ArrayList<String[]>();
         String line;
@@ -86,6 +91,7 @@ public class StaffEnquiryService {
         return enquiryList;
     }
 
+    @Override
     public void replyEnquiry(EnquiryController enquiryController, String[] enquiryToReply){       
         System.out.print("Type in your reply: ");
         String Reply = EnquiryController.sc.nextLine();

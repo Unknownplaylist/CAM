@@ -2,8 +2,11 @@ package UI.StaffViewManagement;
 
 import java.util.InputMismatchException;
 
-public class StaffMenuService {
+import UI.StaffViewManagementInterface.StaffMenuServiceInterface;
 
+public class StaffMenuService implements StaffMenuServiceInterface {
+
+    @Override
     public void display(StaffView staffView){
         staffView.logOff=0;
         int choice;

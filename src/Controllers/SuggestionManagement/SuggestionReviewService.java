@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SuggestionReviewService {
+import Controllers.SuggestionManagementInterface.SuggestionReviewServiceInterface;
+import Controllers.SuggestionManagementInterface.SuggestionServiceInterface;
+
+public class SuggestionReviewService implements SuggestionReviewServiceInterface {
     static final String FILE_PATH = "src/Database/Suggestion.csv";
+    @Override
     public List<String[]> execFindSuggestion(String camp){ //generate the list of all enquiries for that camp, both replied and unreplied
         List<String[]> suggestionList = new ArrayList<String[]>();
         String line;
@@ -26,6 +30,7 @@ public class SuggestionReviewService {
         return suggestionList;
     }
 
+    @Override
     public List<String[]> execFindUnrepliedSuggestion(String camp){
         List<String[]> suggestionList = execFindSuggestion(camp);
         List<String[]> unrepliedSuggestionList = new ArrayList<String[]>();
@@ -49,6 +54,7 @@ public class SuggestionReviewService {
         return unrepliedSuggestionList;
     }
 
+    @Override
     public void execReviewSuggestion(SuggestionController suggestionController, String camp){
         System.out.print("Type in the Suggestion ID to reply to: ");
         String ID = SuggestionController.sc.nextLine();
@@ -86,7 +92,8 @@ public class SuggestionReviewService {
         }
     }
 
-    public void reviewSuggestion(SuggestionController suggestionController, SuggestionService suggestionService, String[] suggestionToReview){
+    @Override
+    public void reviewSuggestion(SuggestionController suggestionController, SuggestionServiceInterface suggestionService, String[] suggestionToReview){
         System.out.println("Choose to accept/reject this suggestion: \n1.Accept\n2.Reject"); 
         int choice = SuggestionController.sc.nextInt();
         String decision = new String();

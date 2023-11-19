@@ -2,10 +2,12 @@ package Controllers.StaffManagement;
 
 import java.util.List;
 
+import Controllers.StaffManagementInterface.StaffSearchServiceInterface;
 import Models.Staff;
 
-public class StaffSearchService {
+public class StaffSearchService implements StaffSearchServiceInterface {
 
+    @Override
     public Staff getStaffByEmail(StaffController staffController, String email) {
         List<Staff> staffList = staffController.staffFileHandler.readStaff();
         for (Staff staff : staffList) {
@@ -16,6 +18,7 @@ public class StaffSearchService {
         return null;
     }
 
+    @Override
     public Staff getStaffByName(StaffController staffController, String name) {
         List<Staff> staffList = staffController.staffFileHandler.readStaff();
         for (Staff staff : staffList) {

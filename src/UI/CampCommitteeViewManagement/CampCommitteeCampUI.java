@@ -1,20 +1,26 @@
 package UI.CampCommitteeViewManagement;
 
-public class CampCommitteeCampUI {
+import UI.CampCommitteeViewManagementInterface.CampCommitteeCampUIInterface;
 
-    void viewCurrentPoint(CampCommitteeView campCommitteeView) {
+public class CampCommitteeCampUI implements CampCommitteeCampUIInterface {
+
+    @Override
+    public void viewCurrentPoint(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.studentManagementService.viewPoint(campCommitteeView.committeeAccess, campCommitteeView.name);
     }
 
-    void viewCamps(CampCommitteeView campCommitteeView) {
+    @Override
+    public void viewCamps(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.campCommitteeService.viewAvailableCamps(campCommitteeView.committeeAccess, campCommitteeView.email);
     }
 
-    void viewCampDetails(CampCommitteeView campCommitteeView) {
+    @Override
+    public void viewCampDetails(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.studentManagementService.generateStudentList(campCommitteeView.committeeAccess, campCommitteeView.email);
     }
 
-    void viewYourCamps(CampCommitteeView campCommitteeView) {
+    @Override
+    public void viewYourCamps(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.campCommitteeService.viewMyCamps(campCommitteeView.committeeAccess, campCommitteeView.name);
     }
     

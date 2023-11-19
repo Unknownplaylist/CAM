@@ -5,11 +5,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import Controllers.StudentManagementInterface.StudentServiceInterface;
 import Models.Student;
 
-public class StudentService {
+public class StudentService implements StudentServiceInterface {
     static final String FILE_PATH = "src/Database/student.csv";
 
+    @Override
     public void updateStudentData(StudentsController studentsController, Student updatedStudent) {
         List<Student> students = studentsController.studentFileHandler.readStudents();
         boolean studentExists = false;
@@ -43,6 +45,7 @@ public class StudentService {
         }
     }
 
+    @Override
     public void updateStudent(StudentsController studentsController, String email, Student updatedStudent) {
         List<Student> students = studentsController.studentFileHandler.readStudents();
         boolean studentExists = false;
@@ -79,6 +82,7 @@ public class StudentService {
         }
     }
 
+    @Override
     public void changePassword(StudentsController studentsController, String email, String newPassword) {
         List<Student> students = studentsController.studentFileHandler.readStudents();
         boolean found = false;
@@ -96,6 +100,7 @@ public class StudentService {
         }
     }
 
+    @Override
     public boolean setStudentRole(StudentsController studentsController, String email, String role) {
         if (!role.equals("attendee") && !role.equals("committee")) {
             System.out.println("Invalid role. Only 'attendee' or 'committee' are allowed.");

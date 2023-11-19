@@ -3,8 +3,11 @@ package Controllers.SuggestionManagement;
 import java.util.List;
 import java.util.Objects;
 
-public class SuggestionViewController {
+import Controllers.SuggestionManagementInterface.SuggestionViewControllerInterface;
 
+public class SuggestionViewController implements SuggestionViewControllerInterface {
+
+    @Override
     public void formatMessageList(SuggestionController suggestionController, List<String[]> suggestionList){
         if (suggestionList == null){
             System.out.println("No message to display.");
@@ -17,6 +20,7 @@ public class SuggestionViewController {
         }
     }
 
+    @Override
     public void formatMessage(String[] data){
         //Print out formatted view of the enquiry
         try {
@@ -36,6 +40,7 @@ public class SuggestionViewController {
         }
     }
 
+    @Override
     public void viewReviewToSuggestion(SuggestionController suggestionController, String camp){
         List<String[]> suggestionList = suggestionController.suggestionReviewService.execFindSuggestion(camp);
         if (!suggestionList.isEmpty()){
@@ -47,6 +52,7 @@ public class SuggestionViewController {
         else System.out.println("No visible suggestions.");       
     }
 
+    @Override
     public void viewSuggestion(SuggestionController suggestionController, String campCommitteeMember){ //view all suggestions under the camp comm name
         List<String[]> suggestionList = suggestionController.suggestionService.studentFindSuggestion(campCommitteeMember);
         if(!suggestionList.isEmpty()){

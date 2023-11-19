@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class EnquiryService {
+import Controllers.EnquiryManagementInterface.EnquiryServiceInterface;
+
+public class EnquiryService implements EnquiryServiceInterface {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
+    @Override
     public void formatMessageList(EnquiryController enquiryController, List<String[]> enquiryList){
         if (enquiryList == null){
             System.out.println("No message to display.");
@@ -21,6 +24,7 @@ public class EnquiryService {
         }
     }
 
+    @Override
     public void formatMessage(String[] data){
         //Print out formatted view of the enquiry
         try {
@@ -42,6 +46,7 @@ public class EnquiryService {
         }
     }
 
+    @Override
     public void viewReplyToEnquiry(EnquiryController enquiryController, String camp){
         List<String[]> enquiryList = enquiryController.staffEnquiryService.execFindEnquiry(camp);
         if (!enquiryList.isEmpty()){
@@ -53,6 +58,7 @@ public class EnquiryService {
         else System.out.println("No visible enquiries.");       
     }
 
+    @Override
     public void deleteEnquiry(EnquiryController enquiryController, String student){
         //check if camp exists
         String[] studentEnquiry = enquiryController.studentEnquiryService.studentEnquiryBasedOnIDandCamp(enquiryController, student);
@@ -88,6 +94,7 @@ public class EnquiryService {
         }
     }
 
+    @Override
     public void editEnquiry(EnquiryController enquiryController, String student){
         //check if camp exists
         String[] studentEnquiry = enquiryController.studentEnquiryService.studentEnquiryBasedOnIDandCamp(enquiryController, student);
@@ -127,6 +134,7 @@ public class EnquiryService {
         
     }
 
+    @Override
     public void createEnquiry(EnquiryController enquiryController, String student){
         String read = " ";
         String reply = " ";

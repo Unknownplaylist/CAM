@@ -2,16 +2,20 @@ package UI.CampCommitteeViewManagement;
 
 import Controllers.CampManagementSystem.CampController;
 import Models.Camp;
+import UI.CampCommitteeViewManagementInterface.CampCommitteeMenuServiceInterface;
+import UI.CampCommitteeViewManagementInterface.CampCommitteeRegistrationUIInterface;
 
-public class CampCommitteeRegistrationUI {
+public class CampCommitteeRegistrationUI implements CampCommitteeRegistrationUIInterface {
 
+    @Override
     public void withdrawFromCamp(CampCommitteeView campCommitteeView) {
         System.out.print("Enter the name of the camp you wish to withdraw from: ");
         String campName = CampCommitteeView.sc.next();
         campCommitteeView.committeeAccess.campCommitteeService.withdrawFromCamp(campCommitteeView.committeeAccess, campCommitteeView.email, campName);
     }
 
-    public void registerForCamp(CampCommitteeView campCommitteeView, CampCommitteeMenuService campCommitteeMenuService) {
+    @Override
+    public void registerForCamp(CampCommitteeView campCommitteeView, CampCommitteeMenuServiceInterface campCommitteeMenuService) {
         System.out.print("Enter the name of the camp to register: ");
         String campName = CampCommitteeView.sc.next();
     

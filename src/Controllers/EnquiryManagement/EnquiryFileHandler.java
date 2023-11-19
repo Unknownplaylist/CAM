@@ -8,8 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnquiryFileHandler {
+import Controllers.EnquiryManagementInterface.EnquiryFileHandlerInterface;
+
+public class EnquiryFileHandler implements EnquiryFileHandlerInterface {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
+    @Override
     public List<String[]> findAllEnquiries(){
         List<String[]> enquiryList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {            
@@ -26,6 +29,7 @@ public class EnquiryFileHandler {
         return enquiryList;
     }
 
+    @Override
     public void writeCSV(List<String[]> dataList){
         int ID = 1;
         String writeLine;
@@ -44,6 +48,7 @@ public class EnquiryFileHandler {
                 }
     }
 
+    @Override
     public void writeEnquiryToFile(String[] enquiry){
         List<String[]> existingEnquiry = findAllEnquiries();
         existingEnquiry.add(enquiry);

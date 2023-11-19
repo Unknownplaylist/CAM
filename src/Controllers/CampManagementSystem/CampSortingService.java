@@ -3,6 +3,7 @@ package Controllers.CampManagementSystem;
 import java.util.Comparator;
 import java.util.List;
 
+import Controllers.CampManagementSystemInterface.CampSortingServiceInterface;
 import Models.Camp;
 
 public class CampSortingService implements CampSortingServiceInterface {

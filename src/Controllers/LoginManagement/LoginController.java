@@ -1,5 +1,7 @@
 package Controllers.LoginManagement;
 
+import Controllers.LoginManagementInterface.LoginControllerInterface;
+import Controllers.LoginManagementInterface.LoginServiceInterface;
 import Controllers.StaffManagement.StaffController;
 import Controllers.StudentManagement.StudentsController;
 import UI.Main;
@@ -7,10 +9,10 @@ import UI.CampCommitteeViewManagement.CampCommitteeView;
 import UI.StaffViewManagement.StaffView;
 import UI.StudentViewManagement.StudentView;
 
-public class LoginController {
+public class LoginController implements LoginControllerInterface {
     StudentsController studentsController;
     StaffController staffController; 
-    public LoginService loginService;
+    public LoginServiceInterface loginService;
 
     public LoginController(StudentsController studentsController, StaffController staffController) {
         this.studentsController = studentsController;
@@ -18,6 +20,7 @@ public class LoginController {
         this.loginService = new LoginService();
     }
 
+    @Override
     public boolean loginUser(String id, String password) {
         // Verify user credentials (e.g., id and password)
         boolean validCredentials = loginService.verifyCredentials(this, id, password);
@@ -39,6 +42,7 @@ public class LoginController {
         }
     }
 
+    @Override
     public void UIlogIn(Main main, StudentsController sdc, StaffController sfc){
         System.out.print("Username : ");
         String userId = Main.sc.next();

@@ -4,21 +4,26 @@ import Models.*;
 import java.io.*;
 import java.util.*;
 
+import Controllers.CampManagementSystemInterface.CampFileHandlerInterface;
+import Controllers.CampManagementSystemInterface.CampRegistrationServiceInterface;
+import Controllers.CampManagementSystemInterface.CampReportingServiceInterface;
+import Controllers.CampManagementSystemInterface.CampServiceInterface;
+import Controllers.CampManagementSystemInterface.CampSortingServiceInterface;
 import Controllers.StaffManagement.StaffController;
-import Controllers.StudentManagement.StudentSearchService;
 import Controllers.StudentManagement.StudentsController;
+import Controllers.StudentManagementInterface.StudentSearchServiceInterface;
 
 public class CampController {
     static final String FILE_PATH = "src/Database/CampInformation.csv";
     static final String CSV_SEPARATOR = ",";
     StudentsController studentController;
     StaffController staffController;
-    CampFileHandler campFileHandler;
-    public CampRegistrationService campRegistrationService;
-    public CampReportingService campReportingService;
-    public CampService campService;
+    CampFileHandlerInterface campFileHandler;
+    public CampRegistrationServiceInterface campRegistrationService;
+    public CampReportingServiceInterface campReportingService;
+    public CampServiceInterface campService;
     public CampSortingServiceInterface campSortingService;
-    private StudentSearchService studentSearchService;
+    private StudentSearchServiceInterface studentSearchService;
 
     public CampController(StudentsController studentController, StaffController staffController) {
         this.studentController = studentController;

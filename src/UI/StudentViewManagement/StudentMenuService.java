@@ -1,7 +1,10 @@
 package UI.StudentViewManagement;
 
-public class StudentMenuService {
+import UI.StudentViewManagementInterface.StudentMenuServiceInterface;
 
+public class StudentMenuService implements StudentMenuServiceInterface {
+
+    @Override
     public void display(StudentView studentView) {
         studentView.logOff = 0;
         do {

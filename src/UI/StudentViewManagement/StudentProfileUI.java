@@ -1,7 +1,10 @@
 package UI.StudentViewManagement;
 
-public class StudentProfileUI {
+import UI.StudentViewManagementInterface.StudentProfileUIInterface;
 
+public class StudentProfileUI implements StudentProfileUIInterface {
+
+    @Override
     public void PasswordChange(StudentView studentView) {
         System.out.print("Enter your new password: ");
         String new_pass = StudentView.sc.next();

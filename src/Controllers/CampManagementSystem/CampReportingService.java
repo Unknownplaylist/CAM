@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import Controllers.CampManagementSystemInterface.CampReportingServiceInterface;
 import Models.Camp;
 import Models.Student;
 
-public class CampReportingService {
+public class CampReportingService implements CampReportingServiceInterface {
 
+    @Override
     public void createStaffReport(List<Camp> camps, String outputPath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {
             // Write header

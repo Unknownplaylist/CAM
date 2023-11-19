@@ -1,7 +1,10 @@
 package UI.StaffViewManagement;
 
-public class StaffProfileUI {
+import UI.StaffViewManagementInterface.StaffProfileUIInterface;
 
+public class StaffProfileUI implements StaffProfileUIInterface {
+
+    @Override
     public void PasswordChange(StaffView staffView){
         try{
             System.out.print("Enter your new password: ");

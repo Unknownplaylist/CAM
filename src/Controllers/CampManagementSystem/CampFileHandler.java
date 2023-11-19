@@ -18,9 +18,11 @@ import Models.Camp;
 import Models.Staff;
 import Models.Student;
 import Controllers.*;
+import Controllers.CampManagementSystemInterface.CampFileHandlerInterface;
 
-public class CampFileHandler {
+public class CampFileHandler implements CampFileHandlerInterface {
 
+    @Override
     public List<Camp> readCamps(CampController campController) {
         List<Camp> camps = new ArrayList<>();
         File file = new File(CampController.FILE_PATH);
@@ -74,7 +76,8 @@ public class CampFileHandler {
         }
     }
 
-    void writeAllCamps(List<Camp> camps) {
+    @Override
+    public void writeAllCamps(List<Camp> camps) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(CampController.FILE_PATH))) {
             bw.write(
                     "campName,startDate,endDate,registrationCloseDate,Faculty,location,totalSlots,committeeSlots,description,staffInCharge,listregisteredStudents,listcommitteeMembers,Visible\n");

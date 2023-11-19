@@ -8,8 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SuggestionFileHandler {
+import Controllers.SuggestionManagementInterface.SuggestionFileHandlerInterface;
+
+public class SuggestionFileHandler implements SuggestionFileHandlerInterface {
     static final String FILE_PATH = "src/Database/Suggestion.csv";
+    @Override
     public List<String[]> findAllSuggestions(){
         List<String[]> suggestionList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {            
@@ -26,6 +29,7 @@ public class SuggestionFileHandler {
         return suggestionList;
     }
 
+    @Override
     public void writeCSV(List<String[]> dataList){
         int ID = 1;
         String writeLine;
@@ -44,6 +48,7 @@ public class SuggestionFileHandler {
                 }
     }
 
+    @Override
     public void writeSuggestionToFile(String[] enquiry){
         List<String[]> existingSuggestion = findAllSuggestions();
         existingSuggestion.add(enquiry);

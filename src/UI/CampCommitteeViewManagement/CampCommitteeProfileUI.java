@@ -1,7 +1,10 @@
 package UI.CampCommitteeViewManagement;
 
-public class CampCommitteeProfileUI {
+import UI.CampCommitteeViewManagementInterface.CampCommitteeProfileUIInterface;
 
+public class CampCommitteeProfileUI implements CampCommitteeProfileUIInterface {
+
+    @Override
     public void PasswordChange(CampCommitteeView campCommitteeView){
         System.out.print("Enter your new password: ");
         String new_pass=CampCommitteeView.sc.next();

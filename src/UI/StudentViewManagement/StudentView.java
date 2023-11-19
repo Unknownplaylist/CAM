@@ -10,6 +10,11 @@ import Controllers.EnquiryManagement.EnquiryController;
 import Controllers.StaffManagement.StaffController;
 import Controllers.StudentManagement.StudentsController;
 import Models.*;
+import UI.StudentViewManagementInterface.StudentCampUIInterface;
+import UI.StudentViewManagementInterface.StudentCommitteeRegistrationUIInterface;
+import UI.StudentViewManagementInterface.StudentEnquiryUIInterface;
+import UI.StudentViewManagementInterface.StudentMenuServiceInterface;
+import UI.StudentViewManagementInterface.StudentProfileUIInterface;
 
 import java.util.Scanner;
 
@@ -23,11 +28,11 @@ public class StudentView {
     EnquiryController enq;
     StudentAccess studentAccess;
     StaffController staffCont; 
-    public StudentMenuService studentMenuService;
-    StudentCampUI studentCampUI;
-    StudentEnquiryUI studentEnquiryUI;
-    StudentCommitteeRegistrationUI studentCommitteeRegistrationUI;
-    StudentProfileUI studentProfileUI;
+    public StudentMenuServiceInterface studentMenuService;
+    StudentCampUIInterface studentCampUI;
+    StudentEnquiryUIInterface studentEnquiryUI;
+    StudentCommitteeRegistrationUIInterface studentCommitteeRegistrationUI;
+    StudentProfileUIInterface studentProfileUI;
 
 
     

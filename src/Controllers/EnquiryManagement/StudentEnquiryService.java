@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentEnquiryService {
+import Controllers.EnquiryManagementInterface.StudentEnquiryServiceInterface;
+
+public class StudentEnquiryService implements StudentEnquiryServiceInterface {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
+    @Override
     public String[] studentEnquiryBasedOnIDandCamp(EnquiryController enquiryController, String student){
         List<String[]> studentEnquiryList = enquiryController.studentEnquiryService.studentFindEnquiry(student);
         if(studentEnquiryList.isEmpty()){
@@ -33,6 +36,7 @@ public class StudentEnquiryService {
         return null;
     }
 
+    @Override
     public void viewEnquiry(EnquiryController enquiryController, String student){ //View all enquiries under the student name
         List<String[]> enquiryList = enquiryController.studentEnquiryService.studentFindEnquiry(student);
         if(!enquiryList.isEmpty()){
@@ -44,6 +48,7 @@ public class StudentEnquiryService {
             System.out.println("You have no enquiries");
     }
 
+    @Override
     public List<String[]> studentFindEnquiry(String student){
         List<String[]> enquiryList = new ArrayList<>();
         String line;

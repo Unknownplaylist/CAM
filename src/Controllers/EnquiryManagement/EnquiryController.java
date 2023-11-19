@@ -3,6 +3,10 @@ package Controllers.EnquiryManagement;
 import java.io.*;
 import java.util.*;
 
+import Controllers.EnquiryManagementInterface.EnquiryFileHandlerInterface;
+import Controllers.EnquiryManagementInterface.EnquiryServiceInterface;
+import Controllers.EnquiryManagementInterface.StaffEnquiryServiceInterface;
+import Controllers.EnquiryManagementInterface.StudentEnquiryServiceInterface;
 import Models.Camp;
 
 //Enquiry.csv:
@@ -17,10 +21,10 @@ public class EnquiryController {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
     static final String CSV_SEPARATOR = ",";
     static Scanner sc = new Scanner(System.in);
-    EnquiryFileHandler enquiryFileHandler;
-    public EnquiryService enquiryService;
-    public StudentEnquiryService studentEnquiryService;
-    public StaffEnquiryService staffEnquiryService;
+    EnquiryFileHandlerInterface enquiryFileHandler;
+    public EnquiryServiceInterface enquiryService;
+    public StudentEnquiryServiceInterface studentEnquiryService;
+    public StaffEnquiryServiceInterface staffEnquiryService;
 
     public EnquiryController(){
         this.enquiryFileHandler = new EnquiryFileHandler();

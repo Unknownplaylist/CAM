@@ -9,6 +9,12 @@ import Controllers.StaffManagement.StaffController;
 import Controllers.StudentManagement.StudentsController;
 import Controllers.SuggestionManagement.SuggestionController;
 import Models.*;
+import UI.CampCommitteeViewManagementInterface.CampCommitteeCampUIInterface;
+import UI.CampCommitteeViewManagementInterface.CampCommitteeEnquiryUIInterface;
+import UI.CampCommitteeViewManagementInterface.CampCommitteeMenuServiceInterface;
+import UI.CampCommitteeViewManagementInterface.CampCommitteeProfileUIInterface;
+import UI.CampCommitteeViewManagementInterface.CampCommitteeRegistrationUIInterface;
+import UI.CampCommitteeViewManagementInterface.CampCommitteeSuggestionUIInterface;
 
 public class CampCommitteeView {
     static Scanner sc=new Scanner(System.in);
@@ -24,12 +30,12 @@ public class CampCommitteeView {
     private CampController camp_controller = new CampController(student_controller, staff_controller);
     
     CommitteeAccess committeeAccess;
-    public CampCommitteeMenuService campCommitteeMenuService;
-    CampCommitteeRegistrationUI campCommitteeRegistrationUI;
-    CampCommitteeSuggestionUI campCommitteeSuggestionUI;
-    CampCommitteeEnquiryUI campCommitteeEnquiryUI;
-    CampCommitteeProfileUI campCommitteeProfileUI;
-    CampCommitteeCampUI campCommitteeCampUI;
+    public CampCommitteeMenuServiceInterface campCommitteeMenuService;
+    CampCommitteeRegistrationUIInterface campCommitteeRegistrationUI;
+    CampCommitteeSuggestionUIInterface campCommitteeSuggestionUI;
+    CampCommitteeEnquiryUIInterface campCommitteeEnquiryUI;
+    CampCommitteeProfileUIInterface campCommitteeProfileUI;
+    CampCommitteeCampUIInterface campCommitteeCampUI;
 
     int logOff=2;
     public CampCommitteeView(String id,StudentsController studentcont){

@@ -9,10 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Controllers.StaffManagementInterface.StaffFileHandlerInterface;
 import Models.Staff;
 
-public class StaffFileHandler {
+public class StaffFileHandler implements StaffFileHandlerInterface {
     static final String FILE_PATH = "src/Database/staff.csv";
+    @Override
     public List<Staff> readStaff() {
         List<Staff> staffList = new ArrayList<>();
         File file = new File(StaffController.FILE_PATH);
@@ -40,6 +42,7 @@ public class StaffFileHandler {
         return staffList;
     }
 
+    @Override
     public void writeStaff(Staff staff) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             String data = String.join(StaffController.CSV_SEPARATOR, staff.getName(), staff.getEmail(), staff.getFaculty(), staff.getPassword());
@@ -51,7 +54,8 @@ public class StaffFileHandler {
         }
     }
 
-    void updateStaffList(List<Staff> staffList) {
+    @Override
+    public void updateStaffList(List<Staff> staffList) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (Staff staff : staffList) {
                 String data = String.join(StaffController.CSV_SEPARATOR, staff.getName(), staff.getEmail(), staff.getFaculty(), staff.getPassword());

@@ -2,6 +2,7 @@ package UI;
 import java.util.*;
 import Controllers.*;
 import Controllers.LoginManagement.LoginController;
+import Controllers.LoginManagementInterface.LoginControllerInterface;
 import Controllers.StaffManagement.StaffController;
 import Controllers.StudentManagement.StudentsController;
 import Models.*;
@@ -25,7 +26,7 @@ public class Main {
             StudentsController studentsController = new StudentsController();
             StaffController staffController = new StaffController();
             // Initialize the LoginController
-            LoginController loginController = new LoginController(studentsController, staffController);
+            LoginControllerInterface loginController = new LoginController(studentsController, staffController);
 
             System.out.println("Welcome to CAMs\n===============\nPlease choose the option of your choice\n");
             System.out.println("(1) Log In");

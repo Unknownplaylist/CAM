@@ -1,7 +1,10 @@
 package UI.CampCommitteeViewManagement;
 
-public class CampCommitteeMenuService {
+import UI.CampCommitteeViewManagementInterface.CampCommitteeMenuServiceInterface;
 
+public class CampCommitteeMenuService implements CampCommitteeMenuServiceInterface {
+
+    @Override
     public void display(CampCommitteeView campCommitteeView){
         campCommitteeView.logOff=0;
         do{

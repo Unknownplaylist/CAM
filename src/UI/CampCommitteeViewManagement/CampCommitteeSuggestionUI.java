@@ -1,20 +1,26 @@
 package UI.CampCommitteeViewManagement;
 
-public class CampCommitteeSuggestionUI {
+import UI.CampCommitteeViewManagementInterface.CampCommitteeSuggestionUIInterface;
 
-    void submitSuggestions(CampCommitteeView campCommitteeView) {
+public class CampCommitteeSuggestionUI implements CampCommitteeSuggestionUIInterface {
+
+    @Override
+    public void submitSuggestions(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.suggestionManagementService.submitSuggestion(campCommitteeView.committeeAccess, campCommitteeView.name);
     }
 
-    void viewSuggestion(CampCommitteeView campCommitteeView) {
+    @Override
+    public void viewSuggestion(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.suggestionManagementService.viewSuggestion(campCommitteeView.committeeAccess, campCommitteeView.name);
     }
 
-    void editSuggestion(CampCommitteeView campCommitteeView) {
+    @Override
+    public void editSuggestion(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.suggestionManagementService.editSuggestion(campCommitteeView.committeeAccess, campCommitteeView.name);
     }
 
-    void deleteSuggestion(CampCommitteeView campCommitteeView) {
+    @Override
+    public void deleteSuggestion(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.suggestionManagementService.deleteSuggestion(campCommitteeView.committeeAccess, campCommitteeView.name);
     }
     

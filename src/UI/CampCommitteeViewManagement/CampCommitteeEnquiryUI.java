@@ -1,12 +1,16 @@
 package UI.CampCommitteeViewManagement;
 
-public class CampCommitteeEnquiryUI {
+import UI.CampCommitteeViewManagementInterface.CampCommitteeEnquiryUIInterface;
 
-    void checkEnquiries(CampCommitteeView campCommitteeView) {
+public class CampCommitteeEnquiryUI implements CampCommitteeEnquiryUIInterface {
+
+    @Override
+    public void checkEnquiries(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.enquiryManagementService.checkEnquiry(campCommitteeView.committeeAccess, campCommitteeView.name);
     }
 
-    void replyEnquiries(CampCommitteeView campCommitteeView) {
+    @Override
+    public void replyEnquiries(CampCommitteeView campCommitteeView) {
         campCommitteeView.committeeAccess.enquiryManagementService.replyEnquiry(campCommitteeView.committeeAccess, campCommitteeView.name);
     }
     

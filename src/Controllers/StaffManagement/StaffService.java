@@ -5,10 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import Controllers.StaffManagementInterface.StaffServiceInterface;
 import Models.Staff;
 
-public class StaffService {
+public class StaffService implements StaffServiceInterface {
     static final String FILE_PATH = "src/Database/staff.csv";
+    @Override
     public void updateStaff(StaffController staffController, String email, Staff updatedStaff) {
         List<Staff> staffList = staffController.staffFileHandler.readStaff();
         boolean staffExists = false;
@@ -37,16 +39,19 @@ public class StaffService {
         }
     }
 
+    @Override
     public boolean isFirstLogin(StaffController staffController, String email) {
         Staff staff = staffController.staffSearchService.getStaffByEmail(staffController, email);
         return staff != null && staff.getPassword().equals(StaffController.DEFAULT_PASSWORD);
     }
 
+    @Override
     public boolean checkPassword(StaffController staffController, String email, String password) {
         Staff staff = staffController.staffSearchService.getStaffByEmail(staffController, email);
         return staff != null && staff.getPassword().equals(password);
     }
 
+    @Override
     public void changePassword(StaffController staffController, String email, String newPassword) {
         List<Staff> staffList = staffController.staffFileHandler.readStaff();
         for (Staff staff : staffList) {
@@ -59,10 +64,12 @@ public class StaffService {
         System.out.println("Staff not found.");
     }
 
+    @Override
     public String getStaffMail(String id){
         return (id+"@NTU.EDU.SG");
     }
 
+    @Override
     public String getStaffFaculty(StaffController staffController, String email) {
         List<Staff> staffList = staffController.staffFileHandler.readStaff();
         for (Staff staff : staffList) {
@@ -73,6 +80,7 @@ public class StaffService {
         return "Staff not found";
     }
 
+    @Override
     public String getStaffName(StaffController staffController, String email) {
         List<Staff> staffList = staffController.staffFileHandler.readStaff();
         for (Staff staff : staffList) {
@@ -83,6 +91,7 @@ public class StaffService {
         return "Staff not found";
     }
 
+    @Override
     public boolean verifyStaff(StaffController staffController, String email) {
         List<Staff> staffList = staffController.staffFileHandler.readStaff();
         for (Staff staff : staffList) {

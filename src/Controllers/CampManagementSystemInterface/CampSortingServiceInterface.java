@@ -1,4 +1,6 @@
-package Controllers.CampManagementSystem;
+package Controllers.CampManagementSystemInterface;
+
+import Controllers.CampManagementSystem.CampController;
 
 public interface CampSortingServiceInterface {
 

@@ -5,6 +5,12 @@ import CampAccess.StaffAccessManagement.StaffAccess;
 import Controllers.*;
 import Controllers.StaffManagement.StaffController;
 import Models.*;
+import UI.StaffViewManagementInterface.StaffCampManagementUIInterface;
+import UI.StaffViewManagementInterface.StaffEnquiryUIInterface;
+import UI.StaffViewManagementInterface.StaffMenuServiceInterface;
+import UI.StaffViewManagementInterface.StaffProfileUIInterface;
+import UI.StaffViewManagementInterface.StaffReportUIInterface;
+import UI.StaffViewManagementInterface.StaffSuggestionUIInterface;
 
 public class StaffView {
     static Scanner sc=new Scanner(System.in);
@@ -19,12 +25,12 @@ public class StaffView {
     StaffAccess access;
     // private EnquiryController enq;
     // private SuggestionController sugg;
-    public StaffMenuService staffMenuService;
-    StaffCampManagementUI staffCampManagementUI;
-    StaffEnquiryUI staffEnquiryUI;
-    StaffSuggestionUI staffSuggestionUI;
-    StaffReportUI staffReportUI;
-    StaffProfileUI staffProfileUI;
+    public StaffMenuServiceInterface staffMenuService;
+    StaffCampManagementUIInterface staffCampManagementUI;
+    StaffEnquiryUIInterface staffEnquiryUI;
+    StaffSuggestionUIInterface staffSuggestionUI;
+    StaffReportUIInterface staffReportUI;
+    StaffProfileUIInterface staffProfileUI;
     public StaffView(String id,StaffController staffcont){
         this.id=id;
         email = staffcont.staffService.getStaffMail(this.id);

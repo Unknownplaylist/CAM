@@ -1,7 +1,10 @@
 package Controllers.LoginManagement;
 
-public class LoginService {
+import Controllers.LoginManagementInterface.LoginServiceInterface;
 
+public class LoginService implements LoginServiceInterface {
+
+    @Override
     public String userType(LoginController loginController, String id){
     
             String studentEmail = id + "@e.ntu.edu.sg";
@@ -16,7 +19,8 @@ public class LoginService {
             }
     }
 
-    boolean verifyCredentials(LoginController loginController, String id, String password) {
+    @Override
+    public boolean verifyCredentials(LoginController loginController, String id, String password) {
         // Verify that the ID is not null
         if (id == null || id.isEmpty()) {
             System.out.println("Invalid ID.");

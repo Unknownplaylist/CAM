@@ -2,9 +2,11 @@ package UI.StudentViewManagement;
 
 import Controllers.CampManagementSystem.CampController;
 import Models.Camp;
+import UI.StudentViewManagementInterface.StudentCampUIInterface;
 
-public class StudentCampUI {
+public class StudentCampUI implements StudentCampUIInterface {
 
+    @Override
     public void registerForCamp(StudentView studentView) {
         System.out.print("Enter the name of the camp to register: ");
         String campName = StudentView.sc.next();
@@ -28,16 +30,19 @@ public class StudentCampUI {
        
     }
 
+    @Override
     public void withdrawFromCamp(StudentView studentView) {
         System.out.print("Enter the name of the camp you wish to withdraw from: ");
         String campName = StudentView.sc.next();
         studentView.studentAccess.studentCampRegistrationService.withdrawFromCamp(studentView.studentAccess, studentView.email, campName);
     }
 
+    @Override
     public void viewCamps(StudentView studentView) {
         studentView.studentAccess.studentCampViewService.viewAvailableCamps(studentView.studentAccess, studentView.email);
     }
 
+    @Override
     public void viewMyCamps(StudentView studentView) {
         studentView.studentAccess.studentCampViewService.viewMyCamps(studentView.studentAccess, studentView.email);
     }
