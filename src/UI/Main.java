@@ -19,7 +19,7 @@ public class Main {
         boolean loggedIn = lgc.loginUser(userId, password);
 
         if(loggedIn){
-            String user = lgc.userType(userId);
+            String user = lgc.loginService.userType(lgc, userId);
             if(user.equalsIgnoreCase("attendee")){
                 studentview = new StudentView(userId,sdc,sfc);
                 studentview.display();
