@@ -115,7 +115,7 @@ public class CampManagementService implements CampManagementServiceInterface {
                     String description=StaffAccess.sc.nextLine();
     
                     Camp newcamp = new Camp(camp_name, startdate, enddate, regdate, curr.getFaculty(), location, curr.getTotalSlots(), curr.getCommitteeSlots(), description, staffAccess.staff);
-                    staffAccess.campcont.updateCamp(camp_name, newcamp);
+                    staffAccess.campcont.campService.updateCamp(staffAccess.campcont, camp_name, newcamp);
     
                 }
                 catch(Exception e){
