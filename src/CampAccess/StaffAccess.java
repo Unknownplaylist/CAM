@@ -88,6 +88,7 @@ public class StaffAccess {
         catch(Exception e){
             System.out.println("Error creating Camp - Redirecting to Menu");
             sc.nextLine();
+            sc.nextLine();
             return;
         }
     }
@@ -103,6 +104,7 @@ public class StaffAccess {
         }
         catch(Exception e){
             System.out.println("Invalid Input - Redirecting to Menu");
+            sc.nextLine();
             sc.nextLine();
             return;
         } 
@@ -215,6 +217,8 @@ public class StaffAccess {
         }
         catch(Exception e){
             System.out.println("Invalid input - Redirecting you to Menu");
+            sc.nextLine();
+            sc.nextLine();
             return;
         }
         switch(choice){
