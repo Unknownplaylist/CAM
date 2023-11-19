@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import Controllers.*;
+import Controllers.CampManagementSystem.CampController;
 import Models.*;
 
 public class CommitteeAccess {
@@ -36,7 +37,7 @@ public class CommitteeAccess {
             return;
         }
         String studentFaculty = student.getFaculty();
-        List<Camp> availableCamps = camp_controller.viewAllCamps().stream()
+        List<Camp> availableCamps = camp_controller.campService.viewAllCamps(camp_controller).stream()
                 .filter(camp -> camp.getFaculty().equalsIgnoreCase(studentFaculty) && camp.isVisible())
                 .collect(Collectors.toList());
 
@@ -60,7 +61,7 @@ public class CommitteeAccess {
             return;
         }   
         //String studentName = student.getName(); // Retrieve the name of the logged-in student    
-        List<Camp> myCamps = camp_controller.viewAllCamps().stream()
+        List<Camp> myCamps = camp_controller.campService.viewAllCamps(camp_controller).stream()
                 .filter(camp -> {
                     List<Student> registeredStudents = camp.getRegisteredStudents();
                     List<Student> committeeMembers = camp.getCommitteeMembers();
@@ -87,7 +88,7 @@ public class CommitteeAccess {
 
     // SuggestionController
     public void submitSuggestion(String campCommName) { //need to retrieve the camp name when creating the suggestion
-        Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
+        Camp camp = camp_controller.campService.getCampByCommitteeMember(camp_controller, campCommName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
@@ -102,7 +103,7 @@ public class CommitteeAccess {
     }
 
     public void editSuggestion(String campCommName) {
-        Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
+        Camp camp = camp_controller.campService.getCampByCommitteeMember(camp_controller, campCommName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
@@ -112,7 +113,7 @@ public class CommitteeAccess {
     }
 
     public void deleteSuggestion(String campCommName) {// to extend the suggestion controller to take in camp
-        Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
+        Camp camp = camp_controller.campService.getCampByCommitteeMember(camp_controller, campCommName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
@@ -123,7 +124,7 @@ public class CommitteeAccess {
 
     // EnquiryController
     public void checkEnquiry(String campCommName) {
-        Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
+        Camp camp = camp_controller.campService.getCampByCommitteeMember(camp_controller, campCommName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
@@ -133,7 +134,7 @@ public class CommitteeAccess {
     }
 
     public void viewEnquiry(String campCommName) {
-        Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
+        Camp camp = camp_controller.campService.getCampByCommitteeMember(camp_controller, campCommName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
@@ -142,7 +143,7 @@ public class CommitteeAccess {
     }
 
     public void replyEnquiry(String campCommName) {
-        Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
+        Camp camp = camp_controller.campService.getCampByCommitteeMember(camp_controller, campCommName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
@@ -161,7 +162,7 @@ public class CommitteeAccess {
             return;
         }
 
-        Camp camp = camp_controller.getCampByCommitteeMember(committeeMember.getName());
+        Camp camp = camp_controller.campService.getCampByCommitteeMember(camp_controller, committeeMember.getName());
         if (camp == null) {
             System.out.println(committeeMember.getName() + " is not a committee member of any camp.");
             return;
@@ -200,24 +201,24 @@ public class CommitteeAccess {
             return;
         }
 
-        Camp camp = camp_controller.getCamp(campName);
+        Camp camp = camp_controller.campService.getCamp(camp_controller, campName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
         }
 
-        if (camp_controller.isStudentRegisteredInCamp(studentEmail, campName)) {
+        if (camp_controller.campService.isStudentRegisteredInCamp(camp_controller, studentEmail, campName)) {
             System.out.println("Student is already registered in this camp.");
             return;
         }
 
         // Check for date clash
-        if (camp_controller.hasDateClash(student, camp)) {
+        if (camp_controller.campService.hasDateClash(camp_controller, student, camp)) {
             System.out.println("Cannot register for " + campName + " due to a date clash with another camp.");
             return;
         }
 
-        camp_controller.registerStudentForCamp(campName, student, asCommitteeMember);
+        camp_controller.campRegistrationService.registerStudentForCamp(camp_controller, campName, student, asCommitteeMember);
         // System.out.println("Student successfully registered for " +
         // (asCommitteeMember ? "committee member" : "participant") + " in the camp: " +
         // campName);
@@ -232,14 +233,14 @@ public class CommitteeAccess {
         }
 
         // Retrieve the camp by name
-        Camp camp = camp_controller.getCamp(campName);
+        Camp camp = camp_controller.campService.getCamp(camp_controller, campName);
         if (camp == null) {
             System.out.println("Camp not found with name: " + campName);
             return;
         }
 
         // Call the CampController to handle the withdrawal process
-        boolean isWithdrawn = camp_controller.withdrawStudentFromAttendees(camp, student);
+        boolean isWithdrawn = camp_controller.campRegistrationService.withdrawStudentFromAttendees(camp_controller, camp, student);
         if (isWithdrawn) {
             student.addWithdrawnCamp(camp.getCampName());
             student_controller.updateStudentData(student);

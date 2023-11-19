@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import Controllers.*;
+import Controllers.CampManagementSystem.CampController;
 import Models.*;
 
 public class StudentAccess {
@@ -34,24 +35,24 @@ public class StudentAccess {
             return;
         }
 
-        Camp camp = campController.getCamp(campName);
+        Camp camp = campController.campService.getCamp(campController, campName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
         }
 
-        if (campController.isStudentRegisteredInCamp(studentEmail, campName)) {
+        if (campController.campService.isStudentRegisteredInCamp(campController, studentEmail, campName)) {
             System.out.println("Student is already registered in this camp.");
             return;
         }
 
         // Check for date clash
-        if (campController.hasDateClash(student, camp)) {
+        if (campController.campService.hasDateClash(campController, student, camp)) {
             System.out.println("Cannot register for " + campName + " due to a date clash with another camp.");
             return;
         }
 
-        campController.registerStudentForCamp(campName, student, asCommitteeMember);
+        campController.campRegistrationService.registerStudentForCamp(campController, campName, student, asCommitteeMember);
         // System.out.println("Student successfully registered for " +
         // (asCommitteeMember ? "committee member" : "participant") + " in the camp: " +
         // campName);
@@ -74,16 +75,16 @@ public class StudentAccess {
         }
         switch (choice) {
             case 1:
-                campController.sortCampsAlphabeticallyAndWrite();
+                campController.campSortingService.sortCampsAlphabeticallyAndWrite(campController);
                 break;
             case 2:
-                campController.sortCampsByStartDateAndWrite();
+                campController.campSortingService.sortCampsByStartDateAndWrite(campController);
                 break;
             case 3:
-                campController.sortCampsByEndDateAndWrite();
+                campController.campSortingService.sortCampsByEndDateAndWrite(campController);
                 break;
             case 4:
-                campController.sortCampsLocationAndWrite();
+                campController.campSortingService.sortCampsLocationAndWrite(campController);
                 break;
             default:
                 System.out.println("Invalid input - Redirecting you to Menu");
@@ -91,7 +92,7 @@ public class StudentAccess {
         }
 
         String studentFaculty = student.getFaculty();
-        List<Camp> availableCamps = campController.viewAllCamps().stream()
+        List<Camp> availableCamps = campController.campService.viewAllCamps(campController).stream()
                 .filter(camp -> camp.getFaculty().equalsIgnoreCase(studentFaculty) && camp.isVisible())
                 .collect(Collectors.toList());
 
@@ -111,14 +112,14 @@ public class StudentAccess {
         }
 
         // Retrieve the camp by name
-        Camp camp = campController.getCamp(campName);
+        Camp camp = campController.campService.getCamp(campController, campName);
         if (camp == null) {
             System.out.println("Camp not found with name: " + campName);
             return;
         }
 
         // Call the CampController to handle the withdrawal process
-        boolean isWithdrawn = campController.withdrawStudentFromAttendees(camp, student);
+        boolean isWithdrawn = campController.campRegistrationService.withdrawStudentFromAttendees(campController, camp, student);
         if (isWithdrawn) {
             student.addWithdrawnCamp(camp.getCampName());
             studentsController.updateStudentData(student);
@@ -152,7 +153,7 @@ public class StudentAccess {
 
         String studentName = student.getName(); // Retrieve the name of the logged-in student
 
-        List<Camp> myCamps = campController.viewAllCamps().stream()
+        List<Camp> myCamps = campController.campService.viewAllCamps(campController).stream()
                 .filter(camp -> {
                     List<Student> registeredStudents = camp.getRegisteredStudents();
                     List<Student> committeeMembers = camp.getCommitteeMembers();

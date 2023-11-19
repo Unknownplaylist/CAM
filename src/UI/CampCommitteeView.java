@@ -3,6 +3,7 @@ import java.util.*;
 
 import CampAccess.CommitteeAccess;
 import Controllers.*;
+import Controllers.CampManagementSystem.CampController;
 import Models.*;
 
 public class CampCommitteeView {
@@ -47,14 +48,14 @@ public class CampCommitteeView {
     
         CampController campController = new CampController(student_controller, staff_controller); // Initialize campController
     
-        Camp camp = campController.getCamp(campName);
+        Camp camp = campController.campService.getCamp(campController, campName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
         }
     
         // Check if the student is already registered in the camp
-        if (campController.isStudentRegisteredInCamp(email, campName)) {
+        if (campController.campService.isStudentRegisteredInCamp(campController, email, campName)) {
             System.out.println("You are already registered in this camp.");
             return;
         }

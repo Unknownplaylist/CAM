@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import Controllers.*;
+import Controllers.CampManagementSystem.CampController;
 import Models.*;
 
 public class StaffAccess {
@@ -81,7 +82,7 @@ public class StaffAccess {
             description=sc.nextLine();
 
             camp=new Camp(camp_name, startdate, enddate, regdate, group, location, slots, commslots, description, staff);
-            campcont.writeCamp(camp);
+            campcont.campService.writeCamp(campcont, camp);
 
             System.out.println("Camp Created");
         }
@@ -113,32 +114,32 @@ public class StaffAccess {
                 System.out.print("Enter Location: ");
                 String location = sc.nextLine();
                 location = sc.nextLine();
-                toprint=campcont.getCampsByLocation(location);
+                toprint=campcont.campService.getCampsByLocation(campcont, location);
             break;
             case 2:
                 System.out.print("Enter starting alphabets: ");
                 String st = sc.nextLine();
                 st = sc.nextLine();
-                toprint=campcont.getCampsByStartingAlphabet(st);
+                toprint=campcont.campService.getCampsByStartingAlphabet(campcont, st);
             break;
             case 3:
                 System.out.print("Enter attendee name: ");
                 String attendee_name = sc.nextLine();
                 attendee_name = sc.nextLine();
-                toprint=campcont.getCampsByAttendeeName(attendee_name);
+                toprint=campcont.campService.getCampsByAttendeeName(campcont, attendee_name);
             break;
             default:
                 System.out.println("Invalid Input - Redirecting to Menu");
                 return;
             }
-        campcont.createStaffReport(toprint, "src\\Database\\StaffReport.csv");        
+        campcont.campReportingService.createStaffReport(toprint, "src\\Database\\StaffReport.csv");        
     }
 
     public void reviewSuggestions(){
         System.out.print("Enter the name of the camp whose Suggestions you want to review : ");
         String camp_name = sc.nextLine();
-        if(campcont.checkCamp(camp_name)){
-            if(campcont.isYourCamp(staffid, camp_name)){
+        if(campcont.campService.checkCamp(campcont, camp_name)){
+            if(campcont.campService.isYourCamp(campcont, staffid, camp_name)){
                 sugg.execReviewSuggestion(camp_name);
             }
             else{
@@ -155,8 +156,8 @@ public class StaffAccess {
     public void viewSuggestions(){
         System.out.print("Enter the name of the camp whose Suggestions you want to view : ");
         String camp_name = sc.nextLine();
-        if(campcont.checkCamp(camp_name)){
-            if(campcont.isYourCamp(staffid, camp_name)){
+        if(campcont.campService.checkCamp(campcont, camp_name)){
+            if(campcont.campService.isYourCamp(campcont, staffid, camp_name)){
                 List<String[]> unrepliedSuggestionList = sugg.execFindUnrepliedSuggestion(camp_name);
                 sugg.formatMessageList(unrepliedSuggestionList);
             }
@@ -174,8 +175,8 @@ public class StaffAccess {
     public void replytoEnquiries(){
         System.out.print("Enter the name of the camp whose Enquiries you want to reply to : ");
         String camp_name = sc.nextLine();
-        if(campcont.checkCamp(camp_name)){
-            if(campcont.isYourCamp(staffid, camp_name)){
+        if(campcont.campService.checkCamp(campcont, camp_name)){
+            if(campcont.campService.isYourCamp(campcont, staffid, camp_name)){
                 enq.execReplyEnquiry(camp_name);
             }
             else{
@@ -192,8 +193,8 @@ public class StaffAccess {
     public void viewEnquiries(){
         System.out.print("Enter the name of the camp whose Enquiries you want to view : ");
         String camp_name = sc.nextLine();
-        if(campcont.checkCamp(camp_name)){
-            if(campcont.isYourCamp(staffid, camp_name)){
+        if(campcont.campService.checkCamp(campcont, camp_name)){
+            if(campcont.campService.isYourCamp(campcont, staffid, camp_name)){
                 List<String[]> unrepliedEnquiryList = enq.execFindUnrepliedEnquiry(camp_name);
                 enq.formatMessageList(unrepliedEnquiryList);
             }
@@ -224,21 +225,21 @@ public class StaffAccess {
             return;
         }
         switch(choice){
-            case 1 : campcont.sortCampsAlphabeticallyAndWrite();
+            case 1 : campcont.campSortingService.sortCampsAlphabeticallyAndWrite(campcont);
             break;
-            case 2 : campcont.sortCampsByStartDateAndWrite();
+            case 2 : campcont.campSortingService.sortCampsByStartDateAndWrite(campcont);
             break;
-            case 3 : campcont.sortCampsByEndDateAndWrite();
+            case 3 : campcont.campSortingService.sortCampsByEndDateAndWrite(campcont);
             break;
-            case 4 : campcont.sortCampsLocationAndWrite();
+            case 4 : campcont.campSortingService.sortCampsLocationAndWrite(campcont);
             break;
             default:
                 System.out.println("Invalid input - Redirecting you to Menu");
                 return;
         }
-        List <Camp> campviewer=campcont.viewAllCamps().stream().collect(Collectors.toList());;
+        List <Camp> campviewer=campcont.campService.viewAllCamps(campcont).stream().collect(Collectors.toList());;
         if(your){
-            campviewer = campcont.viewAllCamps().stream()
+            campviewer = campcont.campService.viewAllCamps(campcont).stream()
                 .filter(camp -> (camp.getStaffInCharge().getName()).equals(staff.getName()))
                 .collect(Collectors.toList()); 
             if (campviewer.isEmpty()){
@@ -254,10 +255,10 @@ public class StaffAccess {
     public void editCamp(){
         System.out.print("Enter the name of the Camp you wish to Edit : ");
         String camp_name=sc.nextLine();
-        if(campcont.checkCamp(camp_name)){
-            if(campcont.isYourCamp(staffid, camp_name)){
+        if(campcont.campService.checkCamp(campcont, camp_name)){
+            if(campcont.campService.isYourCamp(campcont, staffid, camp_name)){
                 try{
-                    Camp curr=campcont.getCamp(camp_name);
+                    Camp curr=campcont.campService.getCamp(campcont, camp_name);
 
                     System.out.print("Enter Changed Starting Date (YYYY-MM-DD): ");
                     String start_date=sc.next();
@@ -309,12 +310,12 @@ public class StaffAccess {
         System.out.print("Enter the name of the camp to delete: ");
         String campName = sc.nextLine();
 
-        if (campcont.checkCamp(campName)) {
-            if(!campcont.isYourCamp(staffid, campName)){
+        if (campcont.campService.checkCamp(campcont, campName)) {
+            if(!campcont.campService.isYourCamp(campcont, staffid, campName)){
                 System.out.println("Camp " + campName + " is not yours.");
                 return;
             }
-            campcont.deleteCamp(campName);
+            campcont.campService.deleteCamp(campcont, campName);
             System.out.println("Camp " + campName + " deleted successfully.");
         } else {
             System.out.println("Camp " + campName + " not found.");
@@ -325,12 +326,12 @@ public class StaffAccess {
         System.out.print("Enter the name of the camp to change visibility: ");
         String campName = sc.nextLine();
 
-        if (!campcont.checkCamp(campName)) {
+        if (!campcont.campService.checkCamp(campcont, campName)) {
             System.out.println("Camp " + campName + " not found.");
             return;
         }
 
-        if(!campcont.isYourCamp(staffid, campName)){
+        if(!campcont.campService.isYourCamp(campcont, staffid, campName)){
             System.out.println("Camp " + campName + " is not yours.");
             return;
         }
@@ -338,7 +339,7 @@ public class StaffAccess {
         System.out.print("Set camp visibility (true for visible, false for hidden): ");
         boolean isVisible = sc.nextBoolean();
 
-        campcont.toggleCampVisibility(campName, isVisible);
+        campcont.campService.toggleCampVisibility(campcont, campName, isVisible);
         System.out.println("Visibility of camp " + campName + " updated to " + (isVisible ? "visible" : "hidden") + ".");
     }
 }

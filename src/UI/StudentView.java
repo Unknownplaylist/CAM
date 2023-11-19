@@ -4,6 +4,7 @@ import java.util.*;
 
 import CampAccess.*;
 import Controllers.*;
+import Controllers.CampManagementSystem.CampController;
 import Models.*;
 
 import java.util.Scanner;
@@ -68,14 +69,14 @@ public class StudentView {
 
         CampController campController = new CampController(studentCont, staffCont); // Initialize campController
 
-        Camp camp = campController.getCamp(campName);
+        Camp camp = campController.campService.getCamp(campController, campName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
         }
 
         // Check if the student is already registered as a participant or committee member
-        if (campController.isStudentRegisteredInCamp(email, campName)) {
+        if (campController.campService.isStudentRegisteredInCamp(campController, email, campName)) {
             System.out.println("You are already registered in this camp.");
             return;
         }
@@ -95,14 +96,14 @@ public class StudentView {
     
         CampController campController = new CampController(studentCont, staffCont); // Initialize campController
     
-        Camp camp = campController.getCamp(campName);
+        Camp camp = campController.campService.getCamp(campController, campName);
         if (camp == null) {
             System.out.println("Camp not found.");
             return;
         }
     
         // Check if the student is already registered in the camp
-        if (campController.isStudentRegisteredInCamp(email, campName)) {
+        if (campController.campService.isStudentRegisteredInCamp(campController, email, campName)) {
             System.out.println("You are already registered in this camp.");
             return;
         }
