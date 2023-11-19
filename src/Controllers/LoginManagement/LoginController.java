@@ -2,6 +2,10 @@ package Controllers.LoginManagement;
 
 import Controllers.StaffManagement.StaffController;
 import Controllers.StudentManagement.StudentsController;
+import UI.Main;
+import UI.CampCommitteeViewManagement.CampCommitteeView;
+import UI.StaffViewManagement.StaffView;
+import UI.StudentViewManagement.StudentView;
 
 public class LoginController {
     StudentsController studentsController;
@@ -32,6 +36,31 @@ public class LoginController {
             // Invalid credentials
             System.out.println("Invalid credentials. Login failed.");
             return false;
+        }
+    }
+
+    public void UIlogIn(Main main, StudentsController sdc, StaffController sfc){
+        System.out.print("Username : ");
+        String userId = Main.sc.next();
+        System.out.print("Password : ");
+        String password = Main.sc.next();
+        System.out.println();
+        boolean loggedIn = loginUser(userId, password);
+    
+        if(loggedIn){
+            String user = loginService.userType(this, userId);
+            if(user.equalsIgnoreCase("attendee")){
+                main.studentview = new StudentView(userId,sdc,sfc);
+                main.studentview.studentMenuService.display(main.studentview);
+            }
+            else if(user.equalsIgnoreCase("committee")){
+                main.commview = new CampCommitteeView(userId, sdc);
+                main.commview.campCommitteeMenuService.display(main.commview);
+            }
+            else{
+                main.staffview = new StaffView(userId,sfc);
+                main.staffview.staffMenuService.display(main.staffview);
+            }
         }
     }
     

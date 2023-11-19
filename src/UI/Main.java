@@ -10,35 +10,11 @@ import UI.StaffViewManagement.StaffView;
 import UI.StudentViewManagement.StudentView;
 
 public class Main {
-    private StaffView staffview;
-    private StudentView studentview;
-    private CampCommitteeView commview;
-    static Scanner sc = new Scanner(System.in);
+    public StaffView staffview;
+    public StudentView studentview;
+    public CampCommitteeView commview;
+    public static Scanner sc = new Scanner(System.in);
     
-    public void UIlogIn(LoginController lgc,StudentsController sdc,StaffController sfc){
-        System.out.print("Username : ");
-        String userId = sc.next();
-        System.out.print("Password : ");
-        String password = sc.next();
-        System.out.println();
-        boolean loggedIn = lgc.loginUser(userId, password);
-
-        if(loggedIn){
-            String user = lgc.loginService.userType(lgc, userId);
-            if(user.equalsIgnoreCase("attendee")){
-                studentview = new StudentView(userId,sdc,sfc);
-                studentview.studentMenuService.display(studentview);
-            }
-            else if(user.equalsIgnoreCase("committee")){
-                commview = new CampCommitteeView(userId, sdc);
-                commview.campCommitteeMenuService.display(commview);
-            }
-            else{
-                staffview = new StaffView(userId,sfc);
-                staffview.staffMenuService.display(staffview);
-            }
-        }
-    }
     public static void main(String[] args) {
         int exit=0;
         int loginput=0;
@@ -67,7 +43,7 @@ public class Main {
 
             switch(loginput){
                 case 1 :
-                    ob.UIlogIn(loginController,studentsController,staffController);
+                    loginController.UIlogIn(ob,studentsController,staffController);
                 break;
                 case 2 : 
                     System.out.println("Closing Application...");
