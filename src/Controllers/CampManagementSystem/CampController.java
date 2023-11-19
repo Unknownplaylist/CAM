@@ -4,8 +4,9 @@ import Models.*;
 import java.io.*;
 import java.util.*;
 
-import Controllers.StudentsController;
 import Controllers.CampStaffManagement.StaffController;
+import Controllers.CampStudentManagement.StudentSearchService;
+import Controllers.CampStudentManagement.StudentsController;
 
 public class CampController {
     static final String FILE_PATH = "src/Database/CampInformation.csv";
@@ -17,6 +18,7 @@ public class CampController {
     public CampReportingService campReportingService;
     public CampService campService;
     public CampSortingServiceInterface campSortingService;
+    private StudentSearchService studentSearchService;
 
     public CampController(StudentsController studentController, StaffController staffController) {
         this.studentController = studentController;
@@ -26,6 +28,7 @@ public class CampController {
         this.campReportingService = new CampReportingService();
         this.campService = new CampService();
         this.campSortingService = new CampSortingService();
+        this.studentSearchService = studentSearchService;
 
     }
 

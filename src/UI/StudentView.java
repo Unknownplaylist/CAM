@@ -7,6 +7,7 @@ import Controllers.*;
 import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Controllers.CampStaffManagement.StaffController;
+import Controllers.CampStudentManagement.StudentsController;
 import Models.*;
 
 import java.util.Scanner;
@@ -32,15 +33,15 @@ public class StudentView {
         // Initialize StudentAccess with StaffController
         this.studentAccess = new StudentAccess(studentCont, new CampController(studentCont, staffCont), staffCont);
 
-        email = studentCont.getStudentMail(this.id);
-        name = studentCont.getStudentName(email);
-        faculty = studentCont.getStudentFaculty(email);
+        email = studentCont.studentSearchService.getStudentMail(this.id);
+        name = studentCont.studentSearchService.getStudentName(studentCont, email);
+        faculty = studentCont.studentSearchService.getStudentFaculty(studentCont, email);
     }
 
     public void PasswordChange() {
         System.out.print("Enter your new password: ");
         String new_pass = sc.next();
-        studentCont.changePassword(email, new_pass);
+        studentCont.studentService.changePassword(studentCont, email, new_pass);
         System.out.println("\nYou will now be logged out.");
         logOff = 2;
     }
@@ -85,7 +86,7 @@ public class StudentView {
     
         // Register the student as a committee member
         studentAccess.registerForCamp(email, campName, true);
-        studentCont.setStudentRole(email, "committee");
+        studentCont.studentService.setStudentRole(studentCont, email, "committee");
         System.out.println("You have been successfully registered as a committee member for the camp: " + campName+ "\n");
 
         System.out.println("Please Relogin logging off...");
@@ -131,7 +132,7 @@ public class StudentView {
         logOff = 0;
         do {
             System.out.println(name + "\n" + faculty + "\n");
-            if (studentCont.isFirstLogin(email) && logOff == 0) {
+            if (studentCont.studentAuthenticationService.isFirstLogin(studentCont, email) && logOff == 0) {
                 System.out.println("Your account is not secure - Change from the Default Password\n");
                 logOff = 1;
             }
@@ -182,7 +183,7 @@ public class StudentView {
                     PasswordChange();
                     break;
                 case 11:
-                    if (studentCont.isFirstLogin(email)) {
+                    if (studentCont.studentAuthenticationService.isFirstLogin(studentCont, email)) {
                         System.out.println("Kindly Change your password\n");
                         continue;
                     } else {

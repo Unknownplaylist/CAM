@@ -6,6 +6,7 @@ import Controllers.*;
 import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Controllers.CampStaffManagement.StaffController;
+import Controllers.CampStudentManagement.StudentsController;
 import Models.*;
 
 public class CampCommitteeView {
@@ -25,9 +26,9 @@ public class CampCommitteeView {
         this.id=id;
         this.student_controller=studentcont;
         
-        email = studentcont.getStudentMail(this.id);
-        name=studentcont.getStudentName(email);
-        faculty=studentcont.getStudentFaculty(email);
+        email = studentcont.studentSearchService.getStudentMail(this.id);
+        name=studentcont.studentSearchService.getStudentName(studentcont, email);
+        faculty=studentcont.studentSearchService.getStudentFaculty(studentcont, email);
 
         this.committeeAccess = new CommitteeAccess(suggestion_controller, enquiry_controller, studentcont, staff_controller, camp_controller, name);
     }
@@ -35,7 +36,7 @@ public class CampCommitteeView {
     public void PasswordChange(){
         System.out.print("Enter your new password: ");
         String new_pass=sc.next();
-        student_controller.changePassword(email, new_pass);
+        student_controller.studentService.changePassword(student_controller, email, new_pass);
         System.out.println("\nYou will now be logged out.");
         logOff=2;
     }
@@ -70,7 +71,7 @@ public class CampCommitteeView {
         logOff=0;
         do{
             System.out.println(name+" - Committee"+"\n"+faculty+"\n");
-            if(student_controller.isFirstLogin(email)&&logOff==0){
+            if(student_controller.studentAuthenticationService.isFirstLogin(student_controller, email)&&logOff==0){
                 System.out.println("This is your first login. Kindly set a new password\n");
                 logOff=1;
             }
@@ -142,7 +143,7 @@ public class CampCommitteeView {
                     PasswordChange();
                     break;
                 case 12: //LogOff
-                    if(student_controller.isFirstLogin(email)){
+                    if(student_controller.studentAuthenticationService.isFirstLogin(student_controller, email)){
                         System.out.println("Kindly Change your password\n");
                         continue;
                     }  

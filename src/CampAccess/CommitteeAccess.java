@@ -8,6 +8,7 @@ import Controllers.*;
 import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Controllers.CampStaffManagement.StaffController;
+import Controllers.CampStudentManagement.StudentsController;
 import Models.*;
 
 public class CommitteeAccess {
@@ -28,12 +29,12 @@ public class CommitteeAccess {
         this.student_controller = studentController;
         this.staff_controller = staffController;
         this.camp_controller = campController;
-        this.student = student_controller.getStudentByName(campCommName);
+        this.student = student_controller.studentSearchService.getStudentByName(student_controller, campCommName);
     }
 
     //CampController
     public void viewAvailableCamps(String studentEmail) {
-        Student student = student_controller.getStudentByEmail(studentEmail);
+        Student student = student_controller.studentSearchService.getStudentByEmail(student_controller, studentEmail);
         if (student == null) {
             System.out.println("Student not found.");
             return;
@@ -158,7 +159,7 @@ public class CommitteeAccess {
 
     public void generateStudentList(String studentEmail) {
         // Assuming 'getStudentByEmail' method exists in StudentsController
-        Student committeeMember = student_controller.getStudentByEmail(studentEmail);
+        Student committeeMember = student_controller.studentSearchService.getStudentByEmail(student_controller, studentEmail);
         if (committeeMember == null) {
             System.out.println("Student not found.");
             return;
@@ -191,7 +192,7 @@ public class CommitteeAccess {
     }
 
     public void registerForCamp(String studentEmail, String campName, boolean asCommitteeMember) {
-        Student student = student_controller.getStudentByEmail(studentEmail);
+        Student student = student_controller.studentSearchService.getStudentByEmail(student_controller, studentEmail);
         if (student == null) {
             System.out.println("Student not found.");
             return;
@@ -228,7 +229,7 @@ public class CommitteeAccess {
 
     public void withdrawFromCamp(String studentEmail, String campName) {
         // Find the student by email
-        Student student = student_controller.getStudentByEmail(studentEmail);
+        Student student = student_controller.studentSearchService.getStudentByEmail(student_controller, studentEmail);
         if (student == null) {
             System.out.println("Student not found with email: " + studentEmail);
             return;
@@ -245,7 +246,7 @@ public class CommitteeAccess {
         boolean isWithdrawn = camp_controller.campRegistrationService.withdrawStudentFromAttendees(camp_controller, camp, student);
         if (isWithdrawn) {
             student.addWithdrawnCamp(camp.getCampName());
-            student_controller.updateStudentData(student);
+            student_controller.studentService.updateStudentData(student_controller, student);
             System.out.println("Added to withdrawn list: " + student.getCampsWithdrawn()); // Debugging line
 
         } else {

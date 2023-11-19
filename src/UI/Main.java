@@ -3,6 +3,7 @@ import java.util.*;
 import Controllers.*;
 import Controllers.CampLoginManagement.LoginController;
 import Controllers.CampStaffManagement.StaffController;
+import Controllers.CampStudentManagement.StudentsController;
 import Models.*;
 
 public class Main {

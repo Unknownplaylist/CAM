@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import Models.Camp;
 import Models.Staff;
 import Models.Student;
+import Controllers.*;
 
 public class CampFileHandler {
 
@@ -47,19 +48,17 @@ public class CampFileHandler {
                     int committeeSlots = Integer.parseInt(data[7]);
                     String description = data[8];
                     Staff staffInCharge = campController.staffController.staffSearchService.getStaffByName(campController.staffController, data[9]);
-    
+
                     List<Student> registeredStudents = Arrays.stream(data[10].split(";"))
-                            .map(campController.studentController::getStudentByName) // Assuming getStudentByName is a method in
-                                                                      // StudentController
-                            .collect(Collectors.toList());
-    
+                        .map(studentName -> campController.studentController.studentSearchService.getStudentByName(campController.studentController, studentName))
+                        .collect(Collectors.toList());
+
                     List<Student> committeeMembers = Arrays.stream(data[11].split(";"))
-                            .map(campController.studentController::getStudentByName) // Assuming getStudentByName is a method in
-                                                                      // StudentController
-                            .collect(Collectors.toList());
-    
+                        .map(studentName -> campController.studentController.studentSearchService.getStudentByName(campController.studentController, studentName))
+                        .collect(Collectors.toList());
+
                     boolean isVisible = Boolean.parseBoolean(data[12]);
-    
+
                     Camp camp = new Camp(campName, startDate, endDate, registrationCloseDate, faculty, location,
                             totalSlots, committeeSlots, description, staffInCharge);
                     camp.setRegisteredStudents(registeredStudents);

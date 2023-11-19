@@ -7,8 +7,8 @@ public class LoginService {
             String studentEmail = id + "@e.ntu.edu.sg";
             String staffEmail = id + "@NTU.EDU.SG";
     
-            if (loginController.studentsController.verifyStudent(studentEmail)) {
-                return loginController.studentsController.getUserRole(studentEmail);
+            if (loginController.studentsController.studentAuthenticationService.verifyStudent(loginController.studentsController, studentEmail)) {
+                return loginController.studentsController.studentAuthenticationService.getUserRole(loginController.studentsController, studentEmail);
             } else if (loginController.staffController.staffService.verifyStaff(loginController.staffController, staffEmail)) {
                 return "Staff";
             } else {
@@ -28,8 +28,8 @@ public class LoginService {
         String staffEmail = (id + "@NTU.EDU.SG");
     
         // Check if the user is a student or staff and verify the password
-        if (loginController.studentsController.verifyStudent(studentEmail)) {
-            return loginController.studentsController.checkPassword(studentEmail, password);
+        if (loginController.studentsController.studentAuthenticationService.verifyStudent(loginController.studentsController, studentEmail)) {
+            return loginController.studentsController.studentAuthenticationService.checkPassword(loginController.studentsController, studentEmail, password);
         } else if (loginController.staffController.staffService.verifyStaff(loginController.staffController, staffEmail)) {
             return loginController.staffController.staffService.checkPassword(loginController.staffController, staffEmail, password);
         } else {

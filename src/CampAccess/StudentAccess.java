@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import Controllers.*;
 import Controllers.CampManagementSystem.CampController;
 import Controllers.CampStaffManagement.StaffController;
+import Controllers.CampStudentManagement.StudentsController;
 import Models.*;
 
 public class StudentAccess {
@@ -24,7 +25,7 @@ public class StudentAccess {
 
     // Method to register a student for a camp
     public void registerForCamp(String studentEmail, String campName, boolean asCommitteeMember) {
-        Student student = studentsController.getStudentByEmail(studentEmail);
+        Student student = studentsController.studentSearchService.getStudentByEmail(studentsController, studentEmail);
         if (student == null) {
             System.out.println("Student not found.");
             return;
@@ -61,7 +62,7 @@ public class StudentAccess {
 
     // Method to view available camps for a student's faculty
     public void viewAvailableCamps(String studentEmail) {
-        Student student = studentsController.getStudentByEmail(studentEmail);
+        Student student = studentsController.studentSearchService.getStudentByEmail(studentsController, studentEmail);
 
         int choice;
         System.out.println("How do you want to view the Camps?");
@@ -106,7 +107,7 @@ public class StudentAccess {
 
     public void withdrawFromCamp(String studentEmail, String campName) {
         // Find the student by email
-        Student student = studentsController.getStudentByEmail(studentEmail);
+        Student student = studentsController.studentSearchService.getStudentByEmail(studentsController, studentEmail);
         if (student == null) {
             System.out.println("Student not found with email: " + studentEmail);
             return;
@@ -123,7 +124,7 @@ public class StudentAccess {
         boolean isWithdrawn = campController.campRegistrationService.withdrawStudentFromAttendees(campController, camp, student);
         if (isWithdrawn) {
             student.addWithdrawnCamp(camp.getCampName());
-            studentsController.updateStudentData(student);
+            studentsController.studentService.updateStudentData(studentsController, student);
             System.out.println("Added to withdrawn list: " + student.getCampsWithdrawn()); // Debugging line
 
         } else {
@@ -133,7 +134,7 @@ public class StudentAccess {
 
     // Method to update student profile
     public void updateStudentProfile(String email, String newName, String newFaculty) {
-        Student student = studentsController.getStudentByEmail(email);
+        Student student = studentsController.studentSearchService.getStudentByEmail(studentsController, email);
         if (student == null) {
             System.out.println("Student not found.");
             return;
@@ -141,12 +142,12 @@ public class StudentAccess {
 
         Student updatedStudent = new Student(newName, email, newFaculty, student.getRole(), student.getPassword(),
                 student.getCampsWithdrawn());
-        studentsController.updateStudent(email, updatedStudent);
+        studentsController.studentService.updateStudent(studentsController, email, updatedStudent);
         System.out.println("Profile updated successfully.");
     }
 
     public void viewMyCamps(String studentEmail) {
-        Student student = studentsController.getStudentByEmail(studentEmail);
+        Student student = studentsController.studentSearchService.getStudentByEmail(studentsController, studentEmail);
         if (student == null) {
             System.out.println("Student not found.");
             return;

@@ -1,7 +1,7 @@
 package Controllers.CampLoginManagement;
 
-import Controllers.StudentsController;
 import Controllers.CampStaffManagement.StaffController;
+import Controllers.CampStudentManagement.StudentsController;
 
 public class LoginController {
     StudentsController studentsController;
@@ -20,7 +20,7 @@ public class LoginController {
 
         if (validCredentials) {
             // Check if the user is a student or staff
-            if (studentsController.verifyStudent(id + "@e.ntu.edu.sg") || staffController.staffService.verifyStaff(staffController, id + "@NTU.EDU.SG")) {
+            if (studentsController.studentAuthenticationService.verifyStudent(studentsController, id + "@e.ntu.edu.sg") || staffController.staffService.verifyStaff(staffController, id + "@NTU.EDU.SG")) {
                 // User is a student or staff
                 return true;
             } else {
