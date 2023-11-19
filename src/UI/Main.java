@@ -7,6 +7,7 @@ import Controllers.StudentManagement.StudentsController;
 import Models.*;
 import UI.CampCommitteeViewManagement.CampCommitteeView;
 import UI.StaffViewManagement.StaffView;
+import UI.StudentViewManagement.StudentView;
 
 public class Main {
     private StaffView staffview;
@@ -26,7 +27,7 @@ public class Main {
             String user = lgc.loginService.userType(lgc, userId);
             if(user.equalsIgnoreCase("attendee")){
                 studentview = new StudentView(userId,sdc,sfc);
-                studentview.display();
+                studentview.studentMenuService.display(studentview);
             }
             else if(user.equalsIgnoreCase("committee")){
                 commview = new CampCommitteeView(userId, sdc);
@@ -34,7 +35,7 @@ public class Main {
             }
             else{
                 staffview = new StaffView(userId,sfc);
-                staffview.display();
+                staffview.staffMenuService.display(staffview);
             }
         }
     }
