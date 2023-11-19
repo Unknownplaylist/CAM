@@ -3,12 +3,12 @@ package CampAccess.CampCommitteeAccessManagement;
 import java.util.*;
 
 import Controllers.*;
-import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Controllers.CampManagementSystem.CampRegistrationService;
-import Controllers.CampStaffManagement.StaffController;
-import Controllers.CampStudentManagement.StudentsController;
-import Controllers.CampSuggestionManagement.SuggestionController;
+import Controllers.EnquiryManagement.EnquiryController;
+import Controllers.StaffManagement.StaffController;
+import Controllers.StudentManagement.StudentsController;
+import Controllers.SuggestionManagement.SuggestionController;
 import Models.*;
 
 public class CommitteeAccess {

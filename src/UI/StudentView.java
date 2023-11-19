@@ -3,12 +3,12 @@ package UI;
 import java.util.*;
 
 import CampAccess.*;
-import CampAccess.CampStudentAccessManagement.StudentAccess;
+import CampAccess.StudentAccessManagement.StudentAccess;
 import Controllers.*;
-import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
-import Controllers.CampStaffManagement.StaffController;
-import Controllers.CampStudentManagement.StudentsController;
+import Controllers.EnquiryManagement.EnquiryController;
+import Controllers.StaffManagement.StaffController;
+import Controllers.StudentManagement.StudentsController;
 import Models.*;
 
 import java.util.Scanner;

@@ -3,7 +3,7 @@ package Controllers.CampManagementSystem;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Controllers.CampStaffManagement.StaffController;
+import Controllers.StaffManagement.StaffController;
 import Models.Camp;
 import Models.Staff;
 import Models.Student;

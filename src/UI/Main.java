@@ -1,10 +1,12 @@
 package UI;
 import java.util.*;
 import Controllers.*;
-import Controllers.CampLoginManagement.LoginController;
-import Controllers.CampStaffManagement.StaffController;
-import Controllers.CampStudentManagement.StudentsController;
+import Controllers.LoginManagement.LoginController;
+import Controllers.StaffManagement.StaffController;
+import Controllers.StudentManagement.StudentsController;
 import Models.*;
+import UI.CampCommitteeViewManagement.CampCommitteeView;
+import UI.StaffViewManagement.StaffView;
 
 public class Main {
     private StaffView staffview;
@@ -28,7 +30,7 @@ public class Main {
             }
             else if(user.equalsIgnoreCase("committee")){
                 commview = new CampCommitteeView(userId, sdc);
-                commview.display();
+                commview.campCommitteeMenuService.display(commview);
             }
             else{
                 staffview = new StaffView(userId,sfc);
