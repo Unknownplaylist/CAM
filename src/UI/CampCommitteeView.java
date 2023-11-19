@@ -36,7 +36,33 @@ public class CampCommitteeView {
         System.out.println("\nYou will now be logged out.");
         logOff=2;
     }
-
+    public void withdrawFromCamp() {
+        System.out.print("Enter the name of the camp you wish to withdraw from: ");
+        String campName = sc.next();
+        committeeAccess.withdrawFromCamp(email, campName);
+    }
+    public void registerForCamp() {
+        System.out.print("Enter the name of the camp to register: ");
+        String campName = sc.next();
+    
+        CampController campController = new CampController(student_controller, staff_controller); // Initialize campController
+    
+        Camp camp = campController.getCamp(campName);
+        if (camp == null) {
+            System.out.println("Camp not found.");
+            return;
+        }
+    
+        // Check if the student is already registered in the camp
+        if (campController.isStudentRegisteredInCamp(email, campName)) {
+            System.out.println("You are already registered in this camp.");
+            return;
+        }
+    
+        // Register the student as a participant
+        committeeAccess.registerForCamp(email, campName, false); // false indicates a regular participant
+       
+    }
     public void display(){
         logOff=0;
         do{
@@ -50,14 +76,15 @@ public class CampCommitteeView {
             System.out.println("(1) View Camps");
             System.out.println("(2) View your Camps");
             System.out.println("(3) Camp Details");
-            System.out.println("(4) Withdraw"); //Camp Committee cannot withdraw from camp
-            System.out.println("(5) Submit Suggestions");
-            System.out.println("(6) View/Edit/Delete Suggestions");
-            System.out.println("(7) Check Enquiries");
-            System.out.println("(8) Reply Enquiries");
-            System.out.println("(9) View Current Point");
-            System.out.println("(10) Change your password");
-            System.out.println("(11) LogOff\n");
+            System.out.println("(4) Register for Camp");//implemented
+            System.out.println("(5) Withdraw"); //Camp Committee cannot withdraw from camp
+            System.out.println("(6) Submit Suggestions");
+            System.out.println("(7) View/Edit/Delete Suggestions");
+            System.out.println("(8) Check Enquiries");
+            System.out.println("(9) Reply Enquiries");
+            System.out.println("(10) View Current Point");
+            System.out.println("(11) Change your password");
+            System.out.println("(12) LogOff\n");
             System.out.print("In: ");
             int choice = sc.nextInt();
             switch(choice){
@@ -70,13 +97,16 @@ public class CampCommitteeView {
                 case 3: // viewCampDetails
                     committeeAccess.generateStudentList(email);
                     break;
-                case 4: //Withdraw
-                    System.out.println("Cannot withdraw from camp where you are in the Camp Committee!");
+                case 4: 
+                    registerForCamp();
+                    break;
+                case 5: //Withdraw
+                    withdrawFromCamp();
                     break; 
-                case 5: //submitSuggestions
+                case 6: //submitSuggestions
                     committeeAccess.submitSuggestion(name);
                     break;
-                case 6: //View/Edit/Delete Suggestions
+                case 7: //View/Edit/Delete Suggestions
                     System.out.println(" Suggestions ");
                     System.out.println("======");
                     System.out.println("(1) View Suggestions");
@@ -96,19 +126,19 @@ public class CampCommitteeView {
                             break;
                     }
                     break;
-                case 7: //CheckEnquiries
+                case 8: //CheckEnquiries
                     committeeAccess.checkEnquiry(name); //GET THE CAMP FIRST
                     break;
-                case 8: //Reply Enquiries
+                case 9: //Reply Enquiries
                     committeeAccess.replyEnquiry(name); //account for multiple number of enquiries for one camp
                     break;
-                case 9:
+                case 10:
                     committeeAccess.viewPoint(name);
                     break;
-                case 10: //Change Password
+                case 11: //Change Password
                     PasswordChange();
                     break;
-                case 11: //LogOff
+                case 12: //LogOff
                     if(student_controller.isFirstLogin(email)){
                         System.out.println("Kindly Change your password\n");
                         continue;
