@@ -4,10 +4,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import CampAccess.StaffAccessManagementInterface.CampManagementServiceInterface;
 import Models.Camp;
 
-public class CampManagementService {
+public class CampManagementService implements CampManagementServiceInterface {
 
+    @Override
     public void createCamp(StaffAccess staffAccess){
         try{
             System.out.print("Camp Name : ");
@@ -77,6 +79,7 @@ public class CampManagementService {
         }
     }
 
+    @Override
     public void editCamp(StaffAccess staffAccess){
         System.out.print("Enter the name of the Camp you wish to Edit : ");
         String camp_name=StaffAccess.sc.nextLine();
@@ -131,6 +134,7 @@ public class CampManagementService {
         }
     }
 
+    @Override
     public void delCamp(StaffAccess staffAccess) {
         System.out.print("Enter the name of the camp to delete: ");
         String campName = StaffAccess.sc.nextLine();
@@ -147,6 +151,7 @@ public class CampManagementService {
         }
     }
 
+    @Override
     public void changeVisibility(StaffAccess staffAccess) {
         System.out.print("Enter the name of the camp to change visibility: ");
         String campName = StaffAccess.sc.nextLine();
@@ -168,6 +173,7 @@ public class CampManagementService {
         System.out.println("Visibility of camp " + campName + " updated to " + (isVisible ? "visible" : "hidden") + ".");
     }
 
+    @Override
     public void viewCamps(StaffAccess staffAccess, boolean your){
         int choice;
         System.out.println("How do you want to view the Camps?");

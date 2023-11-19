@@ -3,11 +3,13 @@ package CampAccess.CampCommitteeAccessManagement;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import CampAccess.CampCommitteeAccessManagementInterface.CampCommitteeServiceInterface;
 import Models.Camp;
 import Models.Student;
 
-public class CampCommitteeService {
+public class CampCommitteeService implements CampCommitteeServiceInterface {
 
+    @Override
     public void viewAvailableCamps(CommitteeAccess committeeAccess, String studentEmail) {
         Student student = committeeAccess.student_controller.studentSearchService.getStudentByEmail(committeeAccess.student_controller, studentEmail);
         if (student == null) {
@@ -32,6 +34,7 @@ public class CampCommitteeService {
         }
     }
 
+    @Override
     public void viewMyCamps(CommitteeAccess committeeAccess, String studentName) {
         //Student student = student_controller.getStudentByEmail(studentEmail);
         if (studentName == null) {
@@ -64,6 +67,7 @@ public class CampCommitteeService {
         }
     }
 
+    @Override
     public void registerForCamp(CommitteeAccess committeeAccess, String studentEmail, String campName, boolean asCommitteeMember) {
         Student student = committeeAccess.student_controller.studentSearchService.getStudentByEmail(committeeAccess.student_controller, studentEmail);
         if (student == null) {
@@ -100,6 +104,7 @@ public class CampCommitteeService {
         // campName);
     }
 
+    @Override
     public void withdrawFromCamp(CommitteeAccess committeeAccess, String studentEmail, String campName) {
         // Find the student by email
         Student student = committeeAccess.student_controller.studentSearchService.getStudentByEmail(committeeAccess.student_controller, studentEmail);

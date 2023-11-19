@@ -1,9 +1,11 @@
 package CampAccess.StudentAccessManagement;
 
+import CampAccess.StudentAccessManagementInterface.StudentProfileServiceInterface;
 import Models.Student;
 
-public class StudentProfileService {
+public class StudentProfileService implements StudentProfileServiceInterface {
 
+    @Override
     public void updateStudentProfile(StudentAccess studentAccess, String email, String newName, String newFaculty) {
         Student student = studentAccess.studentsController.studentSearchService.getStudentByEmail(studentAccess.studentsController, email);
         if (student == null) {

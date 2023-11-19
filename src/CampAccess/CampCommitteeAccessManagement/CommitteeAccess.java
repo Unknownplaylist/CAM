@@ -2,6 +2,10 @@ package CampAccess.CampCommitteeAccessManagement;
 
 import java.util.*;
 
+import CampAccess.CampCommitteeAccessManagementInterface.CampCommitteeServiceInterface;
+import CampAccess.CampCommitteeAccessManagementInterface.EnquiryManagementServiceInterface;
+import CampAccess.CampCommitteeAccessManagementInterface.StudentManagementServiceInterface;
+import CampAccess.CampCommitteeAccessManagementInterface.SuggestionManagementServiceInterface;
 import Controllers.*;
 import Controllers.CampManagementSystem.CampController;
 import Controllers.CampManagementSystem.CampRegistrationService;
@@ -19,10 +23,10 @@ public class CommitteeAccess {
     StudentsController student_controller;
     private StaffController staff_controller;
     CampController camp_controller;
-    public CampCommitteeService campCommitteeService;
-    public EnquiryManagementService enquiryManagementService;
-    public SuggestionManagementService suggestionManagementService;
-    public StudentManagementService studentManagementService;
+    public CampCommitteeServiceInterface campCommitteeService;
+    public EnquiryManagementServiceInterface enquiryManagementService;
+    public SuggestionManagementServiceInterface suggestionManagementService;
+    public StudentManagementServiceInterface studentManagementService;
 
 
     Student student;

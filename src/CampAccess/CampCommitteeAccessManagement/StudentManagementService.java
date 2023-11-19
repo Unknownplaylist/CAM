@@ -1,10 +1,12 @@
 package CampAccess.CampCommitteeAccessManagement;
 
+import CampAccess.CampCommitteeAccessManagementInterface.StudentManagementServiceInterface;
 import Models.Camp;
 import Models.Student;
 
-public class StudentManagementService {
+public class StudentManagementService implements StudentManagementServiceInterface {
 
+    @Override
     public void generateStudentList(CommitteeAccess committeeAccess, String studentEmail) {
         // Assuming 'getStudentByEmail' method exists in StudentsController
         Student committeeMember = committeeAccess.student_controller.studentSearchService.getStudentByEmail(committeeAccess.student_controller, studentEmail);
@@ -33,6 +35,7 @@ public class StudentManagementService {
         System.out.println();
     }
 
+    @Override
     public void viewPoint(CommitteeAccess committeeAccess, String campCommName){
         //Student student = student_controller.getStudentByName(campCommName);
         int point = committeeAccess.student.getPoint();

@@ -1,10 +1,12 @@
 package CampAccess.StudentAccessManagement;
 
+import CampAccess.StudentAccessManagementInterface.StudentCampRegistrationServiceInterface;
 import Models.Camp;
 import Models.Student;
 
-public class StudentCampRegistrationService {
+public class StudentCampRegistrationService implements StudentCampRegistrationServiceInterface {
 
+    @Override
     public void registerForCamp(StudentAccess studentAccess, String studentEmail, String campName, boolean asCommitteeMember) {
         Student student = studentAccess.studentsController.studentSearchService.getStudentByEmail(studentAccess.studentsController, studentEmail);
         if (student == null) {
@@ -41,6 +43,7 @@ public class StudentCampRegistrationService {
         // campName);
     }
 
+    @Override
     public void withdrawFromCamp(StudentAccess studentAccess, String studentEmail, String campName) {
         // Find the student by email
         Student student = studentAccess.studentsController.studentSearchService.getStudentByEmail(studentAccess.studentsController, studentEmail);

@@ -1,6 +1,10 @@
 package CampAccess.StaffAccessManagement;
 import java.util.*;
 
+import CampAccess.StaffAccessManagementInterface.CampManagementServiceInterface;
+import CampAccess.StaffAccessManagementInterface.CampReportingServiceInterface;
+import CampAccess.StaffAccessManagementInterface.EnquiryResponseServiceInterface;
+import CampAccess.StaffAccessManagementInterface.SuggestionReviewServiceInterface;
 import Controllers.*;
 import Controllers.CampManagementSystem.CampController;
 import Controllers.EnquiryManagement.EnquiryController;
@@ -20,10 +24,10 @@ import Models.*;
     Camp camp;
     String staffid;
     Staff staff;
-    public CampManagementService campManagementService;
-    public CampReportingService campReportingService;
-    public SuggestionReviewService suggestionReviewService;
-    public EnquiryResponseService enquiryResponseService;
+    public CampManagementServiceInterface campManagementService;
+    public CampReportingServiceInterface campReportingService;
+    public SuggestionReviewServiceInterface suggestionReviewService;
+    public EnquiryResponseServiceInterface enquiryResponseService;
 
     public StaffAccess(String staffid,StaffController staffcont){
         this.staffid=staffid;

@@ -2,10 +2,12 @@ package CampAccess.StaffAccessManagement;
 
 import java.util.List;
 
+import CampAccess.StaffAccessManagementInterface.CampReportingServiceInterface;
 import Models.Camp;
 
-public class CampReportingService {
+public class CampReportingService implements CampReportingServiceInterface {
 
+    @Override
     public void generateReport(StaffAccess staffAccess){
         List<Camp>toprint;
         System.out.println("Choose filter to view by: ");

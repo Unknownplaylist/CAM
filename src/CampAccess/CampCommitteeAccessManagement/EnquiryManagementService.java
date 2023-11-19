@@ -2,10 +2,12 @@ package CampAccess.CampCommitteeAccessManagement;
 
 import java.util.List;
 
+import CampAccess.CampCommitteeAccessManagementInterface.EnquiryManagementServiceInterface;
 import Models.Camp;
 
-public class EnquiryManagementService {
+public class EnquiryManagementService implements EnquiryManagementServiceInterface {
 
+    @Override
     public void checkEnquiry(CommitteeAccess committeeAccess, String campCommName) {
         Camp camp = committeeAccess.camp_controller.campService.getCampByCommitteeMember(committeeAccess.camp_controller, campCommName);
         if (camp == null) {
@@ -16,6 +18,7 @@ public class EnquiryManagementService {
         committeeAccess.enquiry_controller.enquiryService.formatMessageList(committeeAccess.enquiry_controller, unrepliedEnquiriesList);
     }
 
+    @Override
     public void viewEnquiry(CommitteeAccess committeeAccess, String campCommName) {
         Camp camp = committeeAccess.camp_controller.campService.getCampByCommitteeMember(committeeAccess.camp_controller, campCommName);
         if (camp == null) {
@@ -25,6 +28,7 @@ public class EnquiryManagementService {
         committeeAccess.enquiry_controller.enquiryService.viewReplyToEnquiry(committeeAccess.enquiry_controller, camp.getCampName());
     }
 
+    @Override
     public void replyEnquiry(CommitteeAccess committeeAccess, String campCommName) {
         Camp camp = committeeAccess.camp_controller.campService.getCampByCommitteeMember(committeeAccess.camp_controller, campCommName);
         if (camp == null) {

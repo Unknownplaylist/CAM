@@ -3,11 +3,13 @@ package CampAccess.StudentAccessManagement;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import CampAccess.StudentAccessManagementInterface.StudentCampViewServiceInterface;
 import Models.Camp;
 import Models.Student;
 
-public class StudentCampViewService {
+public class StudentCampViewService implements StudentCampViewServiceInterface {
 
+    @Override
     public void viewAvailableCamps(StudentAccess studentAccess, String studentEmail) {
         Student student = studentAccess.studentsController.studentSearchService.getStudentByEmail(studentAccess.studentsController, studentEmail);
     
@@ -52,6 +54,7 @@ public class StudentCampViewService {
         }
     }
 
+    @Override
     public void viewMyCamps(StudentAccess studentAccess, String studentEmail) {
         Student student = studentAccess.studentsController.studentSearchService.getStudentByEmail(studentAccess.studentsController, studentEmail);
         if (student == null) {

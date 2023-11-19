@@ -2,8 +2,11 @@ package CampAccess.StaffAccessManagement;
 
 import java.util.List;
 
-public class SuggestionReviewService {
+import CampAccess.StaffAccessManagementInterface.SuggestionReviewServiceInterface;
 
+public class SuggestionReviewService implements SuggestionReviewServiceInterface {
+
+    @Override
     public void reviewSuggestions(StaffAccess staffAccess){
         System.out.print("Enter the name of the camp whose Suggestions you want to review : ");
         String camp_name = StaffAccess.sc.nextLine();
@@ -22,6 +25,7 @@ public class SuggestionReviewService {
         }
     }
 
+    @Override
     public void viewSuggestions(StaffAccess staffAccess){
         System.out.print("Enter the name of the camp whose Suggestions you want to view : ");
         String camp_name = StaffAccess.sc.nextLine();
