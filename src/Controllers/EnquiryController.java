@@ -16,20 +16,38 @@ public class EnquiryController {
     private static final String CSV_SEPARATOR = ",";
     static Scanner sc = new Scanner(System.in);
 
-    private CampController campComtroller;
-
-    // private String message;
-    // private String student;
-    // private String camp;
-    // private String read;
-    // private String reply;
+    //private CampController campComtroller;
 
     //###################################################################################
     //IMPLEMENTATIONS FOR STUDENTS
     //###################################################################################
+    public List<String[]> findAllEnquiries(){
+        List<String[]> enquiryList = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {            
+            String[] data;
+            String line;
+            while ((line = br.readLine()) != null) {
+                data = line.split(CSV_SEPARATOR);
+                enquiryList.add(data);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading enquiry file");
+            e.printStackTrace();
+        }
+        return enquiryList;
+    }   
+    public void writeEnquiryToFile(String[] enquiry){
+        List<String[]> existingEnquiry = findAllEnquiries();
+        // int ID = existingEnquiry.size();
+        // enquiry[5] = Integer.toString(ID);
+        existingEnquiry.add(enquiry);
+        writeCSV(existingEnquiry);
+    }
+    
     public void createEnquiry(String student){
         String read = " ";
         String reply = " ";
+        String ID = " "; //To be decided later
 
         //would be better to add in functions to see if the camp exists or not based on the input
         System.out.print("Select the camp to send the enquiry to: ");
@@ -38,63 +56,83 @@ public class EnquiryController {
         System.out.print("Type in your message: ");
         String message = sc.nextLine();
 
-        String data = String.join(CSV_SEPARATOR,message, student, camp,read,reply);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            //writer.newLine();
-            writer.write(data);
-            writer.newLine();
+        String data = String.join(CSV_SEPARATOR,message, student, camp,read,reply, ID);
+        String[] enquiry = data.split(CSV_SEPARATOR);
+        writeEnquiryToFile(enquiry);
+        // try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+        //     //writer.newLine();
+        //     writer.write(data);
+        //     writer.newLine();
             
-        } catch (IOException e) {
-            System.out.println("Error uploading the enquiry");
-            e.printStackTrace();
-        }
+        // } catch (IOException e) {
+        //     System.out.println("Error uploading the enquiry");
+        //     e.printStackTrace();
+        // }
     }
 
-    public String[] studentFindEnquiry(String student, String camp){
+    public List<String[]> studentFindEnquiry(String student){
+        List<String[]> enquiryList = new ArrayList<>();
         String line;
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
             String[] data;
             while ((line = br.readLine()) != null) {
                 data = line.split(CSV_SEPARATOR);
-                if ((data[1].equalsIgnoreCase(student)) && data[2].equalsIgnoreCase(camp)){
-                    return data;
+                if (data[1].equalsIgnoreCase(student)){
+                    enquiryList.add(data);
                 }
             }
-            System.out.println("Cannot find your enquiry. Have you submitted an enquiry to " + camp + " ?");
-            return null;
         } catch (IOException e) {
             System.out.println("Error reading enquiry file");
             e.printStackTrace();
         }
-        return null;
+        return enquiryList;
     }
 
-    public void viewEnquiry(String student){
-        String[] data;
-
-        //check if camp exists
-        System.out.print("Type in the name of the Camp to view Enquiry: ");
-        String camp  = sc.nextLine();
-
-        if(studentFindEnquiry(student, camp)!=null){
-            data = studentFindEnquiry(student, camp);
-            formatMessage(data);
+    public void viewEnquiry(String student){ //View all enquiries under the student name
+        List<String[]> enquiryList = studentFindEnquiry(student);
+        if(!enquiryList.isEmpty()){
+            for (String[] enquiry : enquiryList){       
+                formatMessage(enquiry);        
+            }
         }
         else
-            System.out.println("No Enquiries to View");
+            System.out.println("You have no enquiries");
+    }
+
+    public String[] studentEnquiryBasedOnIDandCamp(String student){
+        List<String[]> studentEnquiryList = studentFindEnquiry(student);
+        if(studentEnquiryList.isEmpty()){
+            System.out.println("No Enquiries under the Student name.");
+            return null;
+        }
+        System.out.println("Type in the Enquiry ID: ");
+        String ID  = sc.nextLine();
+
+        System.out.println("Type in the name of the camp: ");
+        String camp  = sc.nextLine();
+
+        for (String[] data: studentEnquiryList){
+            if (data[5].equals(ID)){
+                if (data[2].equals(camp)){
+                    return data;
+                } else {
+                    System.out.println("Enquiry ID " + ID + " does not match the " + camp);
+                    return null;
+                }
+            }
+        }
+        return null;
     }
 
     public void editEnquiry(String student){
         //check if camp exists
-        System.out.println("Type in the name of the Camp to edit Enquiry: ");
-        String camp  = sc.nextLine();
+        String[] studentEnquiry = studentEnquiryBasedOnIDandCamp(student);
 
-        String[] studentEnquiry = studentFindEnquiry(student, camp);
-        if(studentEnquiry == null){
-            System.out.println("No Enquiries to Edit");
+        if (studentEnquiry == null){
+            System.out.println("Cannot proceed with your edit request");
             return;
         }
+
         if ((studentEnquiry[3].equals(" ")) && (studentEnquiry[4].equals(" "))){
             System.out.println("Edit your enquiry here: ");
             String message = sc.nextLine();
@@ -127,14 +165,13 @@ public class EnquiryController {
 
     public void deleteEnquiry(String student){
         //check if camp exists
-        System.out.println("Type in the name of the Camp to delete Enquiry: ");
-        String camp  = sc.nextLine();
+        String[] studentEnquiry = studentEnquiryBasedOnIDandCamp(student);
 
-        String[] studentEnquiry = studentFindEnquiry(student, camp);
-        if(studentEnquiry==null){
-            System.out.println("No Enquiries to Remove");
+        if (studentEnquiry == null){
+            System.out.println("Cannot proceed with your delete request");
             return;
         }
+
         if ((studentEnquiry[3].equals(" ")) && (studentEnquiry[4].equals(" "))){
 
             try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));){                
@@ -158,25 +195,25 @@ public class EnquiryController {
         }
     }
 
-    public void readReply(String student){
-        //check if camp exists
-        String[] studentEnquiry;
-        System.out.println("Type in the name of the Camp to read Reply to Enquiry: ");
-        String camp  = sc.nextLine();
-        if (studentFindEnquiry(student, camp) != null){
-            studentEnquiry = studentFindEnquiry(student, camp);
-        }
-        else {
-            System.out.println("Cannot find the enquiry");
-            return;
-        }
-        if ((!studentEnquiry[3].equals(" ")) && (!studentEnquiry[4].equals(" "))){
-            formatMessage(studentEnquiry);
-        }
-        else {
-            System.out.println("Your enquiry has not been replied. Stay tuned!");
-        }
-    }
+    // public void readReply(String student){
+    //     //check if camp exists
+    //     String[] studentEnquiry;
+    //     System.out.println("Type in the name of the Camp to read Reply to Enquiry: ");
+    //     String camp  = sc.nextLine();
+    //     if (studentFindEnquiry(student, camp) != null){
+    //         studentEnquiry = studentFindEnquiry(student, camp);
+    //     }
+    //     else {
+    //         System.out.println("Cannot find the enquiry");
+    //         return;
+    //     }
+    //     if ((!studentEnquiry[3].equals(" ")) && (!studentEnquiry[4].equals(" "))){
+    //         formatMessage(studentEnquiry);
+    //     }
+    //     else {
+    //         System.out.println("Your enquiry has not been replied. Stay tuned!");
+    //     }
+    // }
     //###################################################################################
     //IMPLEMENTATIONS FOR STAFF/CAMP COMM
     //###################################################################################
@@ -344,6 +381,7 @@ public class EnquiryController {
     public void formatMessage(String[] data){
         //Print out formatted view of the enquiry
         try {
+            System.out.println("ENQUIRY ID: " + data[5]);
             System.out.println("From: "+data[1]);
             System.out.println("To "+data[2] + " Organizing Committee");
             if (Objects.equals(data[3]," ")){
@@ -370,9 +408,13 @@ public class EnquiryController {
     }
 
     public void writeCSV(List<String[]> dataList){
+        int ID = 1;
         String writeLine;
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
                     for (String[] i : dataList){
+                        if (!i[5].equals("ID")){
+                            i[5] = Integer.toString(ID++);
+                        }                       
                         writeLine = String.join(CSV_SEPARATOR, i);
                         bw.write(writeLine);
                         bw.newLine();
