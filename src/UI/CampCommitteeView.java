@@ -1,7 +1,7 @@
 package UI;
 import java.util.*;
 
-import CampAccess.CommitteeAccess;
+import CampAccess.CampCommitteeManagement.CommitteeAccess;
 import Controllers.*;
 import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
@@ -44,7 +44,7 @@ public class CampCommitteeView {
     public void withdrawFromCamp() {
         System.out.print("Enter the name of the camp you wish to withdraw from: ");
         String campName = sc.next();
-        committeeAccess.withdrawFromCamp(email, campName);
+        committeeAccess.campCommitteeService.withdrawFromCamp(committeeAccess, email, campName);
     }
     public void registerForCamp() {
         System.out.print("Enter the name of the camp to register: ");
@@ -65,7 +65,7 @@ public class CampCommitteeView {
         }
     
         // Register the student as a participant
-        committeeAccess.registerForCamp(email, campName, false); // false indicates a regular participant
+        committeeAccess.campCommitteeService.registerForCamp(committeeAccess, email, campName, false); // false indicates a regular participant
        
     }
     public void display(){
@@ -94,13 +94,13 @@ public class CampCommitteeView {
             int choice = sc.nextInt();
             switch(choice){
                 case 1: //ViewCamps
-                    committeeAccess.viewAvailableCamps(email);
+                    committeeAccess.campCommitteeService.viewAvailableCamps(committeeAccess, email);
                     break;
                 case 2: //View your Camps
-                    committeeAccess.viewMyCamps(name);
+                    committeeAccess.campCommitteeService.viewMyCamps(committeeAccess, name);
                     break;
                 case 3: // viewCampDetails
-                    committeeAccess.generateStudentList(email);
+                    committeeAccess.studentManagementService.generateStudentList(committeeAccess, email);
                     break;
                 case 4: 
                     registerForCamp();
@@ -109,7 +109,7 @@ public class CampCommitteeView {
                     withdrawFromCamp();
                     break; 
                 case 6: //submitSuggestions
-                    committeeAccess.submitSuggestion(name);
+                    committeeAccess.suggestionManagementService.submitSuggestion(committeeAccess, name);
                     break;
                 case 7: //View/Edit/Delete Suggestions
                     System.out.println(" Suggestions ");
@@ -121,24 +121,24 @@ public class CampCommitteeView {
                 
                     switch (caseChoice){
                         case 1: //viewSuggestion
-                            committeeAccess.viewSuggestion(name);
+                            committeeAccess.suggestionManagementService.viewSuggestion(committeeAccess, name);
                             break;
                         case 2: //editSuggestion
-                            committeeAccess.editSuggestion(name);
+                            committeeAccess.suggestionManagementService.editSuggestion(committeeAccess, name);
                             break;
                         case 3: //deleteSuggestion
-                            committeeAccess.deleteSuggestion(name);
+                            committeeAccess.suggestionManagementService.deleteSuggestion(committeeAccess, name);
                             break;
                     }
                     break;
                 case 8: //CheckEnquiries
-                    committeeAccess.checkEnquiry(name); //GET THE CAMP FIRST
+                    committeeAccess.enquiryManagementService.checkEnquiry(committeeAccess, name); //GET THE CAMP FIRST
                     break;
                 case 9: //Reply Enquiries
-                    committeeAccess.replyEnquiry(name); //account for multiple number of enquiries for one camp
+                    committeeAccess.enquiryManagementService.replyEnquiry(committeeAccess, name); //account for multiple number of enquiries for one camp
                     break;
                 case 10:
-                    committeeAccess.viewPoint(name);
+                    committeeAccess.studentManagementService.viewPoint(committeeAccess, name);
                     break;
                 case 11: //Change Password
                     PasswordChange();
