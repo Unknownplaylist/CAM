@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import Controllers.*;
 import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
+import Controllers.CampStaffManagement.StaffController;
 import Models.*;
 
 public class StaffAccess {
@@ -23,7 +24,7 @@ public class StaffAccess {
     public StaffAccess(String staffid,StaffController staffcont){
         this.staffid=staffid;
         this.staffcont=staffcont;
-        staff=staffcont.getStaffByEmail(staffid+"@NTU.EDU.SG");
+        staff=staffcont.staffSearchService.getStaffByEmail(staffcont, staffid+"@NTU.EDU.SG");
     }
 
     public void createCamp(){

@@ -4,8 +4,8 @@ import Models.*;
 import java.io.*;
 import java.util.*;
 
-import Controllers.StaffController;
 import Controllers.StudentsController;
+import Controllers.CampStaffManagement.StaffController;
 
 public class CampController {
     static final String FILE_PATH = "src/Database/CampInformation.csv";

@@ -3,6 +3,7 @@ import java.util.*;
 
 import CampAccess.StaffAccess;
 import Controllers.*;
+import Controllers.CampStaffManagement.StaffController;
 import Models.*;
 
 public class StaffView {
@@ -17,9 +18,9 @@ public class StaffView {
     // private SuggestionController sugg;
     public StaffView(String id,StaffController staffcont){
         this.id=id;
-        email = staffcont.getStaffMail(this.id);
-        name=staffcont.getStaffName(email);
-        faculty=staffcont.getStaffFaculty(email);
+        email = staffcont.staffService.getStaffMail(this.id);
+        name=staffcont.staffService.getStaffName(staffcont, email);
+        faculty=staffcont.staffService.getStaffFaculty(staffcont, email);
         this.staffcont=staffcont;
 
     }
@@ -83,7 +84,7 @@ public class StaffView {
         try{
             System.out.print("Enter your new password: ");
             String new_pass=sc.next();
-            staffcont.changePassword(email, new_pass);
+            staffcont.staffService.changePassword(staffcont, email, new_pass);
             System.out.println("\nYou will now be logged out.");
             logOff=2;
         }
@@ -98,7 +99,7 @@ public class StaffView {
         int choice;
         do{
             System.out.println(name+"\n"+faculty+"\n");
-            if(staffcont.isFirstLogin(email)&&logOff==0){
+            if(staffcont.staffService.isFirstLogin(staffcont, email)&&logOff==0){
                 System.out.println("Your account is not secure - Change from the Default Password\n");
                 logOff=1;
             }
@@ -168,7 +169,7 @@ public class StaffView {
                 case 12:
                     PasswordChange();
                 case 13:
-                    if(staffcont.isFirstLogin(email)){
+                    if(staffcont.staffService.isFirstLogin(staffcont, email)){
                         System.out.println("Kindly Change your password\n");
                         continue;
                     }

@@ -3,7 +3,7 @@ package Controllers.CampManagementSystem;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Controllers.StaffController;
+import Controllers.CampStaffManagement.StaffController;
 import Models.Camp;
 import Models.Staff;
 import Models.Student;
@@ -55,7 +55,7 @@ public class CampService {
     public boolean isYourCamp(CampController campController, String staff_id, String camp_name){
         campController.staffController = new StaffController();
         Camp check_camp=getCamp(campController, camp_name);
-        if((check_camp.getStaffInCharge().getName()).equals(campController.staffController.getStaffName(campController.staffController.getStaffMail(staff_id)))){
+        if((check_camp.getStaffInCharge().getName()).equals(campController.staffController.staffService.getStaffName(campController.staffController, campController.staffController.staffService.getStaffMail(staff_id)))){
             return true;
         }
         return false;

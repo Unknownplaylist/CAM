@@ -9,7 +9,7 @@ public class LoginService {
     
             if (loginController.studentsController.verifyStudent(studentEmail)) {
                 return loginController.studentsController.getUserRole(studentEmail);
-            } else if (loginController.staffController.verifyStaff(staffEmail)) {
+            } else if (loginController.staffController.staffService.verifyStaff(loginController.staffController, staffEmail)) {
                 return "Staff";
             } else {
                 return "Unknown";
@@ -30,8 +30,8 @@ public class LoginService {
         // Check if the user is a student or staff and verify the password
         if (loginController.studentsController.verifyStudent(studentEmail)) {
             return loginController.studentsController.checkPassword(studentEmail, password);
-        } else if (loginController.staffController.verifyStaff(staffEmail)) {
-            return loginController.staffController.checkPassword(staffEmail, password);
+        } else if (loginController.staffController.staffService.verifyStaff(loginController.staffController, staffEmail)) {
+            return loginController.staffController.staffService.checkPassword(loginController.staffController, staffEmail, password);
         } else {
             System.out.println("User not found.");
             return false;

@@ -6,6 +6,7 @@ import CampAccess.*;
 import Controllers.*;
 import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
+import Controllers.CampStaffManagement.StaffController;
 import Models.*;
 
 import java.util.Scanner;

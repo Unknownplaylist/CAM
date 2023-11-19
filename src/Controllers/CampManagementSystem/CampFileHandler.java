@@ -46,7 +46,7 @@ public class CampFileHandler {
                     int totalSlots = Integer.parseInt(data[6]);
                     int committeeSlots = Integer.parseInt(data[7]);
                     String description = data[8];
-                    Staff staffInCharge = campController.staffController.getStaffByName(data[9]);
+                    Staff staffInCharge = campController.staffController.staffSearchService.getStaffByName(campController.staffController, data[9]);
     
                     List<Student> registeredStudents = Arrays.stream(data[10].split(";"))
                             .map(campController.studentController::getStudentByName) // Assuming getStudentByName is a method in
