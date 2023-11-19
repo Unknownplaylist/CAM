@@ -74,31 +74,6 @@ public class CampController {
         }
     }
 
-    /*public static void main(String[] args) {
-        // Assuming you have constructors for these controllers without parameters
-        StudentsController studentController = new StudentsController();
-        StaffController staffController = new StaffController();
-
-        // Create CampController with the required controllers
-        CampController campController = new CampController(studentController, staffController);
-
-        // Call readCamps method and print the results
-        List<Camp> camps = campController.readCamps();
-        for (Camp camp : camps) {
-            System.out.println("Camp Name: " + camp.getCampName());
-            System.out.println("Start Date: " + camp.getStartDate());
-            System.out.println("End Date: " + camp.getEndDate());
-            // Continue printing other details of the camp as needed
-            // ...
-            System.out.println("Registered Students: ");
-            camp.getRegisteredStudents().forEach(student -> System.out.println(student));
-            System.out.println("Committee Members: ");
-            camp.getCommitteeMembers().forEach(student -> System.out.println(student));
-            System.out.println("Is Visible: " + camp.isVisible());
-            System.out.println("---------------------------------");
-        }
-    }*/
-
     public Camp getCamp(String name) {
         return readCamps().stream()
                 .filter(camp -> camp.getCampName().equalsIgnoreCase(name))
@@ -119,13 +94,6 @@ public class CampController {
 
     public void updateCamp(String campName, Camp updatedCamp) {
         List<Camp> camps = readCamps();
-        // Camp toupdate = getCamp(campName);
-        // toupdate.setStartDate(updatedCamp.getStartDate());
-        // toupdate.setEndDate(updatedCamp.getEndDate());
-        // toupdate.setRegistrationCloseDate(updatedCamp.getRegistrationCloseDate());
-        // toupdate.setLocation(updatedCamp.getLocation());
-        // toupdate.setDescription(updatedCamp.getDescription());
-
         for(int i=0;i<camps.size();i++){
             if(updatedCamp.getCampName().equalsIgnoreCase(camps.get(i).getCampName())){
                 camps.get(i).setStartDate(updatedCamp.getStartDate());
@@ -362,6 +330,85 @@ public class CampController {
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
             return false;
+        }
+    }
+
+    public List<Camp> getCampsByLocation(String location) {
+        List<Camp> camps = viewAllCamps().stream()
+            .filter(camp -> camp.getLocation().equalsIgnoreCase(location))
+            .collect(Collectors.toList());
+    
+        if (camps.isEmpty()) {
+            System.out.println("No camps found at location: " + location);
+            return null;
+        } 
+        else {
+            return camps;
+        }
+    }
+
+    public List<Camp> getCampsByStartingAlphabet(String startingAlphabet) {
+        List<Camp> camps = viewAllCamps().stream()
+            .filter(camp -> (camp.getCampName().toUpperCase()).startsWith(startingAlphabet.toUpperCase()))
+            .collect(Collectors.toList());
+    
+        if (camps.isEmpty()) {
+            System.out.println("No camps found with names starting with : " + startingAlphabet);
+            return null;
+        } 
+        else 
+        {
+            return camps;
+        }
+    }
+
+    public List<Camp> getCampsByAttendeeName(String attendeeName) {
+        List<Camp> camps = viewAllCamps().stream()
+            .filter(camp -> camp.getRegisteredStudents().stream()
+                .anyMatch(student -> student.getName().equalsIgnoreCase(attendeeName)))
+            .collect(Collectors.toList());
+    
+        if (camps.isEmpty()) {
+            System.out.println("No camps found for attendee with name: " + attendeeName);
+            return null;
+        } 
+        else {
+            return camps;
+        }
+    }
+
+    public void createStaffReport(List<Camp> camps, String outputPath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {
+            // Write header
+            bw.write("Camp Name,Start Date,End Date,Registration Close Date,Faculty,Location,Total Slots,Committee Slots,Attendees,Camp Committee,Visible");
+            bw.newLine();
+
+            
+            for (Camp camp : camps) {
+                String registeredStudents = String.join(";",
+                        camp.getRegisteredStudents().stream().map(Student::getName).collect(Collectors.toList()));
+                String committeeMembers = String.join(";",
+                        camp.getCommitteeMembers().stream().map(Student::getName).collect(Collectors.toList()));
+                String line = String.format("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%d,%d,\"%s\",\"%s\",%b",
+                        camp.getCampName(),
+                        camp.getStartDate(),
+                        camp.getEndDate(),
+                        camp.getRegistrationCloseDate(),
+                        camp.getFaculty(),
+                        camp.getLocation(),
+                        camp.getTotalSlots(),
+                        camp.getCommitteeSlots(),
+                        registeredStudents,
+                        committeeMembers,
+                        camp.isVisible());
+
+                bw.write(line);
+                bw.newLine();
+            }
+
+            System.out.println("Staff report created successfully at: " + outputPath);
+        } catch (IOException e) {
+            System.out.println("Error creating staff report: " + e.getMessage());
         }
     }
 

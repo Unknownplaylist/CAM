@@ -87,8 +87,51 @@ public class StaffAccess {
         }
         catch(Exception e){
             System.out.println("Error creating Camp - Redirecting to Menu");
+            sc.nextLine();
+            sc.nextLine();
             return;
         }
+    }
+
+    public void generateReport(){
+        List<Camp>toprint;
+        System.out.println("Choose filter to view by: ");
+        System.out.println("(1) Location\n(2) By Starting Alphabets \n(3) By Attendee");
+        System.out.print("In: ");
+        int choice;
+        try{
+            choice = sc.nextInt();
+        }
+        catch(Exception e){
+            System.out.println("Invalid Input - Redirecting to Menu");
+            sc.nextLine();
+            sc.nextLine();
+            return;
+        } 
+        switch(choice){
+            case 1:
+                System.out.print("Enter Location: ");
+                String location = sc.nextLine();
+                location = sc.nextLine();
+                toprint=campcont.getCampsByLocation(location);
+            break;
+            case 2:
+                System.out.print("Enter starting alphabets: ");
+                String st = sc.nextLine();
+                st = sc.nextLine();
+                toprint=campcont.getCampsByStartingAlphabet(st);
+            break;
+            case 3:
+                System.out.print("Enter attendee name: ");
+                String attendee_name = sc.nextLine();
+                attendee_name = sc.nextLine();
+                toprint=campcont.getCampsByAttendeeName(attendee_name);
+            break;
+            default:
+                System.out.println("Invalid Input - Redirecting to Menu");
+                return;
+            }
+        campcont.createStaffReport(toprint, "src\\Database\\StaffReport.csv");        
     }
 
     public void reviewSuggestions(){
@@ -176,6 +219,8 @@ public class StaffAccess {
         }
         catch(Exception e){
             System.out.println("Invalid input - Redirecting you to Menu");
+            sc.nextLine();
+            sc.nextLine();
             return;
         }
         switch(choice){
