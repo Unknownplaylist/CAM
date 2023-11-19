@@ -91,6 +91,45 @@ public class StaffAccess {
         }
     }
 
+    public void generateReport(){
+        List<Camp>toprint;
+        System.out.println("Choose filter to view by: ");
+        System.out.println("(1) Location\n(2) By Starting Alphabets \n(3) By Attendee");
+        System.out.print("In: ");
+        int choice;
+        try{
+            choice = sc.nextInt();
+            switch(choice){
+                case 1:
+                    System.out.print("Enter Location: ");
+                    String location = sc.nextLine();
+                    location = sc.nextLine();
+                    toprint=campcont.getCampsByLocation(location);
+                break;
+                case 2:
+                    System.out.print("Enter starting alphabets: ");
+                    String st = sc.nextLine();
+                    st = sc.nextLine();
+                    toprint=campcont.getCampsByStartingAlphabet(st);
+                break;
+                case 3:
+                    System.out.print("Enter attendee name: ");
+                    String attendee_name = sc.nextLine();
+                    attendee_name = sc.nextLine();
+                    toprint=campcont.getCampsByAttendeeName(attendee_name);
+                break;
+                default:
+                    System.out.println("Invalid Input - Redirecting to Menu");
+                    return;
+                }
+            campcont.createStaffReport(toprint, "src\\Database\\StaffReport.csv");
+        }
+        catch(Exception e){
+            System.out.println("Invalid Input - Redirecting to Menu");
+            return;
+        }  
+    }
+
     public void reviewSuggestions(){
         System.out.print("Enter the name of the camp whose Suggestions you want to review : ");
         String camp_name = sc.nextLine();

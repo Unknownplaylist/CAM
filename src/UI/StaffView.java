@@ -24,6 +24,11 @@ public class StaffView {
 
     }
 
+    public void generateReport(){
+        access = new StaffAccess(id,staffcont);
+        access.generateReport();
+    }
+
     public void reviewSuggestions(){
         access = new StaffAccess(id,staffcont);
         access.reviewSuggestions();
@@ -123,7 +128,7 @@ public class StaffView {
             }
             System.out.println();
             switch(choice){
-                case 11 :default:
+                default:
                     System.out.println("Needs Implementation!");
                 break;
                 case 1:
@@ -155,6 +160,9 @@ public class StaffView {
                 break;
                 case 10:
                     reviewSuggestions();
+                break;
+                case 11:
+                    generateReport();
                 break;
                 case 12:
                     PasswordChange();
