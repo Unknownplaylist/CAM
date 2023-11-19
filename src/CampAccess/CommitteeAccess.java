@@ -174,4 +174,69 @@ public class CommitteeAccess {
         int point = student.getPoint();
         System.out.println("Your current point is: " + point);
     }
+
+    public void registerForCamp(String studentEmail, String campName, boolean asCommitteeMember) {
+        Student student = student_controller.getStudentByEmail(studentEmail);
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+        System.out.println("Withdrawn Camps: " + student.getCampsWithdrawn());
+
+        if (student.hasWithdrawnFromCamp(campName)) {
+            System.out.println("You cannot register for a camp that you have previously withdrawn from.");
+            return;
+        }
+
+        Camp camp = camp_controller.getCamp(campName);
+        if (camp == null) {
+            System.out.println("Camp not found.");
+            return;
+        }
+
+        if (camp_controller.isStudentRegisteredInCamp(studentEmail, campName)) {
+            System.out.println("Student is already registered in this camp.");
+            return;
+        }
+
+        // Check for date clash
+        if (camp_controller.hasDateClash(student, camp)) {
+            System.out.println("Cannot register for " + campName + " due to a date clash with another camp.");
+            return;
+        }
+
+        camp_controller.registerStudentForCamp(campName, student, asCommitteeMember);
+        // System.out.println("Student successfully registered for " +
+        // (asCommitteeMember ? "committee member" : "participant") + " in the camp: " +
+        // campName);
+    }
+
+    public void withdrawFromCamp(String studentEmail, String campName) {
+        // Find the student by email
+        Student student = student_controller.getStudentByEmail(studentEmail);
+        if (student == null) {
+            System.out.println("Student not found with email: " + studentEmail);
+            return;
+        }
+
+        // Retrieve the camp by name
+        Camp camp = camp_controller.getCamp(campName);
+        if (camp == null) {
+            System.out.println("Camp not found with name: " + campName);
+            return;
+        }
+
+        // Call the CampController to handle the withdrawal process
+        boolean isWithdrawn = camp_controller.withdrawStudentFromAttendees(camp, student);
+        if (isWithdrawn) {
+            student.addWithdrawnCamp(camp.getCampName());
+            student_controller.updateStudentData(student);
+            System.out.println("Added to withdrawn list: " + student.getCampsWithdrawn()); // Debugging line
+
+        } else {
+            System.out.println("Could not withdraw student from the camp.");
+        }
+    }
+
+   
 }
