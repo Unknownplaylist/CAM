@@ -21,12 +21,12 @@ public class CampCommitteeView {
     public CampCommitteeView(String id,StudentsController studentcont){
         this.id=id;
         this.student_controller=studentcont;
-
-        this.committeeAccess = new CommitteeAccess(suggestion_controller, enquiry_controller, studentcont, staff_controller, camp_controller);
         
         email = studentcont.getStudentMail(this.id);
         name=studentcont.getStudentName(email);
         faculty=studentcont.getStudentFaculty(email);
+
+        this.committeeAccess = new CommitteeAccess(suggestion_controller, enquiry_controller, studentcont, staff_controller, camp_controller, name);
     }
 
     public void PasswordChange(){
@@ -55,8 +55,9 @@ public class CampCommitteeView {
             System.out.println("(6) View/Edit/Delete Suggestions");
             System.out.println("(7) Check Enquiries");
             System.out.println("(8) Reply Enquiries");
-            System.out.println("(9) Change your password");
-            System.out.println("(10) LogOff\n");
+            System.out.println("(9) View Current Point");
+            System.out.println("(10) Change your password");
+            System.out.println("(11) LogOff\n");
             System.out.print("In: ");
             int choice = sc.nextInt();
             switch(choice){
@@ -101,10 +102,13 @@ public class CampCommitteeView {
                 case 8: //Reply Enquiries
                     committeeAccess.replyEnquiry(name); //account for multiple number of enquiries for one camp
                     break;
-                case 9: //Change Password
+                case 9:
+                    committeeAccess.viewPoint(name);
+                    break;
+                case 10: //Change Password
                     PasswordChange();
                     break;
-                case 10: //LogOff
+                case 11: //LogOff
                     if(student_controller.isFirstLogin(email)){
                         System.out.println("Kindly Change your password\n");
                         continue;
