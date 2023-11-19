@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import Controllers.*;
+import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Models.*;
 
@@ -129,8 +130,8 @@ public class CommitteeAccess {
             System.out.println("Camp not found.");
             return;
         }
-        List<String[]> unrepliedEnquiriesList = enquiry_controller.execFindUnrepliedEnquiry(camp.getCampName());
-        enquiry_controller.formatMessageList(unrepliedEnquiriesList);
+        List<String[]> unrepliedEnquiriesList = enquiry_controller.staffEnquiryService.execFindUnrepliedEnquiry(enquiry_controller, camp.getCampName());
+        enquiry_controller.enquiryService.formatMessageList(enquiry_controller, unrepliedEnquiriesList);
     }
 
     public void viewEnquiry(String campCommName) {
@@ -139,7 +140,7 @@ public class CommitteeAccess {
             System.out.println("Camp not found.");
             return;
         }
-        enquiry_controller.viewReplyToEnquiry(camp.getCampName());
+        enquiry_controller.enquiryService.viewReplyToEnquiry(enquiry_controller, camp.getCampName());
     }
 
     public void replyEnquiry(String campCommName) {
@@ -148,7 +149,7 @@ public class CommitteeAccess {
             System.out.println("Camp not found.");
             return;
         }
-        enquiry_controller.execReplyEnquiry(camp.getCampName());
+        enquiry_controller.staffEnquiryService.execReplyEnquiry(enquiry_controller, camp.getCampName());
         //add one point for every reply to enquiry
         //Student student = student_controller.getStudentByName(campCommName);
         student.addOnePoint();

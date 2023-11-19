@@ -4,6 +4,7 @@ import java.util.*;
 
 import CampAccess.*;
 import Controllers.*;
+import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Models.*;
 
@@ -45,22 +46,22 @@ public class StudentView {
 
     public void SubmitEnquiry() {
         enq = new EnquiryController();
-        enq.createEnquiry(name);
+        enq.enquiryService.createEnquiry(enq, name);
     }
 
     public void checkEnquiry() {
         enq = new EnquiryController();
-        enq.viewEnquiry(name);
+        enq.studentEnquiryService.viewEnquiry(enq, name);
     }
 
     public void removeEnquiry() {
         enq = new EnquiryController();
-        enq.deleteEnquiry(name);
+        enq.enquiryService.deleteEnquiry(enq, name);
     }
 
     public void changeEnquiry() {
         enq = new EnquiryController();
-        enq.editEnquiry(name);
+        enq.enquiryService.editEnquiry(enq, name);
     }
 
     public void registerAsCampCommittee() {

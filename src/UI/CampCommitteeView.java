@@ -3,6 +3,7 @@ import java.util.*;
 
 import CampAccess.CommitteeAccess;
 import Controllers.*;
+import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Models.*;
 

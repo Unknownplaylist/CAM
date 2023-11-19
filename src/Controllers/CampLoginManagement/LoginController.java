@@ -1,4 +1,7 @@
-package Controllers;
+package Controllers.CampLoginManagement;
+
+import Controllers.StaffController;
+import Controllers.StudentsController;
 
 public class LoginController {
     private StudentsController studentsController;

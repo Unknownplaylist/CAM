@@ -16,7 +16,7 @@ public class CampController {
     public CampRegistrationService campRegistrationService;
     public CampReportingService campReportingService;
     public CampService campService;
-    public CampSortingService campSortingService;
+    public CampSortingServiceInterface campSortingService;
 
     public CampController(StudentsController studentController, StaffController staffController) {
         this.studentController = studentController;

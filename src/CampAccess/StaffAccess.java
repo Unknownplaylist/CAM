@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import Controllers.*;
+import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;
 import Models.*;
 
@@ -177,7 +178,7 @@ public class StaffAccess {
         String camp_name = sc.nextLine();
         if(campcont.campService.checkCamp(campcont, camp_name)){
             if(campcont.campService.isYourCamp(campcont, staffid, camp_name)){
-                enq.execReplyEnquiry(camp_name);
+                enq.staffEnquiryService.execReplyEnquiry(enq, camp_name);
             }
             else{
                 System.out.println("Camp "+camp_name+" is not yours to access");
@@ -195,8 +196,8 @@ public class StaffAccess {
         String camp_name = sc.nextLine();
         if(campcont.campService.checkCamp(campcont, camp_name)){
             if(campcont.campService.isYourCamp(campcont, staffid, camp_name)){
-                List<String[]> unrepliedEnquiryList = enq.execFindUnrepliedEnquiry(camp_name);
-                enq.formatMessageList(unrepliedEnquiryList);
+                List<String[]> unrepliedEnquiryList = enq.staffEnquiryService.execFindUnrepliedEnquiry(enq, camp_name);
+                enq.enquiryService.formatMessageList(enq, unrepliedEnquiryList);
             }
             else{
                 System.out.println("Camp "+camp_name+" is not yours to access");

@@ -1,6 +1,7 @@
 package UI;
 import java.util.*;
 import Controllers.*;
+import Controllers.CampLoginManagement.LoginController;
 import Models.*;
 
 public class Main {

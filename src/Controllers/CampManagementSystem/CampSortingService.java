@@ -5,8 +5,9 @@ import java.util.List;
 
 import Models.Camp;
 
-public class CampSortingService {
+public class CampSortingService implements CampSortingServiceInterface {
 
+    @Override
     public void sortCampsAlphabeticallyAndWrite(CampController campController) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Method to read camps from CSV
     
@@ -17,6 +18,7 @@ public class CampSortingService {
         campController.campFileHandler.writeAllCamps(camps);
     }
 
+    @Override
     public void sortCampsByStartDateAndWrite(CampController campController) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Method to read camps from CSV
     
@@ -27,6 +29,7 @@ public class CampSortingService {
         campController.campFileHandler.writeAllCamps(camps);
     }
 
+    @Override
     public void sortCampsByEndDateAndWrite(CampController campController) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Method to read camps from CSV
     
@@ -37,6 +40,7 @@ public class CampSortingService {
         campController.campFileHandler.writeAllCamps(camps);
     }
 
+    @Override
     public void sortCampsLocationAndWrite(CampController campController) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Method to read camps from CSV
     
