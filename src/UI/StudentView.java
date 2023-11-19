@@ -3,6 +3,7 @@ package UI;
 import java.util.*;
 
 import CampAccess.*;
+import CampAccess.CampStudentAccessManagement.StudentAccess;
 import Controllers.*;
 import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;

@@ -1,4 +1,4 @@
-package CampAccess.CampCommitteeManagement;
+package CampAccess.CampCommitteeAccessManagement;
 
 import Models.Camp;
 

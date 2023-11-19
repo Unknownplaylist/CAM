@@ -1,7 +1,7 @@
 package UI;
 import java.util.*;
 
-import CampAccess.CampCommitteeManagement.CommitteeAccess;
+import CampAccess.CampCommitteeAccessManagement.CommitteeAccess;
 import Controllers.*;
 import Controllers.CampEnquiryManagement.EnquiryController;
 import Controllers.CampManagementSystem.CampController;

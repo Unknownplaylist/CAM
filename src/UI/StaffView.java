@@ -1,7 +1,7 @@
 package UI;
 import java.util.*;
 
-import CampAccess.StaffAccess;
+import CampAccess.CampStaffAccessManagement.StaffAccess;
 import Controllers.*;
 import Controllers.CampStaffManagement.StaffController;
 import Models.*;
@@ -27,57 +27,57 @@ public class StaffView {
 
     public void generateReport(){
         access = new StaffAccess(id,staffcont);
-        access.generateReport();
+        access.campReportingService.generateReport(access);
     }
 
     public void reviewSuggestions(){
         access = new StaffAccess(id,staffcont);
-        access.reviewSuggestions();
+        access.suggestionReviewService.reviewSuggestions(access);
     }
 
     public void viewSuggestions(){
         access = new StaffAccess(id,staffcont);
-        access.viewSuggestions();
+        access.suggestionReviewService.viewSuggestions(access);
     }
 
     public void replyEnquiries(){
         access = new StaffAccess(id,staffcont);
-        access.replytoEnquiries();
+        access.enquiryResponseService.replytoEnquiries(access);
     }
 
     public void viewEnquiries(){
         access = new StaffAccess(id,staffcont);
-        access.viewEnquiries();
+        access.enquiryResponseService.viewEnquiries(access);
     }
 
     public void viewCamps(){
         access = new StaffAccess(id,staffcont);
-        access.viewCamps(false);
+        access.campManagementService.viewCamps(access, false);
     }
 
     public void viewMyCamps(){
         access = new StaffAccess(id,staffcont);
-        access.viewCamps(true);
+        access.campManagementService.viewCamps(access, true);
     }
 
     public void removeCamp(){
         access = new StaffAccess(id,staffcont);
-        access.delCamp();
+        access.campManagementService.delCamp(access);
     }
 
     public void editCamp(){
         access = new StaffAccess(id,staffcont);
-        access.editCamp();
+        access.campManagementService.editCamp(access);
     }
 
     public void visibility(){
         access = new StaffAccess(id,staffcont);
-        access.changeVisibility();
+        access.campManagementService.changeVisibility(access);
     }
 
     public void CreatCamp(){
         access = new StaffAccess(id,staffcont);
-        access.createCamp();
+        access.campManagementService.createCamp(access);
     }
 
     public void PasswordChange(){
