@@ -102,11 +102,23 @@ public class CommitteeAccess {
     }
 
     public void editSuggestion(String campCommName) {
-        suggestion_controller.editSuggestion(campCommName);
+        Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
+        if (camp == null) {
+            System.out.println("Camp not found.");
+            return;
+        }
+        String campName = camp.getCampName();
+        suggestion_controller.editSuggestion(campCommName, campName);
     }
 
     public void deleteSuggestion(String campCommName) {// to extend the suggestion controller to take in camp
-        suggestion_controller.deleteSuggestion(campCommName);
+        Camp camp = camp_controller.getCampByCommitteeMember(campCommName);
+        if (camp == null) {
+            System.out.println("Camp not found.");
+            return;
+        }
+        String campName = camp.getCampName();
+        suggestion_controller.deleteSuggestion(campCommName, campName);
     }
 
     // EnquiryController

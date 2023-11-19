@@ -96,7 +96,7 @@ public class StaffAccess {
         String camp_name = sc.nextLine();
         if(campcont.checkCamp(camp_name)){
             if(campcont.isYourCamp(staffid, camp_name)){
-                sugg.reviewSuggestion(camp_name);
+                sugg.execReviewSuggestion(camp_name);
             }
             else{
                 System.out.println("Camp "+camp_name+" is not yours to access");
@@ -114,7 +114,8 @@ public class StaffAccess {
         String camp_name = sc.nextLine();
         if(campcont.checkCamp(camp_name)){
             if(campcont.isYourCamp(staffid, camp_name)){
-                sugg.checkSuggestion(camp_name);
+                List<String[]> unrepliedSuggestionList = sugg.execFindUnrepliedSuggestion(camp_name);
+                sugg.formatMessageList(unrepliedSuggestionList);
             }
             else{
                 System.out.println("Camp "+camp_name+" is not yours to access");
@@ -150,7 +151,8 @@ public class StaffAccess {
         String camp_name = sc.nextLine();
         if(campcont.checkCamp(camp_name)){
             if(campcont.isYourCamp(staffid, camp_name)){
-                enq.checkEnquiry(camp_name);
+                List<String[]> unrepliedEnquiryList = enq.execFindUnrepliedEnquiry(camp_name);
+                enq.formatMessageList(unrepliedEnquiryList);
             }
             else{
                 System.out.println("Camp "+camp_name+" is not yours to access");
