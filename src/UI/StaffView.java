@@ -124,6 +124,7 @@ public class StaffView {
             catch(InputMismatchException  e){
                 System.out.println("\nInvalid\n\n");
                 sc.nextLine();
+                sc.nextLine();
                 continue;
             }
             System.out.println();
