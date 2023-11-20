@@ -209,6 +209,7 @@ public class CampManagementService implements CampManagementServiceInterface {
                 .collect(Collectors.toList()); 
             if (campviewer.isEmpty()){
                 System.out.println("You have created no camps");
+                StaffAccess.sc.nextLine();
                 return;
             }
     
