@@ -9,6 +9,12 @@ import Models.Student;
 
 public class StudentCampViewService implements StudentCampViewServiceInterface {
 
+    /**
+     * Displays the available camps for a student based on their preferred view.
+     * 
+     * @param studentAccess The StudentAccess object.
+     * @param studentEmail The email of the student.
+     */
     @Override
     public void viewAvailableCamps(StudentAccess studentAccess, String studentEmail) {
         Student student = studentAccess.studentsController.studentSearchService.getStudentByEmail(studentAccess.studentsController, studentEmail);
@@ -54,6 +60,12 @@ public class StudentCampViewService implements StudentCampViewServiceInterface {
         }
     }
 
+    /**
+     * Retrieves and displays the camps that a student is registered for or is a committee member of.
+     * 
+     * @param studentAccess The StudentAccess object used to access the necessary controllers and services.
+     * @param studentEmail The email of the student whose camps are to be viewed.
+     */
     @Override
     public void viewMyCamps(StudentAccess studentAccess, String studentEmail) {
         Student student = studentAccess.studentsController.studentSearchService.getStudentByEmail(studentAccess.studentsController, studentEmail);

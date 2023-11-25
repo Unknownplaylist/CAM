@@ -12,6 +12,14 @@ import Models.Student;
 
 public class CampReportingService implements CampReportingServiceInterface {
 
+    /**
+     * Creates a staff report based on the given list of camps and writes it to the specified output path.
+     * The staff report includes information such as camp name, start date, end date, registration close date,
+     * faculty, location, total slots, committee slots, attendees, camp committee, and visibility.
+     *
+     * @param camps      the list of camps to include in the staff report
+     * @param outputPath the path where the staff report will be written
+     */
     @Override
     public void createStaffReport(List<Camp> camps, String outputPath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {

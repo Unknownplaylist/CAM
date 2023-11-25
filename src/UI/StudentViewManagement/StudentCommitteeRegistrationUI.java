@@ -6,6 +6,11 @@ import UI.StudentViewManagementInterface.StudentCommitteeRegistrationUIInterface
 
 public class StudentCommitteeRegistrationUI implements StudentCommitteeRegistrationUIInterface {
 
+    /**
+     * Registers the student as a committee member for a camp.
+     * 
+     * @param studentView The StudentView object.
+     */
     @Override
     public void registerAsCampCommittee(StudentView studentView) {
         System.out.print("Enter the name of the camp to register as a committee member: ");

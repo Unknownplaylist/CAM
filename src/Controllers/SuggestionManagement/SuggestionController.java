@@ -15,6 +15,9 @@ import Controllers.SuggestionManagementInterface.SuggestionViewControllerInterfa
 //Enquiry.csv:
 //Suggestion,CampCommitteeMember,Camp,Read,Review
 
+/**
+ * The SuggestionController class is responsible for managing suggestions in the system.
+ */
 public class SuggestionController {
     static Scanner sc = new Scanner(System.in);
     static final String FILE_PATH = "src/Database/Suggestion.csv";
@@ -25,6 +28,11 @@ public class SuggestionController {
     public SuggestionReviewServiceInterface suggestionReviewService;
 
     public SuggestionController(){
+
+        /**
+         * Constructs a new SuggestionController object.
+         * Initializes the necessary dependencies for managing suggestions.
+         */
         suggestionFileHandler = new SuggestionFileHandler();
         suggestionService = new SuggestionService();
         suggestionViewController = new SuggestionViewController();

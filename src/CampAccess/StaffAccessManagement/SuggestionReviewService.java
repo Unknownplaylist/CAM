@@ -6,6 +6,15 @@ import CampAccess.StaffAccessManagementInterface.SuggestionReviewServiceInterfac
 
 public class SuggestionReviewService implements SuggestionReviewServiceInterface {
 
+    /**
+     * This method allows a staff member to review suggestions for a specific camp.
+     * It prompts the user to enter the name of the camp and checks if the camp exists and if the staff member has access to it.
+     * If the camp exists and the staff member has access, it calls the execReviewSuggestion method to perform the review.
+     * If the camp does not exist, it displays an error message.
+     * If the staff member does not have access to the camp, it displays an error message.
+     *
+     * @param staffAccess the StaffAccess object representing the staff member's access and control over camps and suggestions
+     */
     @Override
     public void reviewSuggestions(StaffAccess staffAccess){
         System.out.print("Enter the name of the camp whose Suggestions you want to review : ");
@@ -25,6 +34,11 @@ public class SuggestionReviewService implements SuggestionReviewServiceInterface
         }
     }
 
+    /**
+     * Displays the suggestions for a specific camp.
+     * 
+     * @param staffAccess the staff access object
+     */
     @Override
     public void viewSuggestions(StaffAccess staffAccess){
         System.out.print("Enter the name of the camp whose Suggestions you want to view : ");

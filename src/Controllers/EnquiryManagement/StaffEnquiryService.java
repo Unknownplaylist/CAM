@@ -10,6 +10,12 @@ import Controllers.EnquiryManagementInterface.StaffEnquiryServiceInterface;
 
 public class StaffEnquiryService implements StaffEnquiryServiceInterface {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
+    /**
+     * Executes the reply to an enquiry.
+     * 
+     * @param enquiryController The EnquiryController object.
+     * @param camp The camp name.
+     */
     @Override
     public void execReplyEnquiry(EnquiryController enquiryController, String camp){
         System.out.print("Type in the Enquiry ID to reply to: ");
@@ -48,6 +54,13 @@ public class StaffEnquiryService implements StaffEnquiryServiceInterface {
         }
     }
 
+    /**
+     * Executes a search for unreplied enquiries based on the given camp.
+     * 
+     * @param enquiryController The EnquiryController object.
+     * @param camp The camp to search for unreplied enquiries.
+     * @return A list of String arrays representing the unreplied enquiries.
+     */
     @Override
     public List<String[]> execFindUnrepliedEnquiry(EnquiryController enquiryController, String camp){
         List<String[]> enquiryList = enquiryController.staffEnquiryService.execFindEnquiry(camp);
@@ -72,6 +85,12 @@ public class StaffEnquiryService implements StaffEnquiryServiceInterface {
         return unrepliedEnquiryList;
     }
 
+    /**
+     * Generates a list of all enquiries for a specific camp, including both replied and unreplied enquiries.
+     *
+     * @param camp the camp for which to retrieve the enquiries
+     * @return a list of String arrays representing the enquiries
+     */
     @Override
     public List<String[]> execFindEnquiry(String camp){ //generate the list of all enquiries for that camp, both replied and unreplied
         List<String[]> enquiryList = new ArrayList<String[]>();
@@ -91,6 +110,14 @@ public class StaffEnquiryService implements StaffEnquiryServiceInterface {
         return enquiryList;
     }
 
+    /**
+     * This method is used to reply to an enquiry.
+     * It prompts the user to enter a reply, updates the enquiry status and saves the reply in the enquiry data.
+     * It also updates the enquiry data file with the new reply.
+     *
+     * @param enquiryController The EnquiryController object.
+     * @param enquiryToReply The array containing the enquiry details to reply to.
+     */
     @Override
     public void replyEnquiry(EnquiryController enquiryController, String[] enquiryToReply){       
         System.out.print("Type in your reply: ");

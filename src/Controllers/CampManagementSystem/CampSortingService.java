@@ -8,6 +8,11 @@ import Models.Camp;
 
 public class CampSortingService implements CampSortingServiceInterface {
 
+    /**
+     * Sorts the camps alphabetically by name and writes the sorted list back to the CSV file.
+     *
+     * @param campController the CampController object used to access the camp file handler
+     */
     @Override
     public void sortCampsAlphabeticallyAndWrite(CampController campController) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Method to read camps from CSV
@@ -19,6 +24,11 @@ public class CampSortingService implements CampSortingServiceInterface {
         campController.campFileHandler.writeAllCamps(camps);
     }
 
+    /**
+     * Sorts the camps by start date and writes the sorted list back to the CSV file.
+     * 
+     * @param campController the CampController object used to read and write camps
+     */
     @Override
     public void sortCampsByStartDateAndWrite(CampController campController) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Method to read camps from CSV
@@ -30,6 +40,11 @@ public class CampSortingService implements CampSortingServiceInterface {
         campController.campFileHandler.writeAllCamps(camps);
     }
 
+    /**
+     * Sorts the camps by end date and writes the sorted list back to the CSV file.
+     *
+     * @param campController the CampController object used to access the camp file handler
+     */
     @Override
     public void sortCampsByEndDateAndWrite(CampController campController) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Method to read camps from CSV
@@ -41,6 +56,11 @@ public class CampSortingService implements CampSortingServiceInterface {
         campController.campFileHandler.writeAllCamps(camps);
     }
 
+    /**
+     * Sorts the camps by location name in ascending order and writes the sorted list back to the CSV file.
+     * 
+     * @param campController the camp controller object
+     */
     @Override
     public void sortCampsLocationAndWrite(CampController campController) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Method to read camps from CSV

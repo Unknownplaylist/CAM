@@ -11,6 +11,12 @@ import Controllers.SuggestionManagementInterface.SuggestionServiceInterface;
 
 public class SuggestionReviewService implements SuggestionReviewServiceInterface {
     static final String FILE_PATH = "src/Database/Suggestion.csv";
+    /**
+     * Generates a list of all suggestions for a given camp, including both replied and unreplied suggestions.
+     *
+     * @param camp the camp for which to find suggestions
+     * @return a list of string arrays representing the suggestions
+     */
     @Override
     public List<String[]> execFindSuggestion(String camp){ //generate the list of all enquiries for that camp, both replied and unreplied
         List<String[]> suggestionList = new ArrayList<String[]>();
@@ -30,6 +36,12 @@ public class SuggestionReviewService implements SuggestionReviewServiceInterface
         return suggestionList;
     }
 
+    /**
+     * Retrieves a list of unreplied suggestions for a given camp.
+     * 
+     * @param camp the camp for which to find unreplied suggestions
+     * @return a list of unreplied suggestions as an array of strings, or null if there are no suggestions for the camp
+     */
     @Override
     public List<String[]> execFindUnrepliedSuggestion(String camp){
         List<String[]> suggestionList = execFindSuggestion(camp);
@@ -54,6 +66,12 @@ public class SuggestionReviewService implements SuggestionReviewServiceInterface
         return unrepliedSuggestionList;
     }
 
+    /**
+     * Executes the review of a suggestion.
+     * 
+     * @param suggestionController The suggestion controller.
+     * @param camp The camp name.
+     */
     @Override
     public void execReviewSuggestion(SuggestionController suggestionController, String camp){
         System.out.print("Type in the Suggestion ID to reply to: ");
@@ -92,6 +110,13 @@ public class SuggestionReviewService implements SuggestionReviewServiceInterface
         }
     }
 
+    /**
+     * Reviews a suggestion and updates its status and decision in the suggestion file.
+     * 
+     * @param suggestionController The suggestion controller object.
+     * @param suggestionService The suggestion service interface.
+     * @param suggestionToReview The suggestion to be reviewed.
+     */
     @Override
     public void reviewSuggestion(SuggestionController suggestionController, SuggestionServiceInterface suggestionService, String[] suggestionToReview){
         System.out.println("Choose to accept/reject this suggestion: \n1.Accept\n2.Reject"); 

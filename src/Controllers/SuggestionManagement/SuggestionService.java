@@ -10,6 +10,13 @@ import Controllers.SuggestionManagementInterface.SuggestionServiceInterface;
 
 public class SuggestionService implements SuggestionServiceInterface {
     static final String FILE_PATH = "src/Database/Suggestion.csv";
+    /**
+     * Creates a suggestion and writes it to a file.
+     * 
+     * @param suggestionController The suggestion controller object.
+     * @param campCommitteeMember The name of the camp committee member.
+     * @param campName The name of the camp.
+     */
     @Override
     public void createSuggestion(SuggestionController suggestionController, String campCommitteeMember, String campName){
         String read = " ";
@@ -24,6 +31,15 @@ public class SuggestionService implements SuggestionServiceInterface {
         suggestionController.suggestionFileHandler.writeSuggestionToFile(suggestion);
     }
 
+    /**
+     * Edits a suggestion based on the student's name, assuming a student can only send one enquiry to one camp.
+     * If the suggestion is not found or has already been viewed by a staff, the edit request cannot proceed.
+     * Otherwise, the user is prompted to enter the edited suggestion, and the suggestion is updated in the CSV file.
+     *
+     * @param suggestionController The SuggestionController object.
+     * @param campCommitteeMember The name of the camp committee member.
+     * @param camp The camp name.
+     */
     @Override
     public void editSuggestion(SuggestionController suggestionController, String campCommitteeMember, String camp){ //Look for the enquiry based on the student's name, assuming a student can only send one enquiry to one camp
         String[] studentSuggestion = suggestionController.suggestionService.studentSuggestionBasedOnIDandCamp(campCommitteeMember, camp);
@@ -63,6 +79,14 @@ public class SuggestionService implements SuggestionServiceInterface {
         
     }
 
+    /**
+     * Deletes a suggestion based on the provided camp committee member and camp.
+     * If the suggestion is not found or has been viewed by a staff, the delete request cannot proceed.
+     *
+     * @param suggestionController The suggestion controller object.
+     * @param campCommitteeMember The camp committee member.
+     * @param camp The camp.
+     */
     @Override
     public void deleteSuggestion(SuggestionController suggestionController, String campCommitteeMember, String camp){
         String[] studentSuggestion = suggestionController.suggestionService.studentSuggestionBasedOnIDandCamp(campCommitteeMember, camp);
@@ -98,6 +122,12 @@ public class SuggestionService implements SuggestionServiceInterface {
         }
     }
 
+    /**
+     * Retrieves a list of suggestions made by a specific camp committee member.
+     *
+     * @param campCommitteeMember The name of the camp committee member.
+     * @return A list of string arrays representing the suggestions made by the camp committee member.
+     */
     @Override
     public List<String[]> studentFindSuggestion(String campCommitteeMember){
         List<String[]> suggestionList = new ArrayList<>();
@@ -117,6 +147,13 @@ public class SuggestionService implements SuggestionServiceInterface {
         return suggestionList;
     }
 
+    /**
+     * Retrieves a student suggestion based on the student's name and camp.
+     * 
+     * @param student the name of the student
+     * @param camp the camp name
+     * @return an array of strings representing the suggestion data, or null if no suggestion is found
+     */
     @Override
     public String[] studentSuggestionBasedOnIDandCamp(String student, String camp){
         List<String[]> studentEnquiryList = studentFindSuggestion(student);

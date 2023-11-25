@@ -7,6 +7,12 @@ import Controllers.SuggestionManagementInterface.SuggestionViewControllerInterfa
 
 public class SuggestionViewController implements SuggestionViewControllerInterface {
 
+    /**
+     * Formats and displays the list of suggestions.
+     * 
+     * @param suggestionController The suggestion controller.
+     * @param suggestionList The list of suggestions to be formatted and displayed.
+     */
     @Override
     public void formatMessageList(SuggestionController suggestionController, List<String[]> suggestionList){
         if (suggestionList == null){
@@ -20,6 +26,11 @@ public class SuggestionViewController implements SuggestionViewControllerInterfa
         }
     }
 
+    /**
+     * Formats and prints out the view of an enquiry message.
+     * 
+     * @param data an array of strings containing the necessary data for formatting the message
+     */
     @Override
     public void formatMessage(String[] data){
         //Print out formatted view of the enquiry
@@ -40,6 +51,12 @@ public class SuggestionViewController implements SuggestionViewControllerInterfa
         }
     }
 
+    /**
+     * Displays the review for a suggestion.
+     * 
+     * @param suggestionController The suggestion controller.
+     * @param camp The camp name.
+     */
     @Override
     public void viewReviewToSuggestion(SuggestionController suggestionController, String camp){
         List<String[]> suggestionList = suggestionController.suggestionReviewService.execFindSuggestion(camp);
@@ -52,6 +69,12 @@ public class SuggestionViewController implements SuggestionViewControllerInterfa
         else System.out.println("No visible suggestions.");       
     }
 
+    /**
+     * View all suggestions under the camp committee member's name.
+     *
+     * @param suggestionController The suggestion controller.
+     * @param campCommitteeMember  The camp committee member's name.
+     */
     @Override
     public void viewSuggestion(SuggestionController suggestionController, String campCommitteeMember){ //view all suggestions under the camp comm name
         List<String[]> suggestionList = suggestionController.suggestionService.studentFindSuggestion(campCommitteeMember);

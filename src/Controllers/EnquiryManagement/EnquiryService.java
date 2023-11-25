@@ -11,6 +11,12 @@ import Controllers.EnquiryManagementInterface.EnquiryServiceInterface;
 
 public class EnquiryService implements EnquiryServiceInterface {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
+    /**
+     * Formats and displays the list of enquiries.
+     * 
+     * @param enquiryController The EnquiryController object.
+     * @param enquiryList The list of enquiries to be formatted and displayed.
+     */
     @Override
     public void formatMessageList(EnquiryController enquiryController, List<String[]> enquiryList){
         if (enquiryList == null){
@@ -24,6 +30,11 @@ public class EnquiryService implements EnquiryServiceInterface {
         }
     }
 
+    /**
+     * Prints out a formatted view of the enquiry.
+     * 
+     * @param data an array of strings containing the enquiry data
+     */
     @Override
     public void formatMessage(String[] data){
         //Print out formatted view of the enquiry
@@ -46,6 +57,12 @@ public class EnquiryService implements EnquiryServiceInterface {
         }
     }
 
+    /**
+     * Displays the replies to an enquiry for a specific camp.
+     * 
+     * @param enquiryController The EnquiryController object.
+     * @param camp The camp for which to view the replies.
+     */
     @Override
     public void viewReplyToEnquiry(EnquiryController enquiryController, String camp){
         List<String[]> enquiryList = enquiryController.staffEnquiryService.execFindEnquiry(camp);
@@ -58,6 +75,13 @@ public class EnquiryService implements EnquiryServiceInterface {
         else System.out.println("No visible enquiries.");       
     }
 
+    /**
+     * Deletes an enquiry based on the provided student ID and camp information.
+     * If the enquiry does not exist or has been viewed by a staff or Camp Committee Member, the deletion request is denied.
+     *
+     * @param enquiryController The EnquiryController object.
+     * @param student The student ID.
+     */
     @Override
     public void deleteEnquiry(EnquiryController enquiryController, String student){
         //check if camp exists
@@ -94,6 +118,16 @@ public class EnquiryService implements EnquiryServiceInterface {
         }
     }
 
+    /**
+     * Edits the enquiry based on the provided EnquiryController and student ID.
+     * If the enquiry does not exist, it prints a message and returns.
+     * If the enquiry has not been viewed by a staff or Camp Committee Member, it allows the user to edit the enquiry message.
+     * The updated enquiry is then written back to the CSV file.
+     * If the enquiry has been viewed, it prints a message indicating that the enquiry cannot be edited.
+     *
+     * @param enquiryController The EnquiryController object.
+     * @param student The student ID.
+     */
     @Override
     public void editEnquiry(EnquiryController enquiryController, String student){
         //check if camp exists
@@ -134,6 +168,12 @@ public class EnquiryService implements EnquiryServiceInterface {
         
     }
 
+    /**
+     * Creates an enquiry by taking input from the user and writing it to a file.
+     * 
+     * @param enquiryController The EnquiryController object.
+     * @param student The name of the student.
+     */
     @Override
     public void createEnquiry(EnquiryController enquiryController, String student){
         String read = " ";

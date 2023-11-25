@@ -18,6 +18,10 @@ import UI.StudentViewManagementInterface.StudentProfileUIInterface;
 
 import java.util.Scanner;
 
+/**
+ * The StudentView class represents the view for a student in the CAM system.
+ * It provides access to various functionalities and information related to the student.
+ */
 public class StudentView {
     static Scanner sc = new Scanner(System.in);
     private String id;
@@ -41,6 +45,10 @@ public class StudentView {
     int logOff = 2;
 
     // Constructor
+    /**
+     * Represents a view for a student in the user interface.
+     * This class is responsible for managing the display and interaction of a student's information and actions.
+     */
     public StudentView(String id, StudentsController studentCont, StaffController staffCont) {
         this.id = id;
         this.studentCont = studentCont;

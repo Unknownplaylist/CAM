@@ -38,6 +38,10 @@ public class CampCommitteeView {
     CampCommitteeCampUIInterface campCommitteeCampUI;
 
     int logOff=2;
+    /**
+     * Represents the view for the camp committee.
+     * This class is responsible for managing the user interface and interactions related to the camp committee.
+     */
     public CampCommitteeView(String id,StudentsController studentcont){
         this.id=id;
         this.student_controller=studentcont;

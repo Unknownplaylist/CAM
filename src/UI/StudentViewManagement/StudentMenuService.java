@@ -4,6 +4,11 @@ import UI.StudentViewManagementInterface.StudentMenuServiceInterface;
 
 public class StudentMenuService implements StudentMenuServiceInterface {
 
+    /**
+     * Displays the student menu and handles user input for various actions.
+     * 
+     * @param studentView the StudentView object containing the necessary data for display
+     */
     @Override
     public void display(StudentView studentView) {
         studentView.logOff = 0;

@@ -11,6 +11,12 @@ import Models.Student;
 public class StudentService implements StudentServiceInterface {
     static final String FILE_PATH = "src/Database/student.csv";
 
+    /**
+     * Updates the data of a student in the student list and writes the updated list back to the CSV file.
+     *
+     * @param studentsController The controller for managing students.
+     * @param updatedStudent The updated student object.
+     */
     @Override
     public void updateStudentData(StudentsController studentsController, Student updatedStudent) {
         List<Student> students = studentsController.studentFileHandler.readStudents();
@@ -45,6 +51,13 @@ public class StudentService implements StudentServiceInterface {
         }
     }
 
+    /**
+     * Updates a student's information based on their email.
+     * 
+     * @param studentsController The controller object for managing students.
+     * @param email The email of the student to be updated.
+     * @param updatedStudent The updated student object containing the new information.
+     */
     @Override
     public void updateStudent(StudentsController studentsController, String email, Student updatedStudent) {
         List<Student> students = studentsController.studentFileHandler.readStudents();
@@ -82,6 +95,15 @@ public class StudentService implements StudentServiceInterface {
         }
     }
 
+    /**
+     * Changes the password of a student with the specified email.
+     * If a student with the given email is found, their password is updated with the new password.
+     * If no student is found with the given email, a message is printed indicating that the student was not found.
+     *
+     * @param studentsController The controller for managing students.
+     * @param email The email of the student whose password needs to be changed.
+     * @param newPassword The new password to set for the student.
+     */
     @Override
     public void changePassword(StudentsController studentsController, String email, String newPassword) {
         List<Student> students = studentsController.studentFileHandler.readStudents();
@@ -100,6 +122,15 @@ public class StudentService implements StudentServiceInterface {
         }
     }
 
+    /**
+     * Sets the role of a student identified by their email address.
+     * Only 'attendee' or 'committee' roles are allowed.
+     * 
+     * @param studentsController The controller for managing students.
+     * @param email The email address of the student.
+     * @param role The role to be set for the student.
+     * @return true if the role was successfully set, false otherwise.
+     */
     @Override
     public boolean setStudentRole(StudentsController studentsController, String email, String role) {
         if (!role.equals("attendee") && !role.equals("committee")) {

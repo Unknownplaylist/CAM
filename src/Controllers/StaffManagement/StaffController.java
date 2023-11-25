@@ -16,7 +16,14 @@ public class StaffController {
     public StaffSearchServiceInterface staffSearchService;
     public StaffServiceInterface staffService;
 
+    /**
+     * This class represents a controller for managing staff members.
+     */
     public StaffController() {
+        /**
+         * Constructs a new StaffController object.
+         * Initializes the necessary dependencies for managing staff members.
+         */
         this.staffFileHandler = new StaffFileHandler();
         this.staffSearchService = new StaffSearchService();
         this.staffService = new StaffService();

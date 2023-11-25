@@ -31,6 +31,16 @@ public class CommitteeAccess {
 
     Student student;
 
+    /**
+     * Represents a CommitteeAccess object that manages access to various controllers and services.
+     * 
+     * @param suggestionController The SuggestionController object.
+     * @param enquiryController The EnquiryController object.
+     * @param studentController The StudentsController object.
+     * @param staffController The StaffController object.
+     * @param campController The CampController object.
+     * @param campCommName The name of the camp committee.
+     */
     public CommitteeAccess(SuggestionController suggestionController, EnquiryController enquiryController,
             StudentsController studentController, StaffController staffController, CampController campController, String campCommName) {
         this.suggestion_controller = suggestionController;

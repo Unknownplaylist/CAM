@@ -22,6 +22,12 @@ import Controllers.CampManagementSystemInterface.CampFileHandlerInterface;
 
 public class CampFileHandler implements CampFileHandlerInterface {
 
+    /**
+     * Reads the camps data from a file and returns a list of Camp objects.
+     * 
+     * @param campController the CampController object used to access other controllers and services
+     * @return a list of Camp objects read from the file
+     */
     @Override
     public List<Camp> readCamps(CampController campController) {
         List<Camp> camps = new ArrayList<>();
@@ -76,6 +82,11 @@ public class CampFileHandler implements CampFileHandlerInterface {
         }
     }
 
+    /**
+     * Writes all camps to a file.
+     * 
+     * @param camps The list of camps to write.
+     */
     @Override
     public void writeAllCamps(List<Camp> camps) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(CampController.FILE_PATH))) {

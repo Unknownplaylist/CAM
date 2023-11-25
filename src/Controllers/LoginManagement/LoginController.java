@@ -14,12 +14,23 @@ public class LoginController implements LoginControllerInterface {
     StaffController staffController; 
     public LoginServiceInterface loginService;
 
+    /**
+     * The LoginController class handles the login functionality of the application.
+     * It is responsible for managing the login service and interacting with the StudentsController and StaffController.
+     */
     public LoginController(StudentsController studentsController, StaffController staffController) {
         this.studentsController = studentsController;
         this.staffController = staffController;
         this.loginService = new LoginService();
     }
 
+    /**
+     * Authenticates a user by verifying their credentials.
+     * 
+     * @param id       the user's ID
+     * @param password the user's password
+     * @return true if the user is authenticated, false otherwise
+     */
     @Override
     public boolean loginUser(String id, String password) {
         // Verify user credentials (e.g., id and password)
@@ -42,6 +53,14 @@ public class LoginController implements LoginControllerInterface {
         }
     }
 
+    /**
+     * Prompts the user to enter a username and password for login.
+     * If the login is successful, determines the user type and displays the corresponding menu.
+     * 
+     * @param main The main application object.
+     * @param sdc The StudentsController object.
+     * @param sfc The StaffController object.
+     */
     @Override
     public void UIlogIn(Main main, StudentsController sdc, StaffController sfc){
         System.out.print("Username : ");

@@ -4,6 +4,13 @@ import UI.StaffViewManagementInterface.StaffProfileUIInterface;
 
 public class StaffProfileUI implements StaffProfileUIInterface {
 
+    /**
+     * Changes the password for the staff member.
+     * Prompts the user to enter a new password and updates it in the staff service.
+     * After changing the password, logs off the staff member.
+     *
+     * @param staffView The StaffView object associated with the staff member.
+     */
     @Override
     public void PasswordChange(StaffView staffView){
         try{

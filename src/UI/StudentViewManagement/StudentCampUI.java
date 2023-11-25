@@ -6,6 +6,11 @@ import UI.StudentViewManagementInterface.StudentCampUIInterface;
 
 public class StudentCampUI implements StudentCampUIInterface {
 
+    /**
+     * Registers a student for a camp.
+     * 
+     * @param studentView The student view object.
+     */
     @Override
     public void registerForCamp(StudentView studentView) {
         System.out.print("Enter the name of the camp to register: ");
@@ -30,6 +35,11 @@ public class StudentCampUI implements StudentCampUIInterface {
        
     }
 
+    /**
+     * Allows a student to withdraw from a camp.
+     * 
+     * @param studentView the student view object
+     */
     @Override
     public void withdrawFromCamp(StudentView studentView) {
         System.out.print("Enter the name of the camp you wish to withdraw from: ");
@@ -37,11 +47,21 @@ public class StudentCampUI implements StudentCampUIInterface {
         studentView.studentAccess.studentCampRegistrationService.withdrawFromCamp(studentView.studentAccess, studentView.email, campName);
     }
 
+    /**
+     * Displays the available camps for a student.
+     * 
+     * @param studentView the student view object
+     */
     @Override
     public void viewCamps(StudentView studentView) {
         studentView.studentAccess.studentCampViewService.viewAvailableCamps(studentView.studentAccess, studentView.email);
     }
 
+    /**
+     * Displays the camps associated with the student.
+     * 
+     * @param studentView the StudentView object containing the student's information
+     */
     @Override
     public void viewMyCamps(StudentView studentView) {
         studentView.studentAccess.studentCampViewService.viewMyCamps(studentView.studentAccess, studentView.email);

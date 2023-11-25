@@ -10,6 +10,10 @@ import UI.CampCommitteeViewManagement.CampCommitteeView;
 import UI.StaffViewManagement.StaffView;
 import UI.StudentViewManagement.StudentView;
 
+/**
+ * The Main class represents the entry point of the CAM application.
+ * It provides the main method to start the application and handle user input.
+ */
 public class Main {
     public StaffView staffview;
     public StudentView studentview;

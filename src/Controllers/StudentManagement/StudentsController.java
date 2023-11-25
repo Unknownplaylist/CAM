@@ -18,7 +18,15 @@ public class StudentsController {
     public StudentServiceInterface studentService;
     public StudentAuthenticationServiceInterface studentAuthenticationService;
 
+    /**
+     * This class represents a controller for managing students.
+     */
     public StudentsController() {
+
+        /**
+         * Constructs a new StudentsController object.
+         * Initializes the necessary dependencies for managing students.
+         */
         this.studentFileHandler = new StudentFileHandler();
         this.studentSearchService = new StudentSearchService();
         this.studentService = new StudentService();

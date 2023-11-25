@@ -14,6 +14,13 @@ import Models.Staff;
 
 public class StaffFileHandler implements StaffFileHandlerInterface {
     static final String FILE_PATH = "src/Database/staff.csv";
+    /**
+     * Reads the staff data from a file and returns a list of Staff objects.
+     * If the file does not exist, an empty list is returned.
+     * If there is any invalid staff data in the file, it is skipped and not included in the list.
+     *
+     * @return A list of Staff objects read from the file.
+     */
     @Override
     public List<Staff> readStaff() {
         List<Staff> staffList = new ArrayList<>();
@@ -42,6 +49,11 @@ public class StaffFileHandler implements StaffFileHandlerInterface {
         return staffList;
     }
 
+    /**
+     * Writes the staff information to a file.
+     * 
+     * @param staff the staff object containing the information to be written
+     */
     @Override
     public void writeStaff(Staff staff) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
@@ -54,6 +66,12 @@ public class StaffFileHandler implements StaffFileHandlerInterface {
         }
     }
 
+    /**
+     * Updates the staff list by writing the staff information to a file.
+     * Each staff's information is written as a line in the file, with fields separated by commas.
+     * 
+     * @param staffList the list of staff to be updated
+     */
     @Override
     public void updateStaffList(List<Staff> staffList) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {

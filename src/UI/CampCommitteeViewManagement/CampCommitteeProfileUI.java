@@ -4,6 +4,11 @@ import UI.CampCommitteeViewManagementInterface.CampCommitteeProfileUIInterface;
 
 public class CampCommitteeProfileUI implements CampCommitteeProfileUIInterface {
 
+    /**
+     * Changes the password for the camp committee user.
+     * 
+     * @param campCommitteeView The CampCommitteeView object.
+     */
     @Override
     public void PasswordChange(CampCommitteeView campCommitteeView){
         System.out.print("Enter your new password: ");

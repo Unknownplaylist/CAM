@@ -7,6 +7,11 @@ import UI.CampCommitteeViewManagementInterface.CampCommitteeRegistrationUIInterf
 
 public class CampCommitteeRegistrationUI implements CampCommitteeRegistrationUIInterface {
 
+    /**
+     * Allows a camp committee member to withdraw from a camp.
+     * 
+     * @param campCommitteeView The camp committee view object.
+     */
     @Override
     public void withdrawFromCamp(CampCommitteeView campCommitteeView) {
         System.out.print("Enter the name of the camp you wish to withdraw from: ");
@@ -14,6 +19,12 @@ public class CampCommitteeRegistrationUI implements CampCommitteeRegistrationUII
         campCommitteeView.committeeAccess.campCommitteeService.withdrawFromCamp(campCommitteeView.committeeAccess, campCommitteeView.email, campName);
     }
 
+    /**
+     * Registers a camp committee member for a camp.
+     * 
+     * @param campCommitteeView The camp committee view object.
+     * @param campCommitteeMenuService The camp committee menu service interface.
+     */
     @Override
     public void registerForCamp(CampCommitteeView campCommitteeView, CampCommitteeMenuServiceInterface campCommitteeMenuService) {
         System.out.print("Enter the name of the camp to register: ");

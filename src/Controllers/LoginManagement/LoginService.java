@@ -4,6 +4,13 @@ import Controllers.LoginManagementInterface.LoginServiceInterface;
 
 public class LoginService implements LoginServiceInterface {
 
+    /**
+     * Determines the user type based on the provided ID.
+     * 
+     * @param loginController The LoginController object.
+     * @param id The ID of the user.
+     * @return The user type as a String ("Student", "Staff", or "Unknown").
+     */
     @Override
     public String userType(LoginController loginController, String id){
     
@@ -19,6 +26,14 @@ public class LoginService implements LoginServiceInterface {
             }
     }
 
+    /**
+     * Verifies the credentials of a user.
+     * 
+     * @param loginController The login controller object.
+     * @param id The user ID.
+     * @param password The user password.
+     * @return true if the credentials are valid, false otherwise.
+     */
     @Override
     public boolean verifyCredentials(LoginController loginController, String id, String password) {
         // Verify that the ID is not null

@@ -10,6 +10,14 @@ import Models.Student;
 
 public class CampRegistrationService implements CampRegistrationServiceInterface {
 
+    /**
+     * Registers a student for a camp.
+     *
+     * @param campController The camp controller object.
+     * @param campName The name of the camp.
+     * @param student The student to be registered.
+     * @param asCommitteeMember Indicates whether the student is registering as a committee member.
+     */
     @Override
     public void registerStudentForCamp(CampController campController, String campName, Student student, boolean asCommitteeMember) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController);
@@ -48,6 +56,13 @@ public class CampRegistrationService implements CampRegistrationServiceInterface
         }
     }
 
+    /**
+     * Withdraws a student from a camp.
+     * 
+     * @param campController The camp controller.
+     * @param camp The camp from which the student will be withdrawn.
+     * @param student The student to be withdrawn.
+     */
     @Override
     public void withdrawStudentFromCamp(CampController campController, Camp camp, Student student) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Read all camps
@@ -73,6 +88,14 @@ public class CampRegistrationService implements CampRegistrationServiceInterface
         }
     }
 
+    /**
+     * Withdraws a student from the list of attendees for a camp.
+     * 
+     * @param campController the camp controller object
+     * @param camp the camp object
+     * @param student the student object to be withdrawn
+     * @return true if the student was successfully withdrawn, false otherwise
+     */
     @Override
     public boolean withdrawStudentFromAttendees(CampController campController, Camp camp, Student student) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController);
@@ -101,6 +124,13 @@ public class CampRegistrationService implements CampRegistrationServiceInterface
         return false; // Indicate unsuccessful removal or camp not found
     }
 
+    /**
+     * Withdraws a student from the committee of a camp.
+     * 
+     * @param campController The camp controller object.
+     * @param camp The camp from which the student will be withdrawn.
+     * @param student The student to be withdrawn from the committee.
+     */
     @Override
     public void withdrawStudentFromCommittee(CampController campController, Camp camp, Student student) {
         List<Camp> camps = campController.campFileHandler.readCamps(campController); // Read all camps
@@ -124,6 +154,14 @@ public class CampRegistrationService implements CampRegistrationServiceInterface
         }
     }
 
+    /**
+     * Returns a list of strings representing the available camp slots.
+     * Each string contains the camp name, the number of remaining slots,
+     * and the visibility status of the camp.
+     *
+     * @param campController the camp controller object
+     * @return a list of strings representing the available camp slots
+     */
     @Override
     public List<String> viewCampSlots(CampController campController) {
         return campController.campFileHandler.readCamps(campController).stream()

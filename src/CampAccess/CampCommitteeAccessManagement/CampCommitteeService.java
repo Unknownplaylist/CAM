@@ -7,6 +7,9 @@ import CampAccess.CampCommitteeAccessManagementInterface.CampCommitteeServiceInt
 import Models.Camp;
 import Models.Student;
 
+/**
+ * The CampCommitteeService class implements the CampCommitteeServiceInterface and provides methods for managing camp committees and registrations.
+ */
 public class CampCommitteeService implements CampCommitteeServiceInterface {
 
     @Override
@@ -34,6 +37,12 @@ public class CampCommitteeService implements CampCommitteeServiceInterface {
         }
     }
 
+    /**
+     * Retrieves and displays the camps that a student is registered for or is a committee member of.
+     * 
+     * @param committeeAccess The committee access object.
+     * @param studentName The name of the student.
+     */
     @Override
     public void viewMyCamps(CommitteeAccess committeeAccess, String studentName) {
         //Student student = student_controller.getStudentByEmail(studentEmail);
@@ -67,6 +76,14 @@ public class CampCommitteeService implements CampCommitteeServiceInterface {
         }
     }
 
+    /**
+     * Registers a student for a camp.
+     *
+     * @param committeeAccess The CommitteeAccess object.
+     * @param studentEmail The email of the student.
+     * @param campName The name of the camp.
+     * @param asCommitteeMember Indicates whether the student is registering as a committee member.
+     */
     @Override
     public void registerForCamp(CommitteeAccess committeeAccess, String studentEmail, String campName, boolean asCommitteeMember) {
         Student student = committeeAccess.student_controller.studentSearchService.getStudentByEmail(committeeAccess.student_controller, studentEmail);
@@ -104,6 +121,13 @@ public class CampCommitteeService implements CampCommitteeServiceInterface {
         // campName);
     }
 
+    /**
+     * Withdraws a student from a camp.
+     * 
+     * @param committeeAccess The CommitteeAccess object.
+     * @param studentEmail The email of the student to be withdrawn.
+     * @param campName The name of the camp.
+     */
     @Override
     public void withdrawFromCamp(CommitteeAccess committeeAccess, String studentEmail, String campName) {
         // Find the student by email

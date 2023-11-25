@@ -10,6 +10,13 @@ import Controllers.EnquiryManagementInterface.StudentEnquiryServiceInterface;
 
 public class StudentEnquiryService implements StudentEnquiryServiceInterface {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
+    /**
+     * Retrieves a student enquiry based on the provided ID and camp name.
+     * 
+     * @param enquiryController The EnquiryController object.
+     * @param student The name of the student.
+     * @return An array of strings representing the student enquiry data, or null if no matching enquiry is found.
+     */
     @Override
     public String[] studentEnquiryBasedOnIDandCamp(EnquiryController enquiryController, String student){
         List<String[]> studentEnquiryList = enquiryController.studentEnquiryService.studentFindEnquiry(student);
@@ -36,6 +43,12 @@ public class StudentEnquiryService implements StudentEnquiryServiceInterface {
         return null;
     }
 
+    /**
+     * View all enquiries under the student name.
+     * 
+     * @param enquiryController The EnquiryController object.
+     * @param student The name of the student.
+     */
     @Override
     public void viewEnquiry(EnquiryController enquiryController, String student){ //View all enquiries under the student name
         List<String[]> enquiryList = enquiryController.studentEnquiryService.studentFindEnquiry(student);
@@ -48,6 +61,12 @@ public class StudentEnquiryService implements StudentEnquiryServiceInterface {
             System.out.println("You have no enquiries");
     }
 
+    /**
+     * Retrieves a list of enquiries for a specific student.
+     *
+     * @param student the name of the student
+     * @return a list of String arrays representing the enquiries
+     */
     @Override
     public List<String[]> studentFindEnquiry(String student){
         List<String[]> enquiryList = new ArrayList<>();

@@ -6,6 +6,11 @@ import UI.StaffViewManagementInterface.StaffMenuServiceInterface;
 
 public class StaffMenuService implements StaffMenuServiceInterface {
 
+    /**
+     * Displays the staff menu and handles user input for various menu options.
+     * 
+     * @param staffView the StaffView object containing the staff's information
+     */
     @Override
     public void display(StaffView staffView){
         staffView.logOff=0;

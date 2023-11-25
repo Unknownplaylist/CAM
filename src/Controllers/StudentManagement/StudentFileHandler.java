@@ -15,6 +15,12 @@ import Models.Student;
 
 public class StudentFileHandler implements StudentFileHandlerInterface {
     static final String FILE_PATH = "src/Database/student.csv";
+    /**
+     * Reads the student data from a file and returns a list of Student objects.
+     * If the file does not exist, an empty list is returned.
+     * 
+     * @return a list of Student objects read from the file
+     */
     @Override
     public List<Student> readStudents() {
         List<Student> students = new ArrayList<>();
@@ -43,6 +49,11 @@ public class StudentFileHandler implements StudentFileHandlerInterface {
         return students;
     }
 
+    /**
+     * Writes the student information to a file.
+     * 
+     * @param student the student object containing the information to be written
+     */
     @Override
     public void writeStudent(Student student) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
@@ -56,6 +67,11 @@ public class StudentFileHandler implements StudentFileHandlerInterface {
         }
     }
 
+    /**
+     * Updates the student list by writing the student data to a file.
+     * 
+     * @param students the list of students to be updated
+     */
     @Override
     public void updateStudentList(List<Student> students) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {

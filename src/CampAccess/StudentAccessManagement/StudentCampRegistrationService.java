@@ -6,6 +6,14 @@ import Models.Student;
 
 public class StudentCampRegistrationService implements StudentCampRegistrationServiceInterface {
 
+    /**
+     * Registers a student for a camp.
+     * 
+     * @param studentAccess The StudentAccess object used to access student-related functionality.
+     * @param studentEmail The email of the student to register.
+     * @param campName The name of the camp to register for.
+     * @param asCommitteeMember Indicates whether the student is registering as a committee member.
+     */
     @Override
     public void registerForCamp(StudentAccess studentAccess, String studentEmail, String campName, boolean asCommitteeMember) {
         Student student = studentAccess.studentsController.studentSearchService.getStudentByEmail(studentAccess.studentsController, studentEmail);
@@ -43,6 +51,13 @@ public class StudentCampRegistrationService implements StudentCampRegistrationSe
         // campName);
     }
 
+    /**
+     * Withdraws a student from a camp.
+     * 
+     * @param studentAccess The StudentAccess object used to access student and camp controllers.
+     * @param studentEmail The email of the student to withdraw.
+     * @param campName The name of the camp to withdraw from.
+     */
     @Override
     public void withdrawFromCamp(StudentAccess studentAccess, String studentEmail, String campName) {
         // Find the student by email

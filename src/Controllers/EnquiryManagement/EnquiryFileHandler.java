@@ -12,6 +12,11 @@ import Controllers.EnquiryManagementInterface.EnquiryFileHandlerInterface;
 
 public class EnquiryFileHandler implements EnquiryFileHandlerInterface {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
+    /**
+     * Retrieves all the enquiries from the file.
+     * 
+     * @return a list of String arrays representing the enquiries
+     */
     @Override
     public List<String[]> findAllEnquiries(){
         List<String[]> enquiryList = new ArrayList<>();
@@ -29,6 +34,14 @@ public class EnquiryFileHandler implements EnquiryFileHandlerInterface {
         return enquiryList;
     }
 
+    /**
+     * Writes the data from the given list to a CSV file.
+     * Each element in the list represents a row in the CSV file.
+     * The first element in each row is assumed to be the ID.
+     * If the ID is not equal to "ID", it is replaced with a unique ID.
+     * 
+     * @param dataList the list of data to be written to the CSV file
+     */
     @Override
     public void writeCSV(List<String[]> dataList){
         int ID = 1;
@@ -48,6 +61,11 @@ public class EnquiryFileHandler implements EnquiryFileHandlerInterface {
                 }
     }
 
+    /**
+     * Writes the given enquiry to the file.
+     * 
+     * @param enquiry the enquiry to be written to the file
+     */
     @Override
     public void writeEnquiryToFile(String[] enquiry){
         List<String[]> existingEnquiry = findAllEnquiries();

@@ -20,6 +20,14 @@ public class StudentAccess {
     private StudentProfileServiceInterface studentProfileService;
     static Scanner sc = new Scanner(System.in);
 
+    /**
+     * Represents a class that provides access to student-related functionality in the system.
+     * This class initializes various services required for student access management.
+     *
+     * @param studentsController The controller responsible for managing student data.
+     * @param campController The controller responsible for managing camp data.
+     * @param staffController The controller responsible for managing staff data.
+     */
     public StudentAccess(StudentsController studentsController, CampController campController,
             StaffController staffController) {
         this.studentsController = studentsController;

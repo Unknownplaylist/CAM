@@ -9,6 +9,11 @@ import Models.Camp;
 
 public class CampManagementService implements CampManagementServiceInterface {
 
+    /**
+     * Creates a new camp based on the provided staff access information.
+     * 
+     * @param staffAccess the staff access information
+     */
     @Override
     public void createCamp(StaffAccess staffAccess){
         try{
@@ -79,6 +84,11 @@ public class CampManagementService implements CampManagementServiceInterface {
         }
     }
 
+    /**
+     * Edits a camp based on the provided staff access.
+     * 
+     * @param staffAccess The staff access object.
+     */
     @Override
     public void editCamp(StaffAccess staffAccess){
         System.out.print("Enter the name of the Camp you wish to Edit : ");
@@ -134,6 +144,11 @@ public class CampManagementService implements CampManagementServiceInterface {
         }
     }
 
+    /**
+     * Deletes a camp based on the provided camp name.
+     * 
+     * @param staffAccess the staff access object
+     */
     @Override
     public void delCamp(StaffAccess staffAccess) {
         System.out.print("Enter the name of the camp to delete: ");
@@ -151,6 +166,15 @@ public class CampManagementService implements CampManagementServiceInterface {
         }
     }
 
+    /**
+     * Changes the visibility of a camp based on the provided staff access.
+     * Prompts the user to enter the name of the camp to change visibility.
+     * If the camp is not found or if it does not belong to the staff, appropriate messages are displayed.
+     * The user is then prompted to set the camp visibility (true for visible, false for hidden).
+     * Finally, the camp visibility is updated and a message is displayed to indicate the change.
+     *
+     * @param staffAccess the staff access object containing the necessary information
+     */
     @Override
     public void changeVisibility(StaffAccess staffAccess) {
         System.out.print("Enter the name of the camp to change visibility: ");
@@ -173,6 +197,12 @@ public class CampManagementService implements CampManagementServiceInterface {
         System.out.println("Visibility of camp " + campName + " updated to " + (isVisible ? "visible" : "hidden") + ".");
     }
 
+    /**
+     * Displays the camps based on the preferred view specified by the user.
+     * 
+     * @param staffAccess The staff access object.
+     * @param your        A boolean value indicating whether to display only the camps created by the staff.
+     */
     @Override
     public void viewCamps(StaffAccess staffAccess, boolean your){
         int choice;

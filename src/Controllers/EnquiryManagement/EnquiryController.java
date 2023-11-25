@@ -17,6 +17,10 @@ import Models.Camp;
 -Only the staff and camp committee member in charge of the camp can read and reply to the enquiry 
  */
 
+/**
+ * The EnquiryController class is responsible for managing the enquiries related to camps.
+ * It provides methods to read and reply to enquiries, as well as check for pending enquiries.
+ */
 public class EnquiryController {
     static final String FILE_PATH = "src/Database/Enquiry.csv";
     static final String CSV_SEPARATOR = ",";

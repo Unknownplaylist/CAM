@@ -31,7 +31,16 @@ public class StaffView {
     StaffSuggestionUIInterface staffSuggestionUI;
     StaffReportUIInterface staffReportUI;
     StaffProfileUIInterface staffProfileUI;
+    /**
+     * Represents a view for staff members.
+     */
     public StaffView(String id,StaffController staffcont){
+        /**
+         * Constructs a new StaffView object.
+         * 
+         * @param id The ID of the staff member.
+         * @param staffcont The StaffController object associated with the staff member.
+         */
         this.id=id;
         email = staffcont.staffService.getStaffMail(this.id);
         name=staffcont.staffService.getStaffName(staffcont, email);

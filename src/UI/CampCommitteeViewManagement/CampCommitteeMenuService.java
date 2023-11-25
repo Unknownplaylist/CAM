@@ -4,6 +4,11 @@ import UI.CampCommitteeViewManagementInterface.CampCommitteeMenuServiceInterface
 
 public class CampCommitteeMenuService implements CampCommitteeMenuServiceInterface {
 
+    /**
+     * Displays the menu and handles user input for the Camp Committee view.
+     * 
+     * @param campCommitteeView The CampCommitteeView object representing the current view.
+     */
     @Override
     public void display(CampCommitteeView campCommitteeView){
         campCommitteeView.logOff=0;

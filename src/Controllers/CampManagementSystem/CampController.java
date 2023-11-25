@@ -24,8 +24,19 @@ public class CampController {
     public CampServiceInterface campService;
     public CampSortingServiceInterface campSortingService;
     private StudentSearchServiceInterface studentSearchService;
+    /**
+     * The CampController class is responsible for managing the camp system.
+     * It handles the registration, reporting, sorting, and searching of students in the camp.
+     */
 
     public CampController(StudentsController studentController, StaffController staffController) {
+        /**
+         * Constructs a new CampController object with the specified student controller
+         * and staff controller.
+         * 
+         * @param studentController the student controller object
+         * @param staffController   the staff controller object
+         */
         this.studentController = studentController;
         this.staffController = staffController;
         this.campFileHandler = new CampFileHandler();

@@ -12,6 +12,11 @@ import Controllers.SuggestionManagementInterface.SuggestionFileHandlerInterface;
 
 public class SuggestionFileHandler implements SuggestionFileHandlerInterface {
     static final String FILE_PATH = "src/Database/Suggestion.csv";
+    /**
+     * Retrieves all suggestions from the suggestion file.
+     * 
+     * @return A list of string arrays representing the suggestions.
+     */
     @Override
     public List<String[]> findAllSuggestions(){
         List<String[]> suggestionList = new ArrayList<>();
@@ -29,6 +34,13 @@ public class SuggestionFileHandler implements SuggestionFileHandlerInterface {
         return suggestionList;
     }
 
+    /**
+     * Writes the data from the given list to a CSV file.
+     * Each element in the list represents a row in the CSV file.
+     * The first element in each row is the ID, which is automatically generated.
+     * 
+     * @param dataList the list of data to be written to the CSV file
+     */
     @Override
     public void writeCSV(List<String[]> dataList){
         int ID = 1;

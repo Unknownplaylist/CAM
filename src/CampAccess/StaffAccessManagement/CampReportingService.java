@@ -7,6 +7,13 @@ import Models.Camp;
 
 public class CampReportingService implements CampReportingServiceInterface {
 
+    /**
+     * Generates a report based on the provided staff access information.
+     * The report can be filtered by location, starting alphabets, or attendee name.
+     * The generated report is saved in a CSV file.
+     *
+     * @param staffAccess the staff access information
+     */
     @Override
     public void generateReport(StaffAccess staffAccess){
         List<Camp>toprint;

@@ -6,6 +6,12 @@ import Models.Student;
 
 public class StudentManagementService implements StudentManagementServiceInterface {
 
+    /**
+     * Generates a student list for a given committee access and student email.
+     * 
+     * @param committeeAccess The committee access object.
+     * @param studentEmail The email of the student.
+     */
     @Override
     public void generateStudentList(CommitteeAccess committeeAccess, String studentEmail) {
         // Assuming 'getStudentByEmail' method exists in StudentsController
@@ -35,6 +41,12 @@ public class StudentManagementService implements StudentManagementServiceInterfa
         System.out.println();
     }
 
+    /**
+     * Displays the current point of a student in the committee access system.
+     * 
+     * @param committeeAccess The committee access object containing the student information.
+     * @param campCommName The name of the student.
+     */
     @Override
     public void viewPoint(CommitteeAccess committeeAccess, String campCommName){
         //Student student = student_controller.getStudentByName(campCommName);
