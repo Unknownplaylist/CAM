@@ -37,6 +37,10 @@ public class Camp {
         isVisible = true;
     }
 
+    
+    /** 
+     * @return String
+     */
     // Getters and Setters
     public String getCampName() {
         return campName;

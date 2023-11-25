@@ -60,6 +60,10 @@ public class SuggestionFileHandler implements SuggestionFileHandlerInterface {
                 }
     }
 
+    
+    /** 
+     * @param enquiry
+     */
     @Override
     public void writeSuggestionToFile(String[] enquiry){
         List<String[]> existingSuggestion = findAllSuggestions();

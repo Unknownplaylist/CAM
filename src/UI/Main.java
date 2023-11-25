@@ -20,6 +20,10 @@ public class Main {
     public CampCommitteeView commview;
     public static Scanner sc = new Scanner(System.in);
     
+    
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         int exit=0;
         int loginput=0;

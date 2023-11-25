@@ -23,6 +23,10 @@ public class Student {
         this.point = 0;
     }
 
+    
+    /** 
+     * @return String
+     */
     // Getters and setters for all fields
     public String getName() {
         return name;

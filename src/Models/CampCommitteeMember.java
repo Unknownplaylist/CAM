@@ -13,6 +13,10 @@ public class CampCommitteeMember extends Student {
         point = 0;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getPoint(){
         return point;
     }

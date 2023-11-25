@@ -14,6 +14,10 @@ public class Staff {
         this.password = password;
     }
 
+    
+    /** 
+     * @return String
+     */
     // Getters and setters
     public String getName() {
         return name;

@@ -12,6 +12,11 @@ import Models.Student;
  */
 public class CampCommitteeService implements CampCommitteeServiceInterface {
 
+    
+    /** 
+     * @param committeeAccess
+     * @param studentEmail
+     */
     @Override
     public void viewAvailableCamps(CommitteeAccess committeeAccess, String studentEmail) {
         Student student = committeeAccess.student_controller.studentSearchService.getStudentByEmail(committeeAccess.student_controller, studentEmail);
